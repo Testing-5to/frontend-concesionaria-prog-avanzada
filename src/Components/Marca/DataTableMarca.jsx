@@ -5,6 +5,7 @@ import { yellow } from "@mui/material/colors";
 import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from '@mui/icons-material/Delete';
+import {DotLoader} from 'react-spinners'
 
 
 const DataTableMarca = ({editarUnaMarca}) => {
@@ -78,10 +79,13 @@ const DataTableMarca = ({editarUnaMarca}) => {
         height: 660,
         width: "95%",
         backgroundColor: "white",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
       }}
     >
       {loading ? (
-        <h1>Cargando...</h1>
+        <DotLoader color="#1D1D1D" />
       ) : (
         <>
         <DataGrid

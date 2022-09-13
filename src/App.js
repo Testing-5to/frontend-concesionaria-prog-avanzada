@@ -12,7 +12,6 @@ const App = () => {
         <Sidebar/>
         <Routes>
           <Route path="/marca" element={<Marca/>} />
-          {/* <Route path="/autos" element={<DashboardAuto/>} /> */}
           <Route path="*" element={<Marca/>}/>
         </Routes>
       </Box>
