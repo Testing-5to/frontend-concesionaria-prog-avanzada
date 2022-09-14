@@ -10,6 +10,8 @@ import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import Modal from "@mui/material/Modal";
 import FormularioMarca from "./FormularioMarca";
+import { useState } from "react";
+import styles from "../../Styles/styles";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -25,18 +27,6 @@ const Search = styled("div")(({ theme }) => ({
     width: "auto",
   },
 }));
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "auto",
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 2),
@@ -66,12 +56,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const NavbarMarca = () => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar style={{ background: '#1D1D1D' }} position="static">
+      <AppBar style={{ background: "#1D1D1D" }} position="static">
         <Toolbar>
           <Typography
             noWrap
@@ -80,6 +70,7 @@ const NavbarMarca = () => {
           >
             LISTA DE MARCAS
           </Typography>
+
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
@@ -98,20 +89,21 @@ const NavbarMarca = () => {
             Marca
             <AddIcon sx={{ marginLeft: "2px" }} />
           </Button>
+
           <Modal
             open={open}
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
           >
-            <Box sx={style}>
-              <FormularioMarca onClose={handleClose} isEdit={false}/>
+            <Box sx={styles.box}>
+              <FormularioMarca onClose={handleClose} isEdit={false} />
             </Box>
           </Modal>
         </Toolbar>
       </AppBar>
     </Box>
   );
-}
+};
 
 export default NavbarMarca;

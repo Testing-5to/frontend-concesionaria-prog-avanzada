@@ -18,6 +18,35 @@ const FormularioMarca = ({ onClose, isEdit, marca }) => {
       onClose();
     });
   };
+
+  const validateValues = (valores) => {
+    let errores = {};
+
+    // Validacion marca
+    if (!valores.marca) {
+      errores.marca = "Por favor ingresa una marca";
+    }
+    // Validacion pais
+    if (!valores.pais) {
+      errores.pais = "Por favor ingresa un pais";
+    } else if (!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.pais)) {
+      errores.pais = "El pais solo puede contener letras y espacios";
+    }
+
+    return errores;
+  };
+
+  const onSubmit = (valores, { resetForm }) => {
+    if (!isEdit) {
+      guardarMarca(valores);
+      resetForm();
+      console.log("Formulario enviado");
+    } else {
+      actualizarMarca(valores);
+      resetForm();
+      console.log("Formulario enviado");
+    }
+  };
   return (
     <>
       {!isEdit ? <h2>Nueva Marca</h2> : <h2>Editar Marca</h2>}
@@ -26,33 +55,8 @@ const FormularioMarca = ({ onClose, isEdit, marca }) => {
           marca: marca?.nombre ? marca.nombre : "",
           pais: marca?.pais ? marca.pais : "",
         }}
-        validate={(valores) => {
-          let errores = {};
-
-          // Validacion marca
-          if (!valores.marca) {
-            errores.marca = "Por favor ingresa una marca";
-          }
-          // Validacion pais
-          if (!valores.pais) {
-            errores.pais = "Por favor ingresa un pais";
-          } else if (!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.pais)) {
-            errores.pais = "El pais solo puede contener letras y espacios";
-          }
-
-          return errores;
-        }}
-        onSubmit={(valores, { resetForm }) => {
-          if (!isEdit) {
-            guardarMarca(valores);
-            resetForm();
-            console.log("Formulario enviado");
-          } else {
-            actualizarMarca(valores);
-            resetForm();
-            console.log("Formulario enviado");
-          }
-        }}
+        validate={(valores) => validateValues(valores)}
+        onSubmit={(valores, { resetForm }) => onSubmit(valores, { resetForm })}
       >
         {({ errors }) => (
           <Form className="formulario">
@@ -62,16 +66,22 @@ const FormularioMarca = ({ onClose, isEdit, marca }) => {
                 type="text"
                 id="marca"
                 name="marca"
-                placeholder="Renault"
+                placeholder="Nombre de la marca"
               />
               <ErrorMessage
                 name="marca"
                 component={() => <div className="error">{errors.marca}</div>}
               />
             </div>
+
             <div>
               <label htmlFor="pais">País</label>
-              <Field type="text" id="pais" name="pais" placeholder="Francia" />
+              <Field
+                type="text"
+                id="pais"
+                name="pais"
+                placeholder="Pais de la marca"
+              />
               <ErrorMessage
                 name="pais"
                 component={() => <div className="error">{errors.pais}</div>}

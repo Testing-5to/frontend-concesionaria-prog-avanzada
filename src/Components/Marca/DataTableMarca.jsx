@@ -45,6 +45,7 @@ const DataTableMarca = ({ editarUnaMarca }) => {
             >
               <EditIcon />
             </Button>
+
             <Button
               variant="contained"
               color="error"
@@ -69,6 +70,7 @@ const DataTableMarca = ({ editarUnaMarca }) => {
   useEffect(() => {
     getMarcas();
   });
+
   return (
     <div style={styles.divDataTableMarca}>
       {loading ? (
