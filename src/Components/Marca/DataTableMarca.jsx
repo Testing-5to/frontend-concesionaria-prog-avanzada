@@ -1,30 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { getAllMarcas, deleteMarca } from "../../Services/Api";
-import { yellow } from "@mui/material/colors";
 import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from '@mui/icons-material/Delete';
-import {DotLoader} from 'react-spinners'
+import DeleteIcon from "@mui/icons-material/Delete";
+import { DotLoader } from "react-spinners";
+import styles from "../../Styles/styles";
 
-
-const DataTableMarca = ({editarUnaMarca}) => {
+const DataTableMarca = ({ editarUnaMarca }) => {
   const [marcas, setMarcas] = useState([]);
   const [loading, setLoading] = useState(true);
-
 
   const editMarca = (cellValues) => {
     editarUnaMarca(cellValues);
   };
 
   const eliminarMarca = async (cellValues) => {
-    if(window.confirm("¿Estas seguro de eliminar esta marca?")){
-      const {id} = cellValues;
+    if (window.confirm("¿Estas seguro de eliminar esta marca?")) {
+      const { id } = cellValues;
       await deleteMarca(id);
-    }else {
+    } else {
       return;
     }
-    
   };
   const columns = [
     { field: "id", headerName: "ID", flex: 1 },
@@ -41,7 +38,7 @@ const DataTableMarca = ({editarUnaMarca}) => {
             <Button
               variant="contained"
               color="inherit"
-              sx={{ backgroundColor: yellow[700], color: "white", '&:hover': { backgroundColor: yellow[800] } }}
+              sx={styles.buttonTable}
               onClick={() => {
                 editMarca(cellValues);
               }}
@@ -73,34 +70,21 @@ const DataTableMarca = ({editarUnaMarca}) => {
     getMarcas();
   });
   return (
-    <div
-      style={{
-        margin: "auto",
-        height: 660,
-        width: "95%",
-        backgroundColor: "white",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center"
-      }}
-    >
+    <div style={styles.divDataTableMarca}>
       {loading ? (
         <DotLoader color="#1D1D1D" />
       ) : (
         <>
-        <DataGrid
-          rows={marcas}
-          columns={columns}
-          pageSize={10}
-          rowsPerPageOptions={[10]}
-        />
-       
-          
+          <DataGrid
+            rows={marcas}
+            columns={columns}
+            pageSize={10}
+            rowsPerPageOptions={[10]}
+          />
         </>
       )}
-      
     </div>
   );
-}
+};
 
 export default DataTableMarca;
