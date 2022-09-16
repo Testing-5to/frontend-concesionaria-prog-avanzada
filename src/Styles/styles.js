@@ -1,6 +1,11 @@
 import { yellow } from "@mui/material/colors";
 
 const styles = {
+  sideBar: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+  },
   sideBarHeader: {
     height: "64px",
     display: "flex",
@@ -20,12 +25,14 @@ const styles = {
   },
   divDataTableMarca: {
     margin: "auto",
-    height: 660,
+    height: "90%",
     width: "95%",
     backgroundColor: "white",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    position: "relative",
+
   },
   box: {
     position: "absolute",
@@ -38,6 +45,7 @@ const styles = {
     boxShadow: 24,
     p: 4,
   },
+  
 };
 
 export default styles;

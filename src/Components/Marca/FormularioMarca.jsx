@@ -1,8 +1,11 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { saveMarca, updateMarca } from "../../Services/Api";
+import {BeatLoader} from 'react-spinners'
 
 const FormularioMarca = ({ onClose, isEdit, marca }) => {
+  const [saving, setSaving] = React.useState(false);
+
   const guardarMarca = async (valores) => {
     await saveMarca(valores).then((response) => {
       onClose();
@@ -37,14 +40,18 @@ const FormularioMarca = ({ onClose, isEdit, marca }) => {
   };
 
   const onSubmit = (valores, { resetForm }) => {
+    setSaving(true);
     if (!isEdit) {
-      guardarMarca(valores);
-      resetForm();
-      console.log("Formulario enviado");
+      guardarMarca(valores).then(() => {
+        resetForm();
+        setSaving(false);
+      });
+      
     } else {
-      actualizarMarca(valores);
-      resetForm();
-      console.log("Formulario enviado");
+      actualizarMarca(valores).then(() => {
+        resetForm();
+        setSaving(false);
+      });
     }
   };
   return (
@@ -88,7 +95,7 @@ const FormularioMarca = ({ onClose, isEdit, marca }) => {
               />
             </div>
 
-            <button type="submit">Enviar</button>
+            <button type="submit">{!saving ? <span>Enviar</span> : <BeatLoader color="white" />}</button>
           </Form>
         )}
       </Formik>

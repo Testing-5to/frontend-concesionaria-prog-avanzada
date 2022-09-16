@@ -19,7 +19,7 @@ const DashboardMarca = () => {
     handleOpen();
   };
   return (
-    <Box sx={{ width: "100%", display: "flex", flexDirection: "column" }}>
+    <Box sx={{ width: "100%", display: "flex", flexDirection: "column", top: "0", marginLeft: "80px"}}>
       <NavbarMarca />
       <br />
       <DataTable editarUnaMarca={editarUnaMarca} />
