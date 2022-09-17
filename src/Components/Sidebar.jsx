@@ -3,7 +3,6 @@ import {
   ProSidebar,
   Menu,
   MenuItem,
-  SidebarHeader,
   SidebarContent,
 } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
@@ -31,11 +30,8 @@ const Sidebar = () => {
       onMouseLeave={() => setCollapsed(true)}
       style={styles.sideBar}
     >
-      <SidebarHeader style={styles.sideBarHeader}>
-        <DirectionsCarIcon />
-      </SidebarHeader>
 
-      <SidebarContent>
+      <SidebarContent style={{marginTop: "10px"}}>
         <Menu iconShape="square">
           {/* Abmc's de autos */}
           <Box sx={styles.sidebarLabels}>

@@ -1,28 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { saveMarca, updateMarca } from "../../Services/Api";
 import { BeatLoader, DotLoader } from "react-spinners";
 import { getAllPaises } from "../../Services/Api";
 
-
 const FormularioMarca = ({ onClose, isEdit, marca }) => {
   const [saving, setSaving] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loadingModal, setLoadingModal] = useState(true);
   const [paises, setPaises] = useState([]);
+  
 
   const getPaises = async () => {
     const paises = await getAllPaises();
     setPaises(paises);
-    setLoading(false); 
+    setLoadingModal(false);
   };
 
-  useState(()=>{
+  useEffect(() => {
     getPaises();
-  })
+  }, []);
 
   const guardarMarca = async (valores) => {
     await saveMarca(valores).then((response) => {
       onClose();
+
     });
   };
 
@@ -33,28 +34,34 @@ const FormularioMarca = ({ onClose, isEdit, marca }) => {
       pais: valores.pais,
     }).then((response) => {
       onClose();
+
     });
   };
 
+  const getPais = (nombre) => {
+    const pais = paises.find((pais) => pais.nombre === nombre);
+    if (pais){
+      return pais.id;
+    }else{
+      return 4;
+    }
+  }
+
+
   const validateValues = (valores) => {
     let errores = {};
-
     // Validacion marca
     if (!valores.marca) {
       errores.marca = "Por favor ingresa una marca";
+    }else if (!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.marca)) {
+      errores.marca = "La marca solo puede contener letras y espacios";
     }
-    // Validacion pais
-    if (!valores.pais) {
-      errores.pais = "Por favor ingresa un pais";
-    } else if (!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.pais)) {
-      errores.pais = "El pais solo puede contener letras y espacios";
-    }
-
     return errores;
   };
 
   const onSubmit = (valores, { resetForm }) => {
     setSaving(true);
+    console.log(valores);
     if (!isEdit) {
       guardarMarca(valores).then(() => {
         resetForm();
@@ -69,15 +76,15 @@ const FormularioMarca = ({ onClose, isEdit, marca }) => {
   };
   return (
     <>
-      {loading ? (
-        <DotLoader color="#3f51b5" loading={loading} size={150} />
+      {loadingModal ? (
+        <DotLoader color="#1D1D1D" />
       ) : (
         <>
           {!isEdit ? <h2>Nueva Marca</h2> : <h2>Editar Marca</h2>}
           <Formik
             initialValues={{
               marca: marca?.nombre ? marca.nombre : "",
-              pais: marca?.pais ? marca.pais : "",
+              pais: getPais(marca?.pais),
             }}
             validate={(valores) => validateValues(valores)}
             onSubmit={(valores, { resetForm }) =>
@@ -104,12 +111,14 @@ const FormularioMarca = ({ onClose, isEdit, marca }) => {
 
                 <div>
                   <label htmlFor="pais">País</label>
-                  <Field as="select" name="pais">
-                    {paises.map((pais) => (
-                      <option key={pais.id} value={pais.abreviatura}>
-                        {pais.nombre}
-                      </option>
-                    ))}
+                  <Field as="select" name="pais" id="pais">
+                    {paises.map((pais) => {
+                      return (
+                        <option key={pais.id} value={pais.id}>
+                          {pais.nombre}
+                        </option>
+                      );
+                    })}
                   </Field>
                   <ErrorMessage
                     name="pais"

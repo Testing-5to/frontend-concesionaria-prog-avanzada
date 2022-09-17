@@ -6,19 +6,33 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DotLoader } from "react-spinners";
 import styles from "../../Styles/styles";
+import { Box } from "@mui/system";
+import { Modal } from "@mui/material";
+import FormularioMarca from "./FormularioMarca";
 
-const DataTableMarca = ({ editarUnaMarca }) => {
+
+const DataTableMarca = ({loading, setLoading}) => {
   const [marcas, setMarcas] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [marca, setMarca] = useState({});
 
-  const editMarca = (cellValues) => {
-    editarUnaMarca(cellValues);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const editarUnaMarca = (marca) => {
+    const id = marca.row.id;
+    const nombre = marca.row.nombre;
+    const pais = marca.row.pais;
+    setMarca({ id, nombre, pais });
+    handleOpen();
   };
 
   const eliminarMarca = async (cellValues) => {
     if (window.confirm("¿Estas seguro de eliminar esta marca?")) {
       const { id } = cellValues;
       await deleteMarca(id);
+      setLoading(true);
+      await getMarcas();
+      setLoading(false);
     } else {
       return;
     }
@@ -40,7 +54,7 @@ const DataTableMarca = ({ editarUnaMarca }) => {
               color="inherit"
               sx={styles.buttonTable}
               onClick={() => {
-                editMarca(cellValues);
+                editarUnaMarca(cellValues);
               }}
             >
               <EditIcon />
@@ -69,23 +83,36 @@ const DataTableMarca = ({ editarUnaMarca }) => {
 
   useEffect(() => {
     getMarcas();
-  });
+  }, [marcas]);
 
   return (
-    <div style={styles.divDataTableMarca}>
-      {loading ? (
-        <DotLoader color="#1D1D1D" />
-      ) : (
-        <>
-          <DataGrid
-            rows={marcas}
-            columns={columns}
-            pageSize={10}
-            rowsPerPageOptions={[10]}
-          />
-        </>
-      )}
-    </div>
+    <>
+      <div style={styles.divDataTableMarca}>
+        {loading ? (
+          <DotLoader color="#1D1D1D" />
+        ) : (
+          <>
+            <DataGrid
+              rows={marcas}
+              columns={columns}
+              autoPageSize={true}
+              disableColumnFilter={true}
+              disableColumnMenu={true}
+            />
+          </>
+        )}
+      </div>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={styles.box}>
+          <FormularioMarca onClose={handleClose} isEdit={true} marca={marca} />
+        </Box>
+      </Modal>
+    </>
   );
 };
 
