@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "http://localhost:9192/api/v1"
+const url = "http://localhost:9192/api/v1/"
 
 const getAllMarcas = async () => {
     const response = await axios.get(url + "marca");
