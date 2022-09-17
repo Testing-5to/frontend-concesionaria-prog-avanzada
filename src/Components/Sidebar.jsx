@@ -20,7 +20,7 @@ import { Box } from "@mui/system";
 
 const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(true);
-  const hidden = collapsed ? {visibility: "hidden", opacity: 0, transition: "visibility 0s linear 300ms, opacity 300ms"} : {visibility: "visible", opacity: 1, transition: "visibility 0s linear 0s, opacity 300ms"};
+  const hidden = collapsed ?  styles.visibilityHidden: styles.visibilityVisible;
 
   return (
     <ProSidebar
@@ -38,7 +38,7 @@ const Sidebar = () => {
       <SidebarContent>
         <Menu iconShape="square">
           {/* Abmc's de autos */}
-          <Box sx={{display: "flex", justifyContent: "start", alignItems: "center", width: "80%", margin: "auto"}}>
+          <Box sx={styles.sidebarLabels}>
             <Typography style={hidden}>Entidades</Typography>
           </Box>
           <MenuItem icon={<ViewCarouselIcon />}>
@@ -52,7 +52,7 @@ const Sidebar = () => {
           </MenuItem>
           <br/>
           {/* Abmc's de personas */}
-          <Box sx={{display: "flex", justifyContent: "start", alignItems: "center", width: "80%", margin: "auto"}}>
+          <Box sx={styles.sidebarLabels}>
             <Typography style={hidden}>Personas</Typography>
           </Box>
           <MenuItem icon={<RecentActorsIcon />}>
@@ -63,7 +63,7 @@ const Sidebar = () => {
           </MenuItem>
           <br/>
           {/* Abmc's de ventas */}
-          <Box sx={{display: "flex", justifyContent: "start", alignItems: "center", width: "80%", margin: "auto"}}>
+          <Box sx={styles.sidebarLabels}>
             <Typography style={hidden}>Ventas</Typography>
           </Box>
           <MenuItem icon={<StoreIcon />}>

@@ -32,7 +32,6 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
-
   },
   box: {
     position: "absolute",
@@ -45,7 +44,23 @@ const styles = {
     boxShadow: 24,
     p: 4,
   },
-  
+  sidebarLabels: {
+    display: "flex",
+    justifyContent: "start",
+    alignItems: "center",
+    width: "80%",
+    margin: "auto",
+  },
+  visibilityHidden: {
+    visibility: "hidden",
+    opacity: 0,
+    transition: "visibility 0s linear 300ms, opacity 300ms",
+  },
+  visibilityVisible: {
+    visibility: "visible",
+    opacity: 1,
+    transition: "visibility 0s linear 0s, opacity 300ms",
+  },
 };
 
 export default styles;

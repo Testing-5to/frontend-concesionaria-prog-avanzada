@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "http://localhost:9192/api/"
+const url = "http://localhost:9192/api/v1"
 
 const getAllMarcas = async () => {
     const response = await axios.get(url + "marca");
@@ -24,4 +24,14 @@ const updateMarca = async (marca) => {
     const response = await axios.put(url + "marca/" + marca.id, marca_parsed);
     return response.data;
 }
-export { getAllMarcas, saveMarca, deleteMarca, updateMarca };
+
+const getAllPaises = async () => {
+    // const response = await axios.get(url + "pais");
+    // return response.data;
+    return [
+        {id: 1, nombre: "Argentina", abreviatura: "AR"},
+        {id: 2, nombre: "Brasil", abreviatura: "BR"},
+        {id: 3, nombre: "Chile", abreviatura: "CL"},
+    ]
+}
+export { getAllMarcas, saveMarca, deleteMarca, updateMarca, getAllPaises };

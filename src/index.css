@@ -39,7 +39,7 @@ body {
 	color: #1f1f1f;
 }
 
-.formulario input,
+.formulario input, select,
 .formulario textarea {
 	font-family: 'Open Sans', sans-serif;
 	width: 100%;
@@ -51,7 +51,7 @@ body {
 	color: #1f1f1f;
 }
 
-.formulario input:focus {
+.formulario input:focus, select:focus {
 	outline: none;
 	border: 2px solid #0085FF;
 }
@@ -92,3 +92,14 @@ body {
 	width: auto;
 }
 
+select {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;       /* Remove default arrow */
+	background-image: url("https://www.kindpng.com/picc/m/25-258178_dropdown-icon-png-free-download-arrow-down-icon.png");
+	background-repeat: no-repeat;
+	background-position: right 10px top 50%;
+	background-size: 18px;
+
+	   
+ }
