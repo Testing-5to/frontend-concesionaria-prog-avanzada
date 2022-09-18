@@ -23,7 +23,7 @@ const FormularioMarca = ({ onClose, isEdit, marca }) => {
   const guardarMarca = async (valores) => {
     await saveMarca(valores).then((response) => {
       onClose();
-
+      window.location.reload();
     });
   };
 
@@ -34,6 +34,7 @@ const FormularioMarca = ({ onClose, isEdit, marca }) => {
       pais: valores.pais,
     }).then((response) => {
       onClose();
+      window.location.reload();
 
     });
   };
@@ -61,7 +62,6 @@ const FormularioMarca = ({ onClose, isEdit, marca }) => {
 
   const onSubmit = (valores, { resetForm }) => {
     setSaving(true);
-    console.log(valores);
     if (!isEdit) {
       guardarMarca(valores).then(() => {
         resetForm();
@@ -120,10 +120,7 @@ const FormularioMarca = ({ onClose, isEdit, marca }) => {
                       );
                     })}
                   </Field>
-                  <ErrorMessage
-                    name="pais"
-                    component={() => <div className="error">{errors.pais}</div>}
-                  />
+                  
                 </div>
 
                 <button type="submit">

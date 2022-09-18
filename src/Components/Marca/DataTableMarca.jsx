@@ -10,9 +10,9 @@ import { Box } from "@mui/system";
 import { Modal } from "@mui/material";
 import FormularioMarca from "./FormularioMarca";
 
-
-const DataTableMarca = ({loading, setLoading}) => {
+const DataTableMarca = ({ loading, setLoading, busqueda }) => {
   const [marcas, setMarcas] = useState([]);
+  const [marcasFiltered, setMarcasFiltered] = useState([]);
   const [open, setOpen] = useState(false);
   const [marca, setMarca] = useState({});
 
@@ -78,22 +78,31 @@ const DataTableMarca = ({loading, setLoading}) => {
   const getMarcas = async () => {
     const response = await getAllMarcas();
     setMarcas(response);
+    setMarcasFiltered(response);
     setLoading(false);
   };
 
   useEffect(() => {
+    const marcasFiltered = marcas.filter((marca) => {
+      return marca.nombre.toLowerCase().includes(busqueda.toLowerCase());
+    });
+    setMarcasFiltered(marcasFiltered);
+  }, [busqueda]);
+
+  useEffect(() => {
+    console.log("re-render");
     getMarcas();
-  }, [marcas]);
+  }, []);
 
   return (
     <>
-      <div style={styles.divDataTableMarca}>
+      <div style={styles.divDataTable}>
         {loading ? (
           <DotLoader color="#1D1D1D" />
         ) : (
           <>
             <DataGrid
-              rows={marcas}
+              rows={marcasFiltered}
               columns={columns}
               autoPageSize={true}
               disableColumnFilter={true}

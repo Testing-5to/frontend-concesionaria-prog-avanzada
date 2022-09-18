@@ -23,7 +23,7 @@ const styles = {
     color: "white",
     "&:hover": { backgroundColor: yellow[800] },
   },
-  divDataTableMarca: {
+  divDataTable: {
     margin: "auto",
     height: "90%",
     width: "95%",

@@ -44,18 +44,18 @@ const Sidebar = () => {
             <strong>Modelo</strong> <Link to="/marca" />
           </MenuItem>
           <MenuItem icon={<DirectionsCarIcon />}>
-            <strong>Auto</strong> <Link to="/marca" />
+            <strong>Vehículo</strong> <Link to="/marca" />
           </MenuItem>
           <br/>
           {/* Abmc's de personas */}
           <Box sx={styles.sidebarLabels}>
-            <Typography style={hidden}>Personas</Typography>
+            <Typography style={hidden}>Personal</Typography>
           </Box>
           <MenuItem icon={<RecentActorsIcon />}>
             <strong>Clientes</strong> <Link to="/marca" />
           </MenuItem>
           <MenuItem icon={<PersonIcon/>}>
-            <strong>Personal</strong> <Link to="/marca" />
+            <strong>Empleados</strong> <Link to="/empleados" />
           </MenuItem>
           <br/>
           {/* Abmc's de ventas */}
