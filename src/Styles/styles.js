@@ -20,8 +20,8 @@ const styles = {
   },
   divDataTableMarca: {
     margin: "auto",
-    height: 660,
-    width: "95%",
+    height: "87%",
+    width: "93%",
     backgroundColor: "white",
     display: "flex",
     justifyContent: "center",

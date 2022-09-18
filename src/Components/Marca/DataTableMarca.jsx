@@ -34,7 +34,7 @@ const DataTableMarca = ({ editarUnaMarca }) => {
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div>
+          <div style={{ position: "absolute", backgroundColor: "red" }}>
             <Button
               variant="contained"
               color="inherit"

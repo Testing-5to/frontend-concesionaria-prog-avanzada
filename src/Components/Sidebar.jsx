@@ -21,9 +21,10 @@ const Sidebar = () => {
     <ProSidebar
       collapsed={collapsed}
       width="150px"
-      collapsedWidth="80px"
+      collapsedWidth="78px"
       onMouseOver={() => setCollapsed(false)}
       onMouseLeave={() => setCollapsed(true)}
+      style={styles.sidebar}
     >
       <SidebarHeader style={styles.sideBarHeader}>
         <DirectionsCarIcon />
