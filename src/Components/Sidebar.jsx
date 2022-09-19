@@ -1,17 +1,12 @@
 import React, { useState } from "react";
-import {
-  ProSidebar,
-  Menu,
-  MenuItem,
-  SidebarContent,
-} from "react-pro-sidebar";
+import { ProSidebar, Menu, MenuItem, SidebarContent } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
 import ViewCarouselIcon from "@mui/icons-material/ViewCarousel";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
-import RecentActorsIcon from '@mui/icons-material/RecentActors';
-import StoreIcon from '@mui/icons-material/Store';
-import AutoAwesomeMotionIcon from '@mui/icons-material/AutoAwesomeMotion';
-import PersonIcon from '@mui/icons-material/Person';
+import RecentActorsIcon from "@mui/icons-material/RecentActors";
+import StoreIcon from "@mui/icons-material/Store";
+import AutoAwesomeMotionIcon from "@mui/icons-material/AutoAwesomeMotion";
+import PersonIcon from "@mui/icons-material/Person";
 import { Link } from "react-router-dom";
 import styles from "../Styles/styles";
 import { Typography } from "@mui/material";
@@ -19,7 +14,7 @@ import { Box } from "@mui/system";
 
 const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(true);
-  const hidden = collapsed ?  styles.visibilityHidden: styles.visibilityVisible;
+  const hidden = collapsed ? styles.visibilityHidden : styles.visibilityVisible;
 
   return (
     <ProSidebar
@@ -30,8 +25,7 @@ const Sidebar = () => {
       onMouseLeave={() => setCollapsed(true)}
       style={styles.sideBar}
     >
-
-      <SidebarContent style={{marginTop: "10px"}}>
+      <SidebarContent style={{ marginTop: "10px" }}>
         <Menu iconShape="square">
           {/* Abmc's de autos */}
           <Box sx={styles.sidebarLabels}>
@@ -46,18 +40,18 @@ const Sidebar = () => {
           <MenuItem icon={<DirectionsCarIcon />}>
             <strong>Vehículo</strong> <Link to="/marca" />
           </MenuItem>
-          <br/>
+          <br />
           {/* Abmc's de personas */}
           <Box sx={styles.sidebarLabels}>
-            <Typography style={hidden}>Personal</Typography>
+            <Typography style={hidden}>People</Typography>
           </Box>
           <MenuItem icon={<RecentActorsIcon />}>
             <strong>Clientes</strong> <Link to="/marca" />
           </MenuItem>
-          <MenuItem icon={<PersonIcon/>}>
+          <MenuItem icon={<PersonIcon />}>
             <strong>Empleados</strong> <Link to="/empleados" />
           </MenuItem>
-          <br/>
+          <br />
           {/* Abmc's de ventas */}
           <Box sx={styles.sidebarLabels}>
             <Typography style={hidden}>Ventas</Typography>
@@ -67,8 +61,6 @@ const Sidebar = () => {
           </MenuItem>
         </Menu>
       </SidebarContent>
-
-     
     </ProSidebar>
   );
 };

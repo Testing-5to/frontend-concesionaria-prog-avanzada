@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { saveMarca, updateMarca } from "../../Services/Api";
 import { BeatLoader, DotLoader } from "react-spinners";
-import { getAllPaises } from "../../Services/Api";
+import { getAllPaises, saveMarca, updateMarca } from "../../Services";
 
 const FormularioMarca = ({ onClose, isEdit, marca }) => {
   const [saving, setSaving] = useState(false);
   const [loadingModal, setLoadingModal] = useState(true);
   const [paises, setPaises] = useState([]);
-  
 
   const getPaises = async () => {
     const paises = await getAllPaises();
@@ -35,26 +33,24 @@ const FormularioMarca = ({ onClose, isEdit, marca }) => {
     }).then((response) => {
       onClose();
       window.location.reload();
-
     });
   };
 
   const getPais = (nombre) => {
     const pais = paises.find((pais) => pais.nombre === nombre);
-    if (pais){
+    if (pais) {
       return pais.id;
-    }else{
+    } else {
       return 4;
     }
-  }
-
+  };
 
   const validateValues = (valores) => {
     let errores = {};
     // Validacion marca
     if (!valores.marca) {
       errores.marca = "Por favor ingresa una marca";
-    }else if (!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.marca)) {
+    } else if (!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.marca)) {
       errores.marca = "La marca solo puede contener letras y espacios";
     }
     return errores;
@@ -120,7 +116,6 @@ const FormularioMarca = ({ onClose, isEdit, marca }) => {
                       );
                     })}
                   </Field>
-                  
                 </div>
 
                 <button type="submit">

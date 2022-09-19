@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { saveEmpleado, updateEmpleado } from "../../Services/Api";
 import { BeatLoader, DotLoader } from "react-spinners";
-import { getAllPaises } from "../../Services/Api";
+import { getAllPaises, saveEmpleado, updateEmpleado } from "../../Services";
 
 const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
   const [saving, setSaving] = useState(false);
@@ -46,7 +45,7 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
 
   const validateValues = (valores) => {
     let errores = {};
-   console.log(valores)
+    console.log(valores);
     // Validacion empleado
     if (!valores.nombre) {
       errores.nombre = "Por favor ingresa una nombre";
@@ -140,7 +139,10 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
             }
           >
             {({ errors }) => (
-              <Form className="formulario" style={{display:"flex", flexWrap: "wrap"}}>
+              <Form
+                className="formulario"
+                style={{ display: "flex", flexWrap: "wrap" }}
+              >
                 <div>
                   <label htmlFor="nombre">Empleado</label>
                   <Field
@@ -265,8 +267,6 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
                   />
                 </div>
 
-                
-
                 <div>
                   <label htmlFor="direccion">Direccion</label>
                   <Field
@@ -308,11 +308,7 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
                 </div>
                 <div>
                   <label htmlFor="provincia">Provincia</label>
-                  <Field
-                    as="select"
-                    id="provincia"
-                    name="provincia"
-                  >
+                  <Field as="select" id="provincia" name="provincia">
                     <option value="Buenos Aires">Buenos Aires</option>
                     <option value="Cordoba">Cordoba</option>
                     <option value="Santa Fe">Santa Fe</option>
@@ -322,11 +318,7 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
                 </div>
                 <div>
                   <label htmlFor="localidad">Localidad</label>
-                  <Field
-                  as="select"
-                  id="localidad"
-                  name="localidad"
-                  >
+                  <Field as="select" id="localidad" name="localidad">
                     <option value="CABA">CABA</option>
                     <option value="San Miguel">San Miguel</option>
                     <option value="San Isidro">San Isidro</option>
@@ -334,7 +326,6 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
                     <option value="San Vicente">San Vicente</option>
                   </Field>
                 </div>
-                
 
                 <div>
                   <label htmlFor="pais">País</label>
@@ -347,7 +338,6 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
                       );
                     })}
                   </Field>
-                  
                 </div>
 
                 <button type="submit">

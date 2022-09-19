@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { getAllEmpleados, deleteEmpleado } from "../../Services/Api";
+import { getAllEmpleados, deleteEmpleado } from "../../Services/";
 import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -10,8 +10,7 @@ import { Box } from "@mui/system";
 import { Modal } from "@mui/material";
 import FormularioEmpleado from "./FormularioEmpleados";
 
-
-const DataTableEmpleados = ({loading, setLoading, busqueda}) => {
+const DataTableEmpleados = ({ loading, setLoading, busqueda }) => {
   const [empleados, setEmpleados] = useState([]);
   const [empleadosFiltered, setEmpleadosFiltered] = useState([]);
   const [open, setOpen] = useState(false);
@@ -43,39 +42,33 @@ const DataTableEmpleados = ({loading, setLoading, busqueda}) => {
     setLoading(false);
   };
 
-  const filtrarEmpleados = (empleados, busqueda="") => {
+  const filtrarEmpleados = (empleados, busqueda = "") => {
     const primerFiltro = empleados.filter((empleado) => {
       return empleado.nombre.toLowerCase().includes(busqueda.toLowerCase());
     });
-    const segundoFiltro = primerFiltro.map((empleado) => (
-      {
-        id: empleado.id,
-        nombre: empleado.nombre,
-        apellido: empleado.apellido,
-        email: empleado.email,
-        salario: empleado.salario,
-        rol: empleado.rol,
-        direccion: empleado.direccion
-      }
-    ));
-      
+    const segundoFiltro = primerFiltro.map((empleado) => ({
+      id: empleado.id,
+      nombre: empleado.nombre,
+      apellido: empleado.apellido,
+      email: empleado.email,
+      salario: empleado.salario,
+      rol: empleado.rol,
+      direccion: empleado.direccion,
+    }));
+
     setEmpleadosFiltered(segundoFiltro);
-  }
-
-  
-
-
-  useEffect(()=>{
-    filtrarEmpleados(empleados, busqueda);
-  },[busqueda])
+  };
 
   useEffect(() => {
-    console.log("re-render")
+    filtrarEmpleados(empleados, busqueda);
+  }, [busqueda]);
+
+  useEffect(() => {
+    console.log("re-render");
     getEmpleados();
   }, []);
 
   const columns = [
-  
     { field: "id", headerName: "ID", flex: 1 },
     { field: "nombre", headerName: "Nombre", flex: 1 },
     { field: "apellido", headerName: "Apellido", flex: 1 },
@@ -116,7 +109,6 @@ const DataTableEmpleados = ({loading, setLoading, busqueda}) => {
     },
   ];
 
-
   return (
     <>
       <div style={styles.divDataTable}>
@@ -141,7 +133,11 @@ const DataTableEmpleados = ({loading, setLoading, busqueda}) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={styles.box}>
-          <FormularioEmpleado onClose={handleClose} isEdit={true} empleado={empleado} />
+          <FormularioEmpleado
+            onClose={handleClose}
+            isEdit={true}
+            empleado={empleado}
+          />
         </Box>
       </Modal>
     </>
