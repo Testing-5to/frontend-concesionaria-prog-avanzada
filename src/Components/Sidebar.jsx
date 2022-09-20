@@ -46,7 +46,7 @@ const Sidebar = () => {
             <Typography style={hidden}>People</Typography>
           </Box>
           <MenuItem icon={<RecentActorsIcon />}>
-            <strong>Clientes</strong> <Link to="/marca" />
+            <strong>Clientes</strong> <Link to="/cliente" />
           </MenuItem>
           <MenuItem icon={<PersonIcon />}>
             <strong>Empleados</strong> <Link to="/empleados" />

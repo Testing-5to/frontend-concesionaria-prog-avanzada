@@ -14,5 +14,11 @@ export { saveEmpleado } from "./Empleado.api";
 export { deleteEmpleado } from "./Empleado.api";
 export { updateEmpleado } from "./Empleado.api";
 
+//Cliente
+export { getAllClientes } from './Cliente.api'
+export { saveCliente } from './Cliente.api'
+export { deleteCliente } from './Cliente.api'
+export { updateCliente } from './Cliente.api'
+
 // Pais
 export { getAllPaises } from "./Pais.api";
