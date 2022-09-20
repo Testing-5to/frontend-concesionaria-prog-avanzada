@@ -16,3 +16,9 @@ export { updateEmpleado } from "./Empleado.api";
 
 // Pais
 export { getAllPaises } from "./Pais.api";
+
+// Roles
+export { getAllRoles } from "./Rol.api"
+
+// Genericos para formularios
+export { getAllDatosFormEmpleados } from "./Generico.api";
