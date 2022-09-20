@@ -1,31 +1,25 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
-import DataTable from "./DataTableMarca";
-import NavbarMarca from "./NavbarMarca";
+import DataTableClientes from "./DatatableClientes";
+import NavbarClientes from "./NavbarClientes";
 
-const DashboardMarca = () => {
+const DashboardClientes = () => {
   const [loading, setLoading] = useState(true);
   const [busqueda, setBusqueda] = useState("");
   return (
     <Box
       sx={{
         width: "100%",
+        height: "100vh",
         display: "flex",
         flexDirection: "column",
-<<<<<<< HEAD
-        backgroundColor: "lightgray",
-      }}
-    >
-      <NavbarMarca />
-=======
         top: "0",
         marginLeft: "80px",
       }}
     >
-      <NavbarMarca setBusqueda={setBusqueda} />
->>>>>>> 96fae35e10dc06bfb47b34fba4fb09e0be09bf27
+      <NavbarClientes setBusqueda={setBusqueda} />
       <br />
-      <DataTable
+      <DataTableClientes
         busqueda={busqueda}
         loading={loading}
         setLoading={setLoading}
@@ -34,4 +28,4 @@ const DashboardMarca = () => {
   );
 };
 
-export default DashboardMarca;
+export default DashboardClientes;

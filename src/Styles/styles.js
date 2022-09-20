@@ -1,6 +1,11 @@
 import { yellow } from "@mui/material/colors";
 
 const styles = {
+  sideBar: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+  },
   sideBarHeader: {
     height: "64px",
     display: "flex",
@@ -18,25 +23,53 @@ const styles = {
     color: "white",
     "&:hover": { backgroundColor: yellow[800] },
   },
-  divDataTableMarca: {
+  divDataTable: {
     margin: "auto",
+<<<<<<< HEAD
     height: "87%",
     width: "93%",
+=======
+    height: "90%",
+    width: "95%",
+>>>>>>> 96fae35e10dc06bfb47b34fba4fb09e0be09bf27
     backgroundColor: "white",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    position: "relative",
   },
   box: {
     position: "absolute",
     top: "50%",
     left: "50%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
     transform: "translate(-50%, -50%)",
-    width: "auto",
-    bgcolor: "background.paper",
+    minWidth: "668px",
+    minHeight: "400px",
+    bgcolor: "#FFFFFF",
     border: "2px solid #000",
     boxShadow: 24,
     p: 4,
+  },
+  sidebarLabels: {
+    display: "flex",
+    justifyContent: "start",
+    alignItems: "center",
+    width: "80%",
+    margin: "auto",
+  },
+  visibilityHidden: {
+    visibility: "hidden",
+    opacity: 0,
+    transition: "visibility 0s linear 300ms, opacity 300ms",
+  },
+  visibilityVisible: {
+    visibility: "visible",
+    opacity: 1,
+    transition: "visibility 0s linear 0s, opacity 300ms",
   },
 };
 

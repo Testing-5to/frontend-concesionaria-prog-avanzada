@@ -29,6 +29,9 @@ body {
 
 .formulario>div {
 	margin-bottom: 20px;
+	margin: 10px;
+    padding: 10px;
+    flex: 30%;
 }
 
 .formulario label {
@@ -39,7 +42,7 @@ body {
 	color: #1f1f1f;
 }
 
-.formulario input,
+.formulario input, select,
 .formulario textarea {
 	font-family: 'Open Sans', sans-serif;
 	width: 100%;
@@ -51,7 +54,7 @@ body {
 	color: #1f1f1f;
 }
 
-.formulario input:focus {
+.formulario input:focus, select:focus {
 	outline: none;
 	border: 2px solid #0085FF;
 }
@@ -91,4 +94,17 @@ body {
 .formulario input[type="radio"] {
 	width: auto;
 }
+
+select {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;       /* Remove default arrow */
+	background-image: url("https://cdn1.iconfinder.com/data/icons/arrows-vol-1-4/24/dropdown_arrow-512.png");
+	background-repeat: no-repeat;
+	background-position: right 10px top 50%;
+	background-size: 18px;
+
+	   
+ }
+
 
