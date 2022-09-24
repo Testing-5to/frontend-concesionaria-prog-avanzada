@@ -1,22 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { BeatLoader, DotLoader } from "react-spinners";
-import { getAllClientes, saveCliente, updateCliente } from "../../Services";
+import {
+  getAllClientes,
+  saveCliente,
+  updateCliente,
+  getAllPaises,
+} from "../../Services";
 
-const FormularioClientes = ({ onClose, isEdit, empleado }) => {
+const FormularioClientes = ({ onClose, isEdit, cliente }) => {
   const [saving, setSaving] = useState(false);
   const [loadingModal, setLoadingModal] = useState(true);
   const [paises, setPaises] = useState([]);
 
-  // const getPaises = async () => {
-  //   const paises = await getAllPaises();
-  //   setPaises(paises);
-  //   setLoadingModal(false);
-  // };
+  const getPaises = async () => {
+    const paises = await getAllPaises();
+    setPaises(paises);
+    setLoadingModal(false);
+  };
 
-  // useEffect(() => {
-  //   getPaises();
-  // }, []);
+  useEffect(() => {
+    getPaises();
+  }, []);
 
   const guardarCliente = async (valores) => {
     await saveCliente(valores).then((response) => {
@@ -25,73 +30,36 @@ const FormularioClientes = ({ onClose, isEdit, empleado }) => {
   };
 
   const actualizarCliente = async (valores) => {
+    const { id, nombre, apellido, telefono, documento, email } = valores;
+
     await updateCliente({
-      id: empleado.id,
-      nombre: valores.empleado,
-      pais: valores.pais,
+      id,
+      nombre,
+      apellido,
+      telefono,
+      documento,
+      email,
     }).then((response) => {
       onClose();
     });
   };
 
-  // const getPais = (nombre) => {
-  //   const pais = paises.find((pais) => pais.nombre === nombre);
-  //   if (pais) {
-  //     return pais.id;
-  //   } else {
-  //     return 4;
-  //   }
-  // };
+  const getPais = (nombre) => {
+    const pais = paises.find((pais) => pais.nombre === nombre);
+    if (pais) {
+      return pais.id;
+    } else {
+      return 4;
+    }
+  };
 
-  const validateValues = (valores) => {
-    let errores = {};
-    console.log(valores);
-    // Validacion empleado
-    if (!valores.nombre) {
-      errores.nombre = "Por favor ingresa una nombre";
-    } else if (!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.nombre)) {
-      errores.nombre = "Los nombres solo puede contener letras y espacios";
-    }
-    if (!valores.apellido) {
-      errores.apellido = "Por favor ingresa una apellido";
-    } else if (!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.apellido)) {
-      errores.apellido = "Los apellidos solo puede contener letras y espacios";
-    }
-    if (!valores.dni) {
-      errores.dni = "Por favor ingresa una dni";
-    } else if (!/^[0-9]{7,8}$/.test(valores.dni)) {
-      errores.dni = "El dni debe contener entre 7 y 8 numeros";
-    }
-    if (!valores.cuit) {
-      errores.cuit = "Por favor ingresa una cuit";
-    } else if (!/^[0-9]{11}$/.test(valores.cuit)) {
-      errores.cuit = "El cuit debe contener 11 numeros";
-    }
-    if (!valores.email) {
-      errores.email = "Por favor ingresa una email";
-    } else if (
-      !/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(valores.email)
-    ) {
-      errores.email = "El email no es valido";
-    }
-    if (!valores.salario) {
-      errores.salario = "Por favor ingresa una salario";
-    } else if (!/^[0-9]{1,10}$/.test(valores.salario)) {
-      errores.salario = "El salario debe contener entre 1 y 10 numeros";
-    }
-    // Validacion direccion
-    if (!valores.direccion) {
-      errores.direccion = "Por favor ingresa una direccion";
-    } else if (!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.direccion)) {
-      errores.direccion = "La direccion solo puede contener letras y espacios";
-    }
-    if (!valores.numero) {
-      errores.numero = "Por favor ingresa una numero";
-    } else if (!/^[0-9]{1,10}$/.test(valores.numero)) {
-      errores.numero = "El numero debe contener entre 1 y 10 numeros";
-    }
-
-    return errores;
+  const initialValues = {
+    id: cliente.id,
+    nombre: cliente.nombre,
+    apellido: cliente.apellido,
+    telefono: cliente.telefono,
+    documento: cliente.documento,
+    email: cliente.email,
   };
 
   const onSubmit = (valores, { resetForm }) => {
@@ -108,31 +76,33 @@ const FormularioClientes = ({ onClose, isEdit, empleado }) => {
       });
     }
   };
+
+  const validateValues = (values) => {
+    let errors = {};
+
+    if (!values.nombre) {
+      errors.nombre = "El nombre es obligatorio";
+    } else if (values.nombre.length < 3) {
+      errors.nombre = "El nombre debe tener al menos 3 caracteres";
+    }
+
+    if (!values.apellido) {
+      errors.apellido = "El apellido es obligatorio";
+    } else if (values.apellido.length < 3) {
+      errors.apellido = "El apellido debe tener al menos 3 caracteres";
+    }
+  };
+
   return (
     <>
       {loadingModal ? (
         <DotLoader color="#1D1D1D" />
       ) : (
         <>
-          {!isEdit ? <h2>Nuevo Empleado</h2> : <h2>Editar Empleado</h2>}
+          {!isEdit ? <h2>Nuevo Cliente</h2> : <h2>Editar Cliente</h2>}
 
           <Formik
-            initialValues={{
-              nombre: isEdit ? empleado.nombre : "",
-              apellido: isEdit ? empleado.apellido : "",
-              dni: isEdit ? empleado.dni : "",
-              cuit: isEdit ? empleado.cuit : "",
-              email: isEdit ? empleado.email : "",
-              fechaIngreso: isEdit ? empleado.fechaIngreso : "",
-              fechaEgreso: isEdit ? empleado.fechaEgreso : "",
-              salario: isEdit ? empleado.salario : "",
-              rol: isEdit ? empleado.rol : "",
-              direccion: isEdit ? empleado.direccion : "",
-              numero: isEdit ? empleado.numero : "",
-              localidad: isEdit ? empleado.localidad : "",
-              provincia: isEdit ? empleado.provincia : "",
-              pais: isEdit ? empleado.pais : "",
-            }}
+            initialValues={initialValues}
             validate={(valores) => validateValues(valores)}
             onSubmit={(valores, { resetForm }) =>
               onSubmit(valores, { resetForm })
@@ -144,12 +114,12 @@ const FormularioClientes = ({ onClose, isEdit, empleado }) => {
                 style={{ display: "flex", flexWrap: "wrap" }}
               >
                 <div>
-                  <label htmlFor="nombre">Empleado</label>
+                  <label htmlFor="nombre">Nombre</label>
                   <Field
                     type="text"
                     id="nombre"
                     name="nombre"
-                    placeholder="Nombre del empleado"
+                    placeholder="Nombre del cliente"
                   />
                   <ErrorMessage
                     name="nombre"
@@ -165,7 +135,7 @@ const FormularioClientes = ({ onClose, isEdit, empleado }) => {
                     type="text"
                     id="apellido"
                     name="apellido"
-                    placeholder="Apellido del empleado"
+                    placeholder="Apellido del cliente"
                   />
                   <ErrorMessage
                     name="apellido"
@@ -176,30 +146,32 @@ const FormularioClientes = ({ onClose, isEdit, empleado }) => {
                 </div>
 
                 <div>
-                  <label htmlFor="dni">DNI</label>
+                  <label htmlFor="telefono">Telefono</label>
                   <Field
                     type="text"
-                    id="dni"
-                    name="dni"
-                    placeholder="DNI del empleado"
+                    id="telefono"
+                    name="telefono"
+                    placeholder="Telefono del cliente"
                   />
                   <ErrorMessage
-                    name="dni"
-                    component={() => <div className="error">{errors.dni}</div>}
+                    name="telefono"
+                    component={() => (
+                      <div className="error">{errors.telefono}</div>
+                    )}
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="cuit">CUIT</label>
+                  <label htmlFor="dni">Documento</label>
                   <Field
                     type="text"
-                    id="cuit"
-                    name="cuit"
-                    placeholder="CUIT del empleado"
+                    id="dni"
+                    name="dni"
+                    placeholder="DNI del cliente"
                   />
                   <ErrorMessage
-                    name="cuit"
-                    component={() => <div className="error">{errors.cuit}</div>}
+                    name="dni"
+                    component={() => <div className="error">{errors.dni}</div>}
                   />
                 </div>
 
@@ -219,93 +191,6 @@ const FormularioClientes = ({ onClose, isEdit, empleado }) => {
                   />
                 </div>
 
-                <div>
-                  <label htmlFor="fechaIngreso">Fecha de Ingreso</label>
-                  <Field
-                    type="date"
-                    id="fechaIngreso"
-                    name="fechaIngreso"
-                    placeholder="Fecha de Ingreso del empleado"
-                  />
-                  <ErrorMessage
-                    name="fechaIngreso"
-                    component={() => (
-                      <div className="error">{errors.fechaIngreso}</div>
-                    )}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="fechaEgreso">Fecha de Egreso</label>
-                  <Field
-                    type="date"
-                    id="fechaEgreso"
-                    name="fechaEgreso"
-                    placeholder="Fecha de Egreso del empleado"
-                  />
-                  <ErrorMessage
-                    name="fechaEgreso"
-                    component={() => (
-                      <div className="error">{errors.fechaEgreso}</div>
-                    )}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="salario">Salario</label>
-                  <Field
-                    type="text"
-                    id="salario"
-                    name="salario"
-                    placeholder="Salario del empleado"
-                  />
-                  <ErrorMessage
-                    name="salario"
-                    component={() => (
-                      <div className="error">{errors.salario}</div>
-                    )}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="direccion">Direccion</label>
-                  <Field
-                    type="text"
-                    id="direccion"
-                    name="direccion"
-                    placeholder="Direccion del empleado"
-                  />
-                  <ErrorMessage
-                    name="direccion"
-                    component={() => (
-                      <div className="error">{errors.direccion}</div>
-                    )}
-                  />
-                </div>
-                <div>
-                  <label htmlFor="numero">Numero</label>
-                  <Field
-                    type="text"
-                    id="numero"
-                    name="numero"
-                    placeholder="Numero de calle"
-                  />
-                  <ErrorMessage
-                    name="numero"
-                    component={() => (
-                      <div className="error">{errors.numero}</div>
-                    )}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="rol">Rol</label>
-                  <Field as="select" name="rol" id="rol">
-                    <option value="Administrador">Administrador</option>
-                    <option value="Vendedor">Vendedor</option>
-                    <option value="Cajero">Cajero</option>
-                  </Field>
-                </div>
                 <div>
                   <label htmlFor="provincia">Provincia</label>
                   <Field as="select" id="provincia" name="provincia">

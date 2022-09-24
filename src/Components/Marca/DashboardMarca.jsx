@@ -12,18 +12,10 @@ const DashboardMarca = () => {
         width: "100%",
         display: "flex",
         flexDirection: "column",
-<<<<<<< HEAD
         backgroundColor: "lightgray",
       }}
     >
       <NavbarMarca />
-=======
-        top: "0",
-        marginLeft: "80px",
-      }}
-    >
-      <NavbarMarca setBusqueda={setBusqueda} />
->>>>>>> 96fae35e10dc06bfb47b34fba4fb09e0be09bf27
       <br />
       <DataTable
         busqueda={busqueda}

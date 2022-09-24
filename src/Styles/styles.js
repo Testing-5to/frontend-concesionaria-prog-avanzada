@@ -25,13 +25,8 @@ const styles = {
   },
   divDataTable: {
     margin: "auto",
-<<<<<<< HEAD
     height: "87%",
     width: "93%",
-=======
-    height: "90%",
-    width: "95%",
->>>>>>> 96fae35e10dc06bfb47b34fba4fb09e0be09bf27
     backgroundColor: "white",
     display: "flex",
     justifyContent: "center",

@@ -19,19 +19,11 @@ const Sidebar = () => {
   return (
     <ProSidebar
       collapsed={collapsed}
-<<<<<<< HEAD
       width="150px"
       collapsedWidth="78px"
       onMouseOver={() => setCollapsed(false)}
       onMouseLeave={() => setCollapsed(true)}
       style={styles.sidebar}
-=======
-      width="200px"
-      collapsedWidth="80px"
-      onMouseOver={() => setCollapsed(false)}
-      onMouseLeave={() => setCollapsed(true)}
-      style={styles.sideBar}
->>>>>>> 96fae35e10dc06bfb47b34fba4fb09e0be09bf27
     >
       <SidebarContent style={{ marginTop: "10px" }}>
         <Menu iconShape="square">
