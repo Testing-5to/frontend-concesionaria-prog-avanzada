@@ -124,7 +124,6 @@ const DataTableEmpleados = ({ loading, setLoading, busqueda }) => {
               disableColumnFilter={true}
               disableColumnMenu={true}
               disableSelectionOnClick={true}
->>>>>>> alejo
               initialState={{
                 sorting: {
                   sortModel: [{ field: 'id', sort: 'asc' }],
