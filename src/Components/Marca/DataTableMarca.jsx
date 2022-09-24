@@ -107,6 +107,11 @@ const DataTableMarca = ({ loading, setLoading, busqueda }) => {
               autoPageSize={true}
               disableColumnFilter={true}
               disableColumnMenu={true}
+              initialState={{
+                sorting: {
+                  sortModel: [{ field: 'id', sort: 'asc' }],
+                },
+              }}
             />
           </>
         )}

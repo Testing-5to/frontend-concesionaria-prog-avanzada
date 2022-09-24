@@ -22,3 +22,15 @@ export { updateCliente } from './Cliente.api'
 
 // Pais
 export { getAllPaises } from "./Pais.api";
+
+// Provincias
+export { getAllProvincias } from "./Provincia.api";
+
+// Localidades
+export { getAllLocalidades } from "./Localidad.api";
+
+// Roles
+export { getAllRoles } from "./Rol.api"
+
+// Genericos para formularios
+export { getAllDatosFormEmpleados } from "./Generico.api";

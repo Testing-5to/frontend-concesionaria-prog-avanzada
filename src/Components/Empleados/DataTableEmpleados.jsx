@@ -19,7 +19,8 @@ const DataTableEmpleados = ({ loading, setLoading, busqueda }) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const editarUnEmpleado = (empleado) => {
-    setEmpleado(empleado.row);
+    const empleadoFound = empleados.filter((e) => e.id === empleado.row.id)[0];
+    setEmpleado();
     handleOpen();
   };
 
@@ -51,9 +52,9 @@ const DataTableEmpleados = ({ loading, setLoading, busqueda }) => {
       nombre: empleado.nombre,
       apellido: empleado.apellido,
       email: empleado.email,
-      salario: empleado.salario,
-      rol: empleado.rol,
-      direccion: empleado.direccion,
+      salario: `$${parseFloat(empleado.salario).toFixed(0)}`,
+      rol: empleado.rol.nombre,
+      direccion: `${empleado.direccion.calle} ${empleado.direccion.numero}`,
     }));
 
     setEmpleadosFiltered(segundoFiltro);
@@ -122,6 +123,12 @@ const DataTableEmpleados = ({ loading, setLoading, busqueda }) => {
               autoPageSize={true}
               disableColumnFilter={true}
               disableColumnMenu={true}
+              empleadoFound
+              initialState={{
+                sorting: {
+                  sortModel: [{ field: 'id', sort: 'asc' }],
+                },
+              }}
             />
           </>
         )}
@@ -131,6 +138,7 @@ const DataTableEmpleados = ({ loading, setLoading, busqueda }) => {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+     
       >
         <Box sx={styles.box}>
           <FormularioEmpleado
