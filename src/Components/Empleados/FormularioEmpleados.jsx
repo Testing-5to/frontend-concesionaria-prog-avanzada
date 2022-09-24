@@ -1,24 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { BeatLoader, DotLoader } from "react-spinners";
-import { getAllPaises, saveEmpleado, updateEmpleado } from "../../Services";
+import { getAllDatosFormEmpleados, saveEmpleado, updateEmpleado } from "../../Services";
 import { Grid } from "@mui/material";
 
 const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
   const [saving, setSaving] = useState(false);
   const [loadingModal, setLoadingModal] = useState(true);
   const [paises, setPaises] = useState([]);
+  const [roles, setRoles] = useState([]);
 
-  const getPaises = async () => {
-    const paises = await getAllPaises();
-    console.log(paises);
-    setPaises(paises);
-    setLoadingModal(false);
-  };
 
   useEffect(() => {
-    getPaises();
+    fetchAllDataForm();
   }, []);
+
+   // traemos toda la data necesaria para popular el formulario
+   const fetchAllDataForm = async () => {
+    const data = await getAllDatosFormEmpleados();
+    setPaises(data.paises);
+    setRoles(data.roles);
+    setLoadingModal(false);
+  };
 
   const guardarEmpleado = async (valores) => {
     await saveEmpleado(valores).then((response) => {
@@ -54,11 +57,6 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
       errores.dni = "Por favor ingresa una dni";
     } else if (!/^[0-9]{7,8}$/.test(valores.dni)) {
       errores.dni = "El dni debe contener entre 7 y 8 numeros";
-    }
-    if (!valores.cuit) {
-      errores.cuit = "Por favor ingresa una cuit";
-    } else if (!/^[0-9]{11}$/.test(valores.cuit)) {
-      errores.cuit = "El cuit debe contener 11 numeros";
     }
     if (!valores.email) {
       errores.email = "Por favor ingresa una email";
@@ -114,7 +112,6 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
               nombre: isEdit ? empleado.nombre : "",
               apellido: isEdit ? empleado.apellido : "",
               dni: isEdit ? empleado.dni : "",
-              cuit: isEdit ? empleado.cuit : "",
               email: isEdit ? empleado.email : "",
               fechaIngreso: isEdit ? empleado.fechaIngreso : "",
               fechaEgreso: isEdit ? empleado.fechaEgreso : "",
@@ -124,7 +121,7 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
               numero: isEdit ? empleado.numero : "",
               localidad: isEdit ? empleado.localidad : "",
               provincia: isEdit ? empleado.provincia : "",
-              pais: isEdit ? empleado.pais : "",
+              pais: "Argentina"
             }}
             validate={(valores) => validateValues(valores)}
             onSubmit={(valores, { resetForm }) =>
@@ -181,22 +178,6 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
                       name="dni"
                       component={() => (
                         <div className="error">{errors.dni}</div>
-                      )}
-                    />
-                  </Grid>
-
-                  <Grid item md={6} xs={12}>
-                    <label htmlFor="cuit">CUIT</label>
-                    <Field
-                      type="text"
-                      id="cuit"
-                      name="cuit"
-                      placeholder="CUIT del empleado"
-                    />
-                    <ErrorMessage
-                      name="cuit"
-                      component={() => (
-                        <div className="error">{errors.cuit}</div>
                       )}
                     />
                   </Grid>
@@ -295,13 +276,14 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
                       )}
                     />
                   </Grid>
-
                   <Grid item md={6} xs={12}>
                     <label htmlFor="rol">Rol</label>
                     <Field as="select" name="rol" id="rol">
-                      <option value="Administrador">Administrador</option>
-                      <option value="Vendedor">Vendedor</option>
-                      <option value="Cajero">Cajero</option>
+                      {
+                        roles.map((rol) => (
+                          <option key={rol.id} value={rol.id}>{rol.nombre}</option>
+                        ))
+                      }
                     </Field>
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -350,6 +332,8 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
                   </Grid>
                   
                 </Grid>
+
+                  
               </Form>
             )}
           </Formik>

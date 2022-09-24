@@ -43,7 +43,7 @@ const Sidebar = () => {
           <br />
           {/* Abmc's de personas */}
           <Box sx={styles.sidebarLabels}>
-            <Typography style={hidden}>People</Typography>
+            <Typography style={hidden}>Personal</Typography>
           </Box>
           <MenuItem icon={<RecentActorsIcon />}>
             <strong>Clientes</strong> <Link to="/marca" />
