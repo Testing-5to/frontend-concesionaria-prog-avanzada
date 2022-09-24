@@ -123,8 +123,6 @@ const DataTableEmpleados = ({ loading, setLoading, busqueda }) => {
               autoPageSize={true}
               disableColumnFilter={true}
               disableColumnMenu={true}
-<<<<<<< HEAD
-=======
               disableSelectionOnClick={true}
 >>>>>>> alejo
               initialState={{
