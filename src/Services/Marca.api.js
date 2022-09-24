@@ -18,7 +18,6 @@ const saveMarca = async (marca) => {
 };
 
 const deleteMarca = async (id) => {
-  console.log(id);
   const response = await axios.delete(url + "marca/" + id);
   return response.data;
 };

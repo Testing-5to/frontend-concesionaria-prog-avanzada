@@ -9,78 +9,76 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
   const [loadingModal, setLoadingModal] = useState(true);
   const [paises, setPaises] = useState([]);
   const [roles, setRoles] = useState([]);
+  const [localidades, setLocalidades] = useState([]);
+  const [provincias, setProvincias] = useState([]);
 
-
-  useEffect(() => {
-    fetchAllDataForm();
-  }, []);
-
-   // traemos toda la data necesaria para popular el formulario
-   const fetchAllDataForm = async () => {
+  
+  // traemos toda la data necesaria para popular el formulario
+  const fetchAllDataForm = async () => {
     const data = await getAllDatosFormEmpleados();
     setPaises(data.paises);
     setRoles(data.roles);
+    setLocalidades(data.localidades);
+    setProvincias(data.provincias);
     setLoadingModal(false);
   };
 
   const guardarEmpleado = async (valores) => {
     await saveEmpleado(valores).then((response) => {
       onClose();
+      window.location.reload();
     });
   };
 
   const actualizarEmpleado = async (valores) => {
-    await updateEmpleado({
-      id: empleado.id,
-      nombre: valores.empleado,
-      pais: valores.pais,
-    }).then((response) => {
+    valores.id = empleado.id;
+    await updateEmpleado(valores).then((response) => {
       onClose();
+      window.location.reload();
     });
   };
 
   const validateValues = (valores) => {
     let errores = {};
-    console.log(valores);
     // Validacion empleado
     if (!valores.nombre) {
-      errores.nombre = "Por favor ingresa una nombre";
+      errores.nombre = "Por favor ingresa un nombre";
     } else if (!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.nombre)) {
       errores.nombre = "Los nombres solo puede contener letras y espacios";
     }
     if (!valores.apellido) {
-      errores.apellido = "Por favor ingresa una apellido";
-    } else if (!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.apellido)) {
-      errores.apellido = "Los apellidos solo puede contener letras y espacios";
-    }
+      errores.apellido = "Por favor ingresa un apellido";
+    } 
     if (!valores.dni) {
-      errores.dni = "Por favor ingresa una dni";
-    } else if (!/^[0-9]{7,8}$/.test(valores.dni)) {
+      errores.dni = "Por favor ingresa un dni";
+    } else if (!/^[0-9]{3,12}$/.test(valores.dni)) {
       errores.dni = "El dni debe contener entre 7 y 8 numeros";
     }
     if (!valores.email) {
-      errores.email = "Por favor ingresa una email";
+      errores.email = "Por favor ingresa un email";
     } else if (
       !/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(valores.email)
     ) {
       errores.email = "El email no es valido";
     }
     if (!valores.salario) {
-      errores.salario = "Por favor ingresa una salario";
-    } else if (!/^[0-9]{1,10}$/.test(valores.salario)) {
+      errores.salario = "Por favor ingresa un salario";
+    } else if (!/^(?!0+(?:\.0+)?$)[0-9]+(?:\.[0-9]+)?$/.test(valores.salario)) {
       errores.salario = "El salario debe contener entre 1 y 10 numeros";
     }
     // Validacion direccion
     if (!valores.direccion) {
       errores.direccion = "Por favor ingresa una direccion";
-    } else if (!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.direccion)) {
-      errores.direccion = "La direccion solo puede contener letras y espacios";
-    }
-    if (!valores.numero) {
-      errores.numero = "Por favor ingresa una numero";
+    }if (!valores.numero) {
+      errores.numero = "Por favor ingresa un numero";
     } else if (!/^[0-9]{1,10}$/.test(valores.numero)) {
       errores.numero = "El numero debe contener entre 1 y 10 numeros";
     }
+
+    // Validacion teléfono
+    if (!valores.telefono) {
+      errores.telefono = "Por favor ingresa un telefono";
+    } 
 
     return errores;
   };
@@ -99,6 +97,12 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
       });
     }
   };
+
+
+  useEffect(() => {
+    fetchAllDataForm();
+  }, []);
+
   return (
     <>
       {loadingModal ? (
@@ -113,22 +117,24 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
               apellido: isEdit ? empleado.apellido : "",
               dni: isEdit ? empleado.dni : "",
               email: isEdit ? empleado.email : "",
+              telefono: isEdit ? empleado.telefono : "",
               fechaIngreso: isEdit ? empleado.fechaIngreso : "",
               fechaEgreso: isEdit ? empleado.fechaEgreso : "",
               salario: isEdit ? empleado.salario : "",
-              rol: isEdit ? empleado.rol : "",
-              direccion: isEdit ? empleado.direccion : "",
-              numero: isEdit ? empleado.numero : "",
-              localidad: isEdit ? empleado.localidad : "",
-              provincia: isEdit ? empleado.provincia : "",
+              rol: isEdit ? empleado.rol.id : "2",
+              direccion: isEdit ? empleado.direccion.calle : "",
+              numero: isEdit ? empleado.direccion.numero : "",
+              provincia: isEdit ? empleado.direccion.localidad.provincia.id.toString() : "1",
+              localidad: isEdit ? empleado.direccion.localidad.id.toString() : "1",
               pais: "Argentina"
             }}
             validate={(valores) => validateValues(valores)}
             onSubmit={(valores, { resetForm }) =>
               onSubmit(valores, { resetForm })
             }
+            
           >
-            {({ errors }) => (
+            {({ errors, values }) => (
               <Form
                 className="formulario"
                 style={{ display: "flex", justifyContent: "center" }}
@@ -197,7 +203,69 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
                       )}
                     />
                   </Grid>
+                  <Grid item md={6} xs={12}>
+                    <label htmlFor="telefono">Telefono</label>
+                    <Field
+                      type="number"
+                      id="telefono"
+                      name="telefono"
+                      placeholder="Teléfono del empleado"
+                    />
+                    <ErrorMessage
+                      name="telefono"
+                      component={() => (
+                        <div className="error">{errors.telefono}</div>
+                      )}
+                    />
+                  </Grid>
 
+                 
+                  <Grid item md={6} xs={12}>
+                    <label htmlFor="salario">Salario</label>
+                    <Field
+                      type="number"
+                      id="salario"
+                      name="salario"
+                      placeholder="Salario del empleado"
+                    />
+                    <ErrorMessage
+                      name="salario"
+                      component={() => (
+                        <div className="error">{errors.salario}</div>
+                      )}
+                    />
+                  </Grid>
+
+                  <Grid item md={6} xs={12}>
+                    <label htmlFor="direccion">Direccion</label>
+                    <Field
+                      type="text"
+                      id="direccion"
+                      name="direccion"
+                      placeholder="Direccion del empleado"
+                    />
+                    <ErrorMessage
+                      name="direccion"
+                      component={() => (
+                        <div className="error">{errors.direccion}</div>
+                      )}
+                    />
+                  </Grid>
+                  <Grid item md={6} xs={12}>
+                    <label htmlFor="numero">Numero</label>
+                    <Field
+                      type="number"
+                      id="numero"
+                      name="numero"
+                      placeholder="Numero de calle"
+                    />
+                    <ErrorMessage
+                      name="numero"
+                      component={() => (
+                        <div className="error">{errors.numero}</div>
+                      )}
+                    />
+                  </Grid>
                   <Grid item md={6} xs={12}>
                     <label htmlFor="fechaIngreso">Fecha de Ingreso</label>
                     <Field
@@ -231,52 +299,6 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
                   </Grid>
 
                   <Grid item md={6} xs={12}>
-                    <label htmlFor="salario">Salario</label>
-                    <Field
-                      type="text"
-                      id="salario"
-                      name="salario"
-                      placeholder="Salario del empleado"
-                    />
-                    <ErrorMessage
-                      name="salario"
-                      component={() => (
-                        <div className="error">{errors.salario}</div>
-                      )}
-                    />
-                  </Grid>
-
-                  <Grid item md={6} xs={12}>
-                    <label htmlFor="direccion">Direccion</label>
-                    <Field
-                      type="text"
-                      id="direccion"
-                      name="direccion"
-                      placeholder="Direccion del empleado"
-                    />
-                    <ErrorMessage
-                      name="direccion"
-                      component={() => (
-                        <div className="error">{errors.direccion}</div>
-                      )}
-                    />
-                  </Grid>
-                  <Grid item md={6} xs={12}>
-                    <label htmlFor="numero">Numero</label>
-                    <Field
-                      type="text"
-                      id="numero"
-                      name="numero"
-                      placeholder="Numero de calle"
-                    />
-                    <ErrorMessage
-                      name="numero"
-                      component={() => (
-                        <div className="error">{errors.numero}</div>
-                      )}
-                    />
-                  </Grid>
-                  <Grid item md={6} xs={12}>
                     <label htmlFor="rol">Rol</label>
                     <Field as="select" name="rol" id="rol">
                       {
@@ -289,21 +311,27 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
                   <Grid item md={6} xs={12}>
                     <label htmlFor="provincia">Provincia</label>
                     <Field as="select" id="provincia" name="provincia">
-                      <option value="Buenos Aires">Buenos Aires</option>
-                      <option value="Cordoba">Cordoba</option>
-                      <option value="Santa Fe">Santa Fe</option>
-                      <option value="Mendoza">Mendoza</option>
-                      <option value="Tucuman">Tucuman</option>
+                      {
+                        provincias.map((provincia) => (
+                          <option key={provincia.id} value={provincia.id}>{provincia.nombre}</option>
+                        ))
+                      }
+
                     </Field>
                   </Grid>
                   <Grid item md={6} xs={12}>
                     <label htmlFor="localidad">Localidad</label>
                     <Field as="select" id="localidad" name="localidad">
-                      <option value="CABA">CABA</option>
-                      <option value="San Miguel">San Miguel</option>
-                      <option value="San Isidro">San Isidro</option>
-                      <option value="San Fernando">San Fernando</option>
-                      <option value="San Vicente">San Vicente</option>
+                      {
+                        localidades.map((localidad) => { 
+                          if(localidad.provincia.id.toString() === values.provincia){
+                            return <option key={localidad.id} value={localidad.id}>{localidad.nombre}</option>
+                          }else{
+                            return null
+                          }
+                        })
+                      }
+
                     </Field>
                   </Grid>
                 
@@ -311,24 +339,23 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
                     <label htmlFor="pais">País</label>
                     <Field as="select" disabled name="pais" id="pais">
                       {paises.map((pais) => {
-                        return (
-                          pais.nombre="Argentina" && (
-                            <option defaultValue={pais.id} key={pais.id} value={pais.id}>
-                              {pais.nombre}
-                            </option>
-                          )
-                        );
+                        if(pais.nombre === "Argentina"){
+                          return <option key={pais.id} value={pais.id}>{pais.nombre}</option>
+                        }else{
+                          return null;
+                        }
+      
                       })}
                     </Field>
                   </Grid>
                   <Grid item xs={12}>
-                  <button type="submit">
-                    {!saving ? (
-                      <span>Enviar</span>
-                    ) : (
-                      <BeatLoader color="white" />
-                    )}
-                  </button>
+                    <button type="submit">
+                      {!saving ? (
+                        <span>Enviar</span>
+                      ) : (
+                        <BeatLoader color="white" />
+                      )}
+                    </button>
                   </Grid>
                   
                 </Grid>
