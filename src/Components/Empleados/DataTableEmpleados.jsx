@@ -123,7 +123,6 @@ const DataTableEmpleados = ({ loading, setLoading, busqueda }) => {
               autoPageSize={true}
               disableColumnFilter={true}
               disableColumnMenu={true}
-              empleadoFound
               initialState={{
                 sorting: {
                   sortModel: [{ field: 'id', sort: 'asc' }],
