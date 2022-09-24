@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { BeatLoader, DotLoader } from "react-spinners";
 import { getAllPaises, saveEmpleado, updateEmpleado } from "../../Services";
+import { Grid } from "@mui/material";
 
 const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
   const [saving, setSaving] = useState(false);
@@ -10,6 +11,7 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
 
   const getPaises = async () => {
     const paises = await getAllPaises();
+    console.log(paises);
     setPaises(paises);
     setLoadingModal(false);
   };
@@ -32,15 +34,6 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
     }).then((response) => {
       onClose();
     });
-  };
-
-  const getPais = (nombre) => {
-    const pais = paises.find((pais) => pais.nombre === nombre);
-    if (pais) {
-      return pais.id;
-    } else {
-      return 4;
-    }
   };
 
   const validateValues = (valores) => {
@@ -141,208 +134,222 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
             {({ errors }) => (
               <Form
                 className="formulario"
-                style={{ display: "flex", flexWrap: "wrap" }}
+                style={{ display: "flex", justifyContent: "center" }}
               >
-                <div>
-                  <label htmlFor="nombre">Empleado</label>
-                  <Field
-                    type="text"
-                    id="nombre"
-                    name="nombre"
-                    placeholder="Nombre del empleado"
-                  />
-                  <ErrorMessage
-                    name="nombre"
-                    component={() => (
-                      <div className="error">{errors.nombre}</div>
+                <Grid container spacing={2}>
+                  <Grid item md={6} xs={12}>
+                    <label htmlFor="nombre">Empleado</label>
+                    <Field
+                      type="text"
+                      id="nombre"
+                      name="nombre"
+                      placeholder="Nombre del empleado"
+                    />
+                    <ErrorMessage
+                      name="nombre"
+                      component={() => (
+                        <div className="error">{errors.nombre}</div>
+                      )}
+                    />
+                  </Grid>
+
+                  <Grid item md={6} xs={12}>
+                    <label htmlFor="apellido">Apellido</label>
+                    <Field
+                      type="text"
+                      id="apellido"
+                      name="apellido"
+                      placeholder="Apellido del empleado"
+                    />
+                    <ErrorMessage
+                      name="apellido"
+                      component={() => (
+                        <div className="error">{errors.apellido}</div>
+                      )}
+                    />
+                  </Grid>
+
+                  <Grid item md={6} xs={12}>
+                    <label htmlFor="dni">DNI</label>
+                    <Field
+                      type="text"
+                      id="dni"
+                      name="dni"
+                      placeholder="DNI del empleado"
+                    />
+                    <ErrorMessage
+                      name="dni"
+                      component={() => (
+                        <div className="error">{errors.dni}</div>
+                      )}
+                    />
+                  </Grid>
+
+                  <Grid item md={6} xs={12}>
+                    <label htmlFor="cuit">CUIT</label>
+                    <Field
+                      type="text"
+                      id="cuit"
+                      name="cuit"
+                      placeholder="CUIT del empleado"
+                    />
+                    <ErrorMessage
+                      name="cuit"
+                      component={() => (
+                        <div className="error">{errors.cuit}</div>
+                      )}
+                    />
+                  </Grid>
+
+                  <Grid item md={6} xs={12}>
+                    <label htmlFor="email">Email</label>
+                    <Field
+                      type="text"
+                      id="email"
+                      name="email"
+                      placeholder="Email del empleado"
+                    />
+                    <ErrorMessage
+                      name="email"
+                      component={() => (
+                        <div className="error">{errors.email}</div>
+                      )}
+                    />
+                  </Grid>
+
+                  <Grid item md={6} xs={12}>
+                    <label htmlFor="fechaIngreso">Fecha de Ingreso</label>
+                    <Field
+                      type="date"
+                      id="fechaIngreso"
+                      name="fechaIngreso"
+                      placeholder="Fecha de Ingreso del empleado"
+                    />
+                    <ErrorMessage
+                      name="fechaIngreso"
+                      component={() => (
+                        <div className="error">{errors.fechaIngreso}</div>
+                      )}
+                    />
+                  </Grid>
+
+                  <Grid item md={6} xs={12}>
+                    <label htmlFor="fechaEgreso">Fecha de Egreso</label>
+                    <Field
+                      type="date"
+                      id="fechaEgreso"
+                      name="fechaEgreso"
+                      placeholder="Fecha de Egreso del empleado"
+                    />
+                    <ErrorMessage
+                      name="fechaEgreso"
+                      component={() => (
+                        <div className="error">{errors.fechaEgreso}</div>
+                      )}
+                    />
+                  </Grid>
+
+                  <Grid item md={6} xs={12}>
+                    <label htmlFor="salario">Salario</label>
+                    <Field
+                      type="text"
+                      id="salario"
+                      name="salario"
+                      placeholder="Salario del empleado"
+                    />
+                    <ErrorMessage
+                      name="salario"
+                      component={() => (
+                        <div className="error">{errors.salario}</div>
+                      )}
+                    />
+                  </Grid>
+
+                  <Grid item md={6} xs={12}>
+                    <label htmlFor="direccion">Direccion</label>
+                    <Field
+                      type="text"
+                      id="direccion"
+                      name="direccion"
+                      placeholder="Direccion del empleado"
+                    />
+                    <ErrorMessage
+                      name="direccion"
+                      component={() => (
+                        <div className="error">{errors.direccion}</div>
+                      )}
+                    />
+                  </Grid>
+                  <Grid item md={6} xs={12}>
+                    <label htmlFor="numero">Numero</label>
+                    <Field
+                      type="text"
+                      id="numero"
+                      name="numero"
+                      placeholder="Numero de calle"
+                    />
+                    <ErrorMessage
+                      name="numero"
+                      component={() => (
+                        <div className="error">{errors.numero}</div>
+                      )}
+                    />
+                  </Grid>
+
+                  <Grid item md={6} xs={12}>
+                    <label htmlFor="rol">Rol</label>
+                    <Field as="select" name="rol" id="rol">
+                      <option value="Administrador">Administrador</option>
+                      <option value="Vendedor">Vendedor</option>
+                      <option value="Cajero">Cajero</option>
+                    </Field>
+                  </Grid>
+                  <Grid item md={6} xs={12}>
+                    <label htmlFor="provincia">Provincia</label>
+                    <Field as="select" id="provincia" name="provincia">
+                      <option value="Buenos Aires">Buenos Aires</option>
+                      <option value="Cordoba">Cordoba</option>
+                      <option value="Santa Fe">Santa Fe</option>
+                      <option value="Mendoza">Mendoza</option>
+                      <option value="Tucuman">Tucuman</option>
+                    </Field>
+                  </Grid>
+                  <Grid item md={6} xs={12}>
+                    <label htmlFor="localidad">Localidad</label>
+                    <Field as="select" id="localidad" name="localidad">
+                      <option value="CABA">CABA</option>
+                      <option value="San Miguel">San Miguel</option>
+                      <option value="San Isidro">San Isidro</option>
+                      <option value="San Fernando">San Fernando</option>
+                      <option value="San Vicente">San Vicente</option>
+                    </Field>
+                  </Grid>
+                
+                  <Grid item md={6} xs={12}>
+                    <label htmlFor="pais">País</label>
+                    <Field as="select" disabled name="pais" id="pais">
+                      {paises.map((pais) => {
+                        return (
+                          pais.nombre="Argentina" && (
+                            <option defaultValue={pais.id} key={pais.id} value={pais.id}>
+                              {pais.nombre}
+                            </option>
+                          )
+                        );
+                      })}
+                    </Field>
+                  </Grid>
+                  <Grid item xs={12}>
+                  <button type="submit">
+                    {!saving ? (
+                      <span>Enviar</span>
+                    ) : (
+                      <BeatLoader color="white" />
                     )}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="apellido">Apellido</label>
-                  <Field
-                    type="text"
-                    id="apellido"
-                    name="apellido"
-                    placeholder="Apellido del empleado"
-                  />
-                  <ErrorMessage
-                    name="apellido"
-                    component={() => (
-                      <div className="error">{errors.apellido}</div>
-                    )}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="dni">DNI</label>
-                  <Field
-                    type="text"
-                    id="dni"
-                    name="dni"
-                    placeholder="DNI del empleado"
-                  />
-                  <ErrorMessage
-                    name="dni"
-                    component={() => <div className="error">{errors.dni}</div>}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="cuit">CUIT</label>
-                  <Field
-                    type="text"
-                    id="cuit"
-                    name="cuit"
-                    placeholder="CUIT del empleado"
-                  />
-                  <ErrorMessage
-                    name="cuit"
-                    component={() => <div className="error">{errors.cuit}</div>}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="email">Email</label>
-                  <Field
-                    type="text"
-                    id="email"
-                    name="email"
-                    placeholder="Email del empleado"
-                  />
-                  <ErrorMessage
-                    name="email"
-                    component={() => (
-                      <div className="error">{errors.email}</div>
-                    )}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="fechaIngreso">Fecha de Ingreso</label>
-                  <Field
-                    type="date"
-                    id="fechaIngreso"
-                    name="fechaIngreso"
-                    placeholder="Fecha de Ingreso del empleado"
-                  />
-                  <ErrorMessage
-                    name="fechaIngreso"
-                    component={() => (
-                      <div className="error">{errors.fechaIngreso}</div>
-                    )}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="fechaEgreso">Fecha de Egreso</label>
-                  <Field
-                    type="date"
-                    id="fechaEgreso"
-                    name="fechaEgreso"
-                    placeholder="Fecha de Egreso del empleado"
-                  />
-                  <ErrorMessage
-                    name="fechaEgreso"
-                    component={() => (
-                      <div className="error">{errors.fechaEgreso}</div>
-                    )}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="salario">Salario</label>
-                  <Field
-                    type="text"
-                    id="salario"
-                    name="salario"
-                    placeholder="Salario del empleado"
-                  />
-                  <ErrorMessage
-                    name="salario"
-                    component={() => (
-                      <div className="error">{errors.salario}</div>
-                    )}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="direccion">Direccion</label>
-                  <Field
-                    type="text"
-                    id="direccion"
-                    name="direccion"
-                    placeholder="Direccion del empleado"
-                  />
-                  <ErrorMessage
-                    name="direccion"
-                    component={() => (
-                      <div className="error">{errors.direccion}</div>
-                    )}
-                  />
-                </div>
-                <div>
-                  <label htmlFor="numero">Numero</label>
-                  <Field
-                    type="text"
-                    id="numero"
-                    name="numero"
-                    placeholder="Numero de calle"
-                  />
-                  <ErrorMessage
-                    name="numero"
-                    component={() => (
-                      <div className="error">{errors.numero}</div>
-                    )}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="rol">Rol</label>
-                  <Field as="select" name="rol" id="rol">
-                    <option value="Administrador">Administrador</option>
-                    <option value="Vendedor">Vendedor</option>
-                    <option value="Cajero">Cajero</option>
-                  </Field>
-                </div>
-                <div>
-                  <label htmlFor="provincia">Provincia</label>
-                  <Field as="select" id="provincia" name="provincia">
-                    <option value="Buenos Aires">Buenos Aires</option>
-                    <option value="Cordoba">Cordoba</option>
-                    <option value="Santa Fe">Santa Fe</option>
-                    <option value="Mendoza">Mendoza</option>
-                    <option value="Tucuman">Tucuman</option>
-                  </Field>
-                </div>
-                <div>
-                  <label htmlFor="localidad">Localidad</label>
-                  <Field as="select" id="localidad" name="localidad">
-                    <option value="CABA">CABA</option>
-                    <option value="San Miguel">San Miguel</option>
-                    <option value="San Isidro">San Isidro</option>
-                    <option value="San Fernando">San Fernando</option>
-                    <option value="San Vicente">San Vicente</option>
-                  </Field>
-                </div>
-
-                <div>
-                  <label htmlFor="pais">País</label>
-                  <Field as="select" name="pais" id="pais">
-                    {paises.map((pais) => {
-                      return (
-                        <option key={pais.id} value={pais.id}>
-                          {pais.nombre}
-                        </option>
-                      );
-                    })}
-                  </Field>
-                </div>
-
-                <button type="submit">
-                  {!saving ? <span>Enviar</span> : <BeatLoader color="white" />}
-                </button>
+                  </button>
+                  </Grid>
+                  
+                </Grid>
               </Form>
             )}
           </Formik>
