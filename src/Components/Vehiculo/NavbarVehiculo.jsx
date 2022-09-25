@@ -9,10 +9,9 @@ import SearchIcon from "@mui/icons-material/Search";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import Modal from "@mui/material/Modal";
-import FormularioMarca from "./Marca/FormularioMarca";
-import FormularioEmpleados from "./Empleados/FormularioEmpleados";
+import FormularioVehiculo from "./FormularioVehiculo";
 import { useState } from "react";
-import styles from "../Styles/styles";
+import styles from "../../Styles/styles";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -56,7 +55,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const Navbar = ({ nombre, setBusqueda }) => {
+const NavbarVehiculo = ({setBusqueda}) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -69,7 +68,7 @@ const Navbar = ({ nombre, setBusqueda }) => {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
-            {{ nombre }}
+            LISTA DE VEHICULOS
           </Typography>
 
           <Search>
@@ -79,9 +78,7 @@ const Navbar = ({ nombre, setBusqueda }) => {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
-              onChange={(e) => {
-                setBusqueda(e.target.value);
-              }}
+              onChange={(e) => {setBusqueda(e.target.value)}}
             />
           </Search>
 
@@ -90,7 +87,7 @@ const Navbar = ({ nombre, setBusqueda }) => {
             variant="contained"
             sx={{ marginLeft: "12px" }}
           >
-            {{ nombre }}
+            Vehiculo
             <AddIcon sx={{ marginLeft: "2px" }} />
           </Button>
 
@@ -101,14 +98,7 @@ const Navbar = ({ nombre, setBusqueda }) => {
             aria-describedby="modal-modal-description"
           >
             <Box sx={styles.box}>
-              {nombre ===
-                "LISTA DE MARCAS"(
-                  <FormularioMarca onClose={handleClose} isEdit={false} />
-                )}
-              {nombre ===
-                "LISTA DE EMPLEADOS"(
-                  <FormularioEmpleados onClose={handleClose} isEdit={false} />
-                )}
+              <FormularioVehiculo onClose={handleClose} isEdit={false} />
             </Box>
           </Modal>
         </Toolbar>
@@ -117,4 +107,4 @@ const Navbar = ({ nombre, setBusqueda }) => {
   );
 };
 
-export default Navbar;
+export default NavbarVehiculo;

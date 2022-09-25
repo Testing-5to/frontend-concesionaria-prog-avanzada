@@ -9,6 +9,7 @@ const getAllEmpleados = async () => {
 };
 
 const saveEmpleado = async (empleado) => {
+  console.log(empleado)
   const empleado_parsed = {
     nombre: empleado.nombre,
     apellido: empleado.apellido,

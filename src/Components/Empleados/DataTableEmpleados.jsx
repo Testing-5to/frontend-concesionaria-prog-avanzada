@@ -39,7 +39,7 @@ const DataTableEmpleados = ({ loading, setLoading, busqueda }) => {
   const getEmpleados = async () => {
     const response = await getAllEmpleados();
     setEmpleados(response);
-    filtrarEmpleados(response, busqueda);
+    filtrarEmpleados(response, "");
     setLoading(false);
   };
 

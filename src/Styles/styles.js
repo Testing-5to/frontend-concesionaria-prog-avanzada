@@ -32,6 +32,7 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
+    overflowX: "auto",
   },
   box: {
     position: "absolute",
