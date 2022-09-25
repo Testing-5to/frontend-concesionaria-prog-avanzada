@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { getAllMarcas, deleteMarca } from "../../Services/";
+import { getAllModelos, deleteModelo } from "../../Services";
 import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -8,30 +8,28 @@ import { DotLoader } from "react-spinners";
 import styles from "../../Styles/styles";
 import { Box } from "@mui/system";
 import { Modal } from "@mui/material";
-import FormularioMarca from "./FormularioMarca";
+import FormularioModelo from "./FormularioModelo";
 
-const DataTableMarca = ({ loading, setLoading, busqueda }) => {
-  const [marcas, setMarcas] = useState([]);
-  const [marcasFiltered, setMarcasFiltered] = useState([]);
+const DataTableModelo = ({ loading, setLoading, busqueda }) => {
+  const [modelos, setModelos] = useState([]);
+  const [modelosFiltered, setModelosFiltered] = useState([]);
   const [open, setOpen] = useState(false);
-  const [marca, setMarca] = useState({});
+  const [modelo, setModelo] = useState({});
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const editarUnaMarca = (marca) => {
-    const id = marca.row.id;
-    const nombre = marca.row.nombre;
-    const pais = marca.row.pais;
-    setMarca({ id, nombre, pais });
+  const editarUnModelo = (modelo) => {
+    const modeloFiltered = modelos.find((m) => m.id === modelo.row.id);
+    setModelo(modeloFiltered);
     handleOpen();
   };
 
-  const eliminarMarca = async (cellValues) => {
-    if (window.confirm("¿Estas seguro de eliminar esta marca?")) {
+  const eliminarModelo = async (cellValues) => {
+    if (window.confirm("¿Estas seguro de eliminar esta modelo?")) {
       const { id } = cellValues;
-      await deleteMarca(id);
+      await deleteModelo(id);
       setLoading(true);
-      await getMarcas();
+      await getModelos();
       setLoading(false);
     } else {
       return;
@@ -39,7 +37,9 @@ const DataTableMarca = ({ loading, setLoading, busqueda }) => {
   };
   const columns = [
     { field: "id", headerName: "ID", flex: 1 },
-    { field: "nombre", headerName: "Marca", flex: 1 },
+    { field: "nombre", headerName: "Modelo", flex: 1 },
+    { field: "marca", headerName: "Marca", flex: 1 },
+    { field: "tipoVehiculo", headerName: "Tipo de Vehículo", flex: 1 },
     { field: "pais", headerName: "País", flex: 1 },
 
     {
@@ -54,7 +54,7 @@ const DataTableMarca = ({ loading, setLoading, busqueda }) => {
               color="inherit"
               sx={styles.buttonTable}
               onClick={() => {
-                editarUnaMarca(cellValues);
+                editarUnModelo(cellValues);
               }}
             >
               <EditIcon />
@@ -64,7 +64,7 @@ const DataTableMarca = ({ loading, setLoading, busqueda }) => {
               variant="contained"
               color="error"
               onClick={() => {
-                eliminarMarca(cellValues);
+                eliminarModelo(cellValues);
               }}
             >
               <DeleteIcon />
@@ -75,22 +75,32 @@ const DataTableMarca = ({ loading, setLoading, busqueda }) => {
     },
   ];
 
-  const getMarcas = async () => {
-    const response = await getAllMarcas();
-    setMarcas(response);
-    setMarcasFiltered(response);
+  const getModelos = async () => {
+    const response = await getAllModelos();
+    setModelos(response);
+    filtrarModelos(response, "");
     setLoading(false);
   };
-
-  useEffect(() => {
-    const marcasFiltered = marcas.filter((marca) => {
-      return marca.nombre.toLowerCase().includes(busqueda.toLowerCase());
+  const filtrarModelos = (modelos, busqueda) => {
+    const primerFiltro = modelos.filter((modelo) => {
+      return modelo.nombre.toLowerCase().includes(busqueda.toLowerCase());
     });
-    setMarcasFiltered(marcasFiltered);
+
+    const segundoFiltro = primerFiltro.map((modelo) => ({
+      id: modelo.id,
+      nombre: modelo.nombre,
+      marca: modelo.marca.nombre,
+      tipoVehiculo: modelo.tipoVehiculo.nombre,
+      pais: modelo.marca.pais.nombre,
+    }));
+    setModelosFiltered(segundoFiltro);
+  }
+  useEffect(() => {
+    filtrarModelos(modelos, busqueda);
   }, [busqueda]);
 
   useEffect(() => {
-    getMarcas();
+    getModelos();
   }, []);
 
   return (
@@ -101,7 +111,7 @@ const DataTableMarca = ({ loading, setLoading, busqueda }) => {
         ) : (
           <>
             <DataGrid
-              rows={marcasFiltered}
+              rows={modelosFiltered}
               columns={columns}
               autoPageSize={true}
               disableColumnFilter={true}
@@ -122,11 +132,15 @@ const DataTableMarca = ({ loading, setLoading, busqueda }) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={styles.box}>
-          <FormularioMarca onClose={handleClose} isEdit={true} marca={marca} />
+          <FormularioModelo
+            onClose={handleClose}
+            isEdit={true}
+            modelo={modelo}
+          />
         </Box>
       </Modal>
     </>
   );
 };
 
-export default DataTableMarca;
+export default DataTableModelo;

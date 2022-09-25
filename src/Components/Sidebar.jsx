@@ -19,11 +19,11 @@ const Sidebar = () => {
   return (
     <ProSidebar
       collapsed={collapsed}
-      width="150px"
-      collapsedWidth="78px"
+      width="200px"
+      collapsedWidth="80px"
       onMouseOver={() => setCollapsed(false)}
       onMouseLeave={() => setCollapsed(true)}
-      style={styles.sidebar}
+      style={styles.sideBar}
     >
       <SidebarContent style={{ marginTop: "10px" }}>
         <Menu iconShape="square">
@@ -35,10 +35,10 @@ const Sidebar = () => {
             <strong>Marca</strong> <Link to="/marca" />
           </MenuItem>
           <MenuItem icon={<AutoAwesomeMotionIcon />}>
-            <strong>Modelo</strong> <Link to="/marca" />
+            <strong>Modelo</strong> <Link to="/modelo" />
           </MenuItem>
           <MenuItem icon={<DirectionsCarIcon />}>
-            <strong>Vehículo</strong> <Link to="/marca" />
+            <strong>Vehículo</strong> <Link to="/vehiculo" />
           </MenuItem>
           <br />
           {/* Abmc's de personas */}
@@ -46,7 +46,7 @@ const Sidebar = () => {
             <Typography style={hidden}>Personal</Typography>
           </Box>
           <MenuItem icon={<RecentActorsIcon />}>
-            <strong>Clientes</strong> <Link to="/cliente" />
+            <strong>Clientes</strong> <Link to="/clientes" />
           </MenuItem>
           <MenuItem icon={<PersonIcon />}>
             <strong>Empleados</strong> <Link to="/empleados" />
@@ -57,7 +57,7 @@ const Sidebar = () => {
             <Typography style={hidden}>Ventas</Typography>
           </Box>
           <MenuItem icon={<StoreIcon />}>
-            <strong>Venta</strong> <Link to="/marca" />
+            <strong>Venta</strong> <Link to="/ventas" />
           </MenuItem>
         </Menu>
       </SidebarContent>

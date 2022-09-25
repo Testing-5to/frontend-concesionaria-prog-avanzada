@@ -25,13 +25,14 @@ const styles = {
   },
   divDataTable: {
     margin: "auto",
-    height: "87%",
-    width: "93%",
+    height: "90%",
+    width: "95%",
     backgroundColor: "white",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
+    overflowX: "auto",
   },
   box: {
     position: "absolute",

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
-import DataTable from "./DataTableMarca";
-import NavbarMarca from "./NavbarMarca";
+import DataTable from "./DataTableVehiculo";
+import NavbarVehiculo from "./NavbarVehiculo";
 
-const DashboardMarca = () => {
+const DashboardVehiculo = () => {
   const [loading, setLoading] = useState(true);
   const [busqueda, setBusqueda] = useState("");
   return (
@@ -16,7 +16,7 @@ const DashboardMarca = () => {
         marginLeft: "80px",
       }}
     >
-      <NavbarMarca setBusqueda={setBusqueda} />
+      <NavbarVehiculo setBusqueda={setBusqueda} />
       <br />
       <DataTable
         busqueda={busqueda}
@@ -27,4 +27,4 @@ const DashboardMarca = () => {
   );
 };
 
-export default DashboardMarca;
+export default DashboardVehiculo;

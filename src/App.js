@@ -5,6 +5,8 @@ import Empleados from "./Pages/Empleados";
 import { Route, BrowserRouter, Routes } from "react-router-dom";
 import Sidebar from "./Components/Sidebar";
 import Clientes from "./Pages/Clientes";
+import Modelo from "./Pages/Modelo";
+import Vehiculo from "./Pages/Vehiculo";
 
 const App = () => {
   return (
@@ -21,8 +23,10 @@ const App = () => {
         <Routes>
           <Route path="/marca" element={<Marca />} />
           <Route path="/empleados" element={<Empleados />} />
-          <Route path="/cliente" element={<Clientes/>} /> 
-          <Route path="*" element={<Marca />} />
+          <Route path="/clientes" element={<Clientes />} />
+          <Route path="/modelo" element={<Modelo />} />
+          <Route path="/vehiculo" element={<Vehiculo />} />
+          <Route path="*" element={<Vehiculo />} />
         </Routes>
       </Box>
     </BrowserRouter>

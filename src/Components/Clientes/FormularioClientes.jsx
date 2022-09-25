@@ -6,7 +6,7 @@ import {
   saveCliente,
   updateCliente,
 } from "../../Services";
-import { Grid } from "@mui/material";
+import { Grid, Checkbox, FormControlLabel } from "@mui/material";
 
 const FormularioClientes = ({ onClose, isEdit, cliente }) => {
   const [saving, setSaving] = useState(false);
@@ -95,7 +95,15 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
     }
   };
 
+  const getLocalidadInitial = (idProvincia) => {
+    const id = localidades
+      .filter((l) => l.provincia.id.toString() === idProvincia)[0]
+      .id.toString();
+    return id;
+  };
+
   useEffect(() => {
+    console.log("cliente", cliente);
     fetchAllDataForm();
   }, []);
 
@@ -116,23 +124,23 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
               telefono: isEdit ? cliente.telefono : "",
               direccion: isEdit ? cliente.direccion.calle : "",
               numero: isEdit ? cliente.direccion.numero : "",
-              esCliente: isEdit ? cliente.esCliente : true,
+              esCliente: isEdit ? cliente.esCliente : false,
               provincia: isEdit
                 ? cliente.direccion.localidad.provincia.id.toString()
-                : "1",
+                : provincias[0].id.toString(),
               localidad: isEdit
                 ? cliente.direccion.localidad.id.toString()
-                : "1",
+                : getLocalidadInitial(provincias[0].id.toString()),
               pais: isEdit
-                ? cliente.direccion.localidad.pais.id.toString()
-                : "1",
+                ? cliente.direccion.localidad.provincia.pais.id.toString()
+                : paises[0].id,
             }}
             validate={(valores) => validateValues(valores)}
             onSubmit={(valores, { resetForm }) =>
               onSubmit(valores, { resetForm })
             }
           >
-            {({ errors, values }) => (
+            {({ errors, values, handleChange }) => (
               <Form
                 className="formulario"
                 style={{ display: "flex", justifyContent: "center" }}
@@ -247,15 +255,7 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
                       )}
                     />
                   </Grid>
-                  <Grid item md={6} xs={12}>
-                    <label htmlFor="esCliente">Es Cliente</label>
-                    <Field
-                      type="checkbox"
-                      id="esCliente"
-                      name="esCliente"
-                      placeholder="Es Cliente"
-                    />
-                  </Grid>
+
                   <Grid item md={6} xs={12}>
                     <label htmlFor="provincia">Provincia</label>
                     <Field as="select" id="provincia" name="provincia">
@@ -293,6 +293,26 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
                         </option>
                       ))}
                     </Field>
+                  </Grid>
+                  <Grid
+                    item
+                    lg={4}
+                    md={6}
+                    xs={12}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+
+                      mt: 2,
+                    }}
+                  >
+                    <FormControlLabel
+                      control={<Checkbox checked={values.esCliente} />}
+                      label="Es Cliente"
+                      name="esCliente"
+                      onChange={handleChange}
+                    />
                   </Grid>
                   <Grid item xs={12}>
                     <button type="submit">

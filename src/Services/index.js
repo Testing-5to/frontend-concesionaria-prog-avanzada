@@ -32,5 +32,20 @@ export { getAllLocalidades } from "./Localidad.api";
 // Roles
 export { getAllRoles } from "./Rol.api"
 
+// Modelos
+export { getAllModelos } from "./Modelo.api";
+export { saveModelo } from "./Modelo.api";
+export { deleteModelo } from "./Modelo.api";
+export { updateModelo } from "./Modelo.api";
+
+// Vehiculos
+export { getAllVehiculos } from "./Vehiculo.api";
+export { saveVehiculo } from "./Vehiculo.api";
+export { deleteVehiculo } from "./Vehiculo.api";
+export { updateVehiculo } from "./Vehiculo.api";
+
+
 // Genericos para formularios
 export { getAllDatosFormEmpleados } from "./Generico.api";
+export { getAllDatosFormModelo } from "./Generico.api";
+export { getAllDatosFormVehiculo } from "./Generico.api";

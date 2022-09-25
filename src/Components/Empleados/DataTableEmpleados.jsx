@@ -39,7 +39,7 @@ const DataTableEmpleados = ({ loading, setLoading, busqueda }) => {
   const getEmpleados = async () => {
     const response = await getAllEmpleados();
     setEmpleados(response);
-    filtrarEmpleados(response, busqueda);
+    filtrarEmpleados(response, "");
     setLoading(false);
   };
 
@@ -123,7 +123,7 @@ const DataTableEmpleados = ({ loading, setLoading, busqueda }) => {
               autoPageSize={true}
               disableColumnFilter={true}
               disableColumnMenu={true}
-              empleadoFound
+              disableSelectionOnClick={true}
               initialState={{
                 sorting: {
                   sortModel: [{ field: "id", sort: "asc" }],

@@ -56,6 +56,7 @@ const updateCliente = async (cliente) => {
     localidad,
     esCliente,
   } = cliente;
+  console.log(cliente);
   const cliente_parsed = {
     nombre,
     apellido,
@@ -71,7 +72,6 @@ const updateCliente = async (cliente) => {
       },
     },
   };
-  console.log(cliente);
   console.log(cliente_parsed);
   const response = await axios.put(
     url + "cliente/" + cliente.id,

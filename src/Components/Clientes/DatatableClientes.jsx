@@ -73,8 +73,8 @@ const DataTableClientes = ({ loading, setLoading, busqueda }) => {
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
-    { field: "nombre", headerName: "Nombre", flex: 0.5 },
-    { field: "apellido", headerName: "Apellido", flex: 0.5 },
+    { field: "nombre", headerName: "Nombre", flex: 1 },
+    { field: "apellido", headerName: "Apellido", flex: 1 },
     { field: "telefono", headerName: "Telefono", flex: 1 },
     { field: "email", headerName: "Email", flex: 1 },
     { field: "direccion", headerName: "Direccion", flex: 1 },

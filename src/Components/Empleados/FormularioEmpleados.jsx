@@ -98,7 +98,10 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
     }
   };
 
-
+  const getLocalidadInitial = (idProvincia) => {
+    const id = localidades.filter((l) => l.provincia.id.toString() === idProvincia)[0].id.toString();
+    return id;
+  }
   useEffect(() => {
     fetchAllDataForm();
   }, []);
@@ -121,11 +124,11 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
               fechaIngreso: isEdit ? empleado.fechaIngreso : "",
               fechaEgreso: isEdit ? empleado.fechaEgreso : "",
               salario: isEdit ? empleado.salario : "",
-              rol: isEdit ? empleado.rol.id : "2",
+              rol: isEdit ? empleado.rol.id : roles[0].id,
               direccion: isEdit ? empleado.direccion.calle : "",
               numero: isEdit ? empleado.direccion.numero : "",
-              provincia: isEdit ? empleado.direccion.localidad.provincia.id.toString() : "1",
-              localidad: isEdit ? empleado.direccion.localidad.id.toString() : "1",
+              provincia: isEdit ? empleado.direccion.localidad.provincia.id.toString() : provincias[0].id.toString(),
+              localidad: isEdit ? empleado.direccion.localidad.id.toString() : getLocalidadInitial(provincias[0].id.toString()),
               pais: "Argentina"
             }}
             validate={(valores) => validateValues(valores)}
