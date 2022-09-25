@@ -43,7 +43,16 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
     let errores = {};
     // Validacion vehiculo
     if (!valores.nombre) {
-      errores.nombre = "Por favor ingresa un nombre";
+      errores.nombre = "Por favor ingresa un VIN";
+    }
+    if (!valores.anio) {
+      errores.anio = "Por favor ingresa un año";
+    }
+    if(!valores.precioCompra){
+      errores.precioCompra = "Por favor ingresa el precio de compra";
+    }
+    if(!valores.precioVenta){
+      errores.precioVenta = "Por favor ingresa el precio de venta";
     }
 
     return errores;
@@ -68,6 +77,27 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
     fetchAllDataForm();
   }, []);
 
+  const getModeloInitialValue = () => {
+    // devolver el primer modelo que su marca no sea un objeto vacio
+    const id = modelos.find(
+      (modelo) => Object.keys(modelo.marca).length !== 0
+    ).id;
+    if (id) {
+      return id.toString();
+    } else {
+      return "0";
+    }
+  };
+
+  const getMarcaInitialValue = (idModelo) => {
+    const id = modelos.find((m) => m.id.toString() === idModelo).marca.id;
+    if (id) {
+      return id.toString();
+    } else {
+      return "0";
+    }
+  };
+
   return (
     <>
       {loadingModal ? (
@@ -79,12 +109,16 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
           <Formik
             initialValues={{
               nombre: isEdit ? vehiculo.nombre : "",
-              modelo: isEdit ? vehiculo.modelo.id : modelos[0].id,
-              marca: isEdit ? vehiculo.modelo.marca.id : marcas[0].id,
+              modelo: isEdit
+                ? vehiculo.modelo.id
+                : getMarcaInitialValue(getModeloInitialValue()),
+              marca: isEdit
+                ? vehiculo.modelo.marca.id
+                : getModeloInitialValue(),
               tipoVehiculo: isEdit
                 ? vehiculo.modelo.tipoVehiculo.id
                 : tipos[0].id,
-              year: isEdit ? vehiculo.year : "",
+              anio: isEdit ? vehiculo.anio : "",
               kilometros: isEdit ? vehiculo.kilometros : "",
               importado: isEdit ? vehiculo.importado : false,
               precioCompra: isEdit ? vehiculo.precioCompra : "",
@@ -102,12 +136,12 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
               >
                 <Grid container spacing={2}>
                   <Grid item lg={4} md={6} xs={12}>
-                    <label htmlFor="nombre">Vehiculo</label>
+                    <label htmlFor="nombre">VIN</label>
                     <Field
                       type="text"
                       id="nombre"
                       name="nombre"
-                      placeholder="Nombre del vehiculo"
+                      placeholder="VIN del vehiculo"
                     />
                     <ErrorMessage
                       name="nombre"
@@ -118,23 +152,23 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
                   </Grid>
 
                   <Grid item lg={4} md={6} xs={12}>
-                    <label htmlFor="year">Vehiculo</label>
+                    <label htmlFor="anio">Año</label>
                     <Field
                       type="number"
-                      id="year"
-                      name="year"
+                      id="anio"
+                      name="anio"
                       placeholder="Año del vehiculo"
                     />
                     <ErrorMessage
-                      name="year"
+                      name="anio"
                       component={() => (
-                        <div className="error">{errors.year}</div>
+                        <div className="error">{errors.anio}</div>
                       )}
                     />
                   </Grid>
 
                   <Grid item lg={4} md={6} xs={12}>
-                    <label htmlFor="kilometros">Vehiculo</label>
+                    <label htmlFor="kilometros">Kilómetros</label>
                     <Field
                       type="number"
                       id="kilometros"
@@ -150,7 +184,7 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
                   </Grid>
 
                   <Grid item lg={4} md={6} xs={12}>
-                    <label htmlFor="precioCompra">Vehiculo</label>
+                    <label htmlFor="precioCompra">Precio de compra</label>
                     <Field
                       type="number"
                       id="precioCompra"
@@ -166,7 +200,7 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
                   </Grid>
 
                   <Grid item lg={4} md={6} xs={12}>
-                    <label htmlFor="precioVenta">Vehiculo</label>
+                    <label htmlFor="precioVenta">Precio de venta</label>
                     <Field
                       type="number"
                       id="precioVenta"
@@ -183,40 +217,55 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
 
                   <Grid item lg={4} md={6} xs={12}>
                     <label htmlFor="marca">Marca</label>
-                    <Field as="select" name="marca" id="marca">
-                      {marcas.map((marca) => (
-                        <option key={marca.id} value={marca.id}>
-                          {marca.nombre}
-                        </option>
-                      ))}
-                    </Field>
-                  </Grid>
-                  {/* localidades.map((localidad) => { 
-                          if(localidad.provincia.id.toString() === values.provincia){
-                            return <option key={localidad.id} value={localidad.id}>{localidad.nombre}</option>
-                          }else{
-                            return null
-                          }
-                        }) */}
-
-                  <Grid item lg={4} md={6} xs={12}>
-                    <label htmlFor="modelo">Modelo</label>
-                    <Field as="select" name="modelo" id="modelo">
-                      {modelos.map((modelo) => {
-                        if (modelo.marca.id.toString() === values.marca.toString()) {
+                    <Field
+                      as="select"
+                      selected={values.marca}
+                      name="marca"
+                      id="marca"
+                    >
+                      {marcas.map((marca) => {
+                        if(marca.id.toString() === values.marca){
+                          
                           return (
-                            <option key={modelo.id} value={modelo.id}>
-                              {modelo.nombre}
+                            <option key={marca.id} value={marca.id} selected>
+                              {marca.nombre}
                             </option>
                           );
-                        } else {
-                          return null;
+                        }else{
+                          return (
+                            <option key={marca.id} value={marca.id}>
+                              {marca.nombre}
+                            </option>
+                          );
                         }
                       })}
                     </Field>
                   </Grid>
 
-                
+                  <Grid item lg={4} md={6} xs={12}>
+                    <label htmlFor="modelo">Modelo</label>
+                    <Field
+                      as="select"
+                      selected={values.modelo}
+                      name="modelo"
+                      id="modelo"
+                    >
+                        {modelos.map((modelo) => {
+                          if (
+                            modelo.marca.id.toString() ===
+                            values.marca.toString()
+                          ) {
+                            return (
+                              <option key={modelo.id} value={modelo.id}>
+                                {modelo.nombre}
+                              </option>
+                            );
+                          } else {
+                            return null;
+                          }
+                        })}
+                    </Field>
+                  </Grid>
 
                   <Grid item lg={4} md={6} xs={12}>
                     <label htmlFor="tipoVehiculo">Tipo Vehículo</label>
