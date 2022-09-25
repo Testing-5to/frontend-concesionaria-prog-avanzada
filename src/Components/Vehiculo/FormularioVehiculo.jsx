@@ -40,6 +40,7 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
   };
 
   const validateValues = (valores) => {
+    console.log("VALORES", valores);
     let errores = {};
     // Validacion vehiculo
     if (!valores.nombre) {
@@ -97,6 +98,19 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
       return "0";
     }
   };
+  const handleChangeMarca = (e, values, handleChange) => {
+    // esta funcion esta para que cuando cambie la marca, se cambie el modelo
+    values.marca = e.target.value
+    try{
+      const idModelo = modelos.filter((modelo) => modelo?.marca.id.toString() === e.target.value.toString())[0].id;  
+      values.modelo = idModelo;
+    }catch{
+      values.modelo = 0;
+    }
+    handleChange(e);
+    
+  };
+
 
   return (
     <>
@@ -115,9 +129,6 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
               marca: isEdit
                 ? vehiculo.modelo.marca.id
                 : getModeloInitialValue(),
-              tipoVehiculo: isEdit
-                ? vehiculo.modelo.tipoVehiculo.id
-                : tipos[0].id,
               anio: isEdit ? vehiculo.anio : "",
               kilometros: isEdit ? vehiculo.kilometros : "",
               importado: isEdit ? vehiculo.importado : false,
@@ -219,13 +230,12 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
                     <label htmlFor="marca">Marca</label>
                     <Field
                       as="select"
-                      selected={values.marca}
                       name="marca"
                       id="marca"
+                      onChange={(e) => {handleChangeMarca(e, values, handleChange)}}
                     >
                       {marcas.map((marca) => {
                         if(marca.id.toString() === values.marca){
-                          
                           return (
                             <option key={marca.id} value={marca.id} selected>
                               {marca.nombre}
@@ -246,7 +256,6 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
                     <label htmlFor="modelo">Modelo</label>
                     <Field
                       as="select"
-                      selected={values.modelo}
                       name="modelo"
                       id="modelo"
                     >
@@ -267,16 +276,6 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
                     </Field>
                   </Grid>
 
-                  <Grid item lg={4} md={6} xs={12}>
-                    <label htmlFor="tipoVehiculo">Tipo Vehículo</label>
-                    <Field as="select" id="tipoVehiculo" name="tipoVehiculo">
-                      {tipos.map((tipoVehiculo) => (
-                        <option key={tipoVehiculo.id} value={tipoVehiculo.id}>
-                          {tipoVehiculo.nombre}
-                        </option>
-                      ))}
-                    </Field>
-                  </Grid>
 
                   <Grid
                     item

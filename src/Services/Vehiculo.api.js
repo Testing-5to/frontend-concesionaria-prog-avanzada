@@ -10,7 +10,6 @@ const saveVehiculo = async (vehiculo) => {
   const vehiculo_parsed = {
     nombre: vehiculo.nombre,
     modelo: { id: vehiculo.modelo },
-    tipoVehiculo: { id: vehiculo.tipoVehiculo },
     anio: vehiculo.anio,
     kilometros: vehiculo.kilometros,
     importado: vehiculo.importado,
@@ -30,7 +29,6 @@ const updateVehiculo = async (vehiculo) => {
   const vehiculo_parsed = {
     nombre: vehiculo.nombre,
     modelo: { id: vehiculo.modelo },
-    tipoVehiculo: { id: vehiculo.tipoVehiculo },
     anio: vehiculo.anio,
     kilometros: vehiculo.kilometros,
     importado: vehiculo.importado,
