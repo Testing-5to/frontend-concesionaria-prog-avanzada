@@ -26,5 +26,13 @@ export { getAllLocalidades } from "./Localidad.api";
 // Roles
 export { getAllRoles } from "./Rol.api"
 
+// Modelos
+export { getAllModelos } from "./Modelo.api";
+export { saveModelo } from "./Modelo.api";
+export { deleteModelo } from "./Modelo.api";
+export { updateModelo } from "./Modelo.api";
+
+
 // Genericos para formularios
 export { getAllDatosFormEmpleados } from "./Generico.api";
+export { getAllDatosFormModelo } from "./Generico.api";

@@ -35,7 +35,7 @@ const Sidebar = () => {
             <strong>Marca</strong> <Link to="/marca" />
           </MenuItem>
           <MenuItem icon={<AutoAwesomeMotionIcon />}>
-            <strong>Modelo</strong> <Link to="/marca" />
+            <strong>Modelo</strong> <Link to="/modelo" />
           </MenuItem>
           <MenuItem icon={<DirectionsCarIcon />}>
             <strong>Vehículo</strong> <Link to="/marca" />

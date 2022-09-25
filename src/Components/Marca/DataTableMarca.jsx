@@ -90,7 +90,6 @@ const DataTableMarca = ({ loading, setLoading, busqueda }) => {
   }, [busqueda]);
 
   useEffect(() => {
-    console.log("re-render");
     getMarcas();
   }, []);
 

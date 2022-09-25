@@ -18,11 +18,9 @@ const DataTableModelo = ({ loading, setLoading, busqueda }) => {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const editarUnaModelo = (modelo) => {
-    const id = modelo.row.id;
-    const nombre = modelo.row.nombre;
-    const pais = modelo.row.pais;
-    setModelo({ id, nombre, pais });
+  const editarUnModelo = (modelo) => {
+    const modeloFiltered = modelos.find((m) => m.id === modelo.row.id);
+    setModelo(modeloFiltered);
     handleOpen();
   };
 
@@ -40,6 +38,8 @@ const DataTableModelo = ({ loading, setLoading, busqueda }) => {
   const columns = [
     { field: "id", headerName: "ID", flex: 1 },
     { field: "nombre", headerName: "Modelo", flex: 1 },
+    { field: "marca", headerName: "Marca", flex: 1 },
+    { field: "tipoVehiculo", headerName: "Tipo de Vehículo", flex: 1 },
     { field: "pais", headerName: "País", flex: 1 },
 
     {
@@ -54,7 +54,7 @@ const DataTableModelo = ({ loading, setLoading, busqueda }) => {
               color="inherit"
               sx={styles.buttonTable}
               onClick={() => {
-                editarUnaModelo(cellValues);
+                editarUnModelo(cellValues);
               }}
             >
               <EditIcon />
@@ -78,19 +78,28 @@ const DataTableModelo = ({ loading, setLoading, busqueda }) => {
   const getModelos = async () => {
     const response = await getAllModelos();
     setModelos(response);
-    setModelosFiltered(response);
+    filtrarModelos(response, "");
     setLoading(false);
   };
-
-  useEffect(() => {
-    const modelosFiltered = modelos.filter((modelo) => {
+  const filtrarModelos = (modelos, busqueda) => {
+    const primerFiltro = modelos.filter((modelo) => {
       return modelo.nombre.toLowerCase().includes(busqueda.toLowerCase());
     });
-    setModelosFiltered(modelosFiltered);
+
+    const segundoFiltro = primerFiltro.map((modelo) => ({
+      id: modelo.id,
+      nombre: modelo.nombre,
+      marca: modelo.marca.nombre,
+      tipoVehiculo: modelo.tipoVehiculo.nombre,
+      pais: modelo.marca.pais.nombre,
+    }));
+    setModelosFiltered(segundoFiltro);
+  }
+  useEffect(() => {
+    filtrarModelos(modelos, busqueda);
   }, [busqueda]);
 
   useEffect(() => {
-    console.log("re-render");
     getModelos();
   }, []);
 
@@ -109,7 +118,7 @@ const DataTableModelo = ({ loading, setLoading, busqueda }) => {
               disableColumnMenu={true}
               initialState={{
                 sorting: {
-                  sortModel: [{ field: 'id', sort: 'asc' }],
+                  sortModel: [{ field: "id", sort: "asc" }],
                 },
               }}
             />
@@ -123,7 +132,11 @@ const DataTableModelo = ({ loading, setLoading, busqueda }) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={styles.box}>
-          <FormularioModelo onClose={handleClose} isEdit={true} modelo={modelo} />
+          <FormularioModelo
+            onClose={handleClose}
+            isEdit={true}
+            modelo={modelo}
+          />
         </Box>
       </Modal>
     </>
