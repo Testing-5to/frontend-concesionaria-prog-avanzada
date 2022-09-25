@@ -10,11 +10,13 @@ import Modal from "@mui/material/Modal";
 import FormularioClientes from "./FormularioClientes";
 import { useState } from "react";
 import styles from "../../Styles/styles";
-import { Search, SearchIconWrapper, StyledInputBase } from "../../Styles/material";
+import {
+  Search,
+  SearchIconWrapper,
+  StyledInputBase,
+} from "../../Styles/material";
 
-
-
-const NavbarClientes = ({setBusqueda}) => {
+const NavbarClientes = ({ setBusqueda }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -37,7 +39,9 @@ const NavbarClientes = ({setBusqueda}) => {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
-              onChange={(e) => {setBusqueda(e.target.value)}}
+              onChange={(e) => {
+                setBusqueda(e.target.value);
+              }}
             />
           </Search>
 
