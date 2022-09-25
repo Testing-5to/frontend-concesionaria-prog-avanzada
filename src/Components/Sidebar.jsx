@@ -38,7 +38,7 @@ const Sidebar = () => {
             <strong>Modelo</strong> <Link to="/modelo" />
           </MenuItem>
           <MenuItem icon={<DirectionsCarIcon />}>
-            <strong>Vehículo</strong> <Link to="/marca" />
+            <strong>Vehículo</strong> <Link to="/vehiculo" />
           </MenuItem>
           <br />
           {/* Abmc's de personas */}

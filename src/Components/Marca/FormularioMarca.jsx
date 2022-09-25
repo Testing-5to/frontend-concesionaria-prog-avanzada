@@ -41,7 +41,7 @@ const FormularioMarca = ({ onClose, isEdit, marca }) => {
     if (pais) {
       return pais.id;
     } else {
-      return 4;
+      return paises[0].id;
     }
   };
 
