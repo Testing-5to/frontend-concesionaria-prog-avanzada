@@ -38,11 +38,11 @@ const DataTableVehiculo = ({ loading, setLoading, busqueda }) => {
   const columns = [
 
     { field: "id", headerName: "ID", flex: 1 },
-    { field: "nombre", headerName: "Vehiculo", flex: 1 },
+    { field: "nombre", headerName: "VIN", flex: 1 },
     { field: "marca", headerName: "Marca", flex: 1 },
     { field: "tipoVehiculo", headerName: "Tipo de Vehículo", flex: 1 },
     { field: "pais", headerName: "País", flex: 1 },
-    { field: "year", headerName: "Año", flex: 1 },
+    { field: "anio", headerName: "Año", flex: 1 },
     { field: "kilometros", headerName: "Kilometros", flex: 1 },
     { field: "importado", headerName: "Importado", flex: 1 },
     { field: "precioCompra", headerName: "Compra", flex: 1 },
@@ -97,7 +97,7 @@ const DataTableVehiculo = ({ loading, setLoading, busqueda }) => {
       marca: vehiculo.modelo.marca.nombre,
       tipoVehiculo: vehiculo.modelo.tipoVehiculo.nombre,
       pais: vehiculo.modelo.marca.pais.abreviatura,
-      year: vehiculo.year,
+      anio: vehiculo.anio,
       kilometros: vehiculo.kilometros+"km",
       importado: vehiculo.importado ? "Si" : "No",
       precioCompra: "$"+vehiculo.precioCompra,
