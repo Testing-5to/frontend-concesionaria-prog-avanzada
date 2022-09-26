@@ -10,6 +10,7 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
   const [paises, setPaises] = useState([]);
   const [roles, setRoles] = useState([]);
   const [localidades, setLocalidades] = useState([]);
+  const [localidadesDeProvincia, setLocalidadesDeProvincia] = useState([]);
   const [provincias, setProvincias] = useState([]);
 
   
@@ -20,6 +21,14 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
     setRoles(data.roles);
     setLocalidades(data.localidades);
     setProvincias(data.provincias);
+    if (!isEdit) {
+      guardarLocalidadesDeProvincia(data.localidades, data.provincias[0].id);
+    } else {
+      guardarLocalidadesDeProvincia(
+        data.localidades,
+        empleado.direccion.localidad.provincia.id.toString()
+      );
+    }
     setLoadingModal(false);
   };
 
@@ -98,10 +107,39 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
     }
   };
 
+    // este metodo es para setear las localidades que se van a mostrar en el select
+    const guardarLocalidadesDeProvincia = (localidades, idProvincia) => {
+      const localidadesFiltradas = localidades.filter(
+        (localidad) => localidad.provincia.id.toString() === idProvincia.toString()
+      );
+      setLocalidadesDeProvincia(localidadesFiltradas);
+    };
+
   const getLocalidadInitial = (idProvincia) => {
-    const id = localidades.filter((l) => l.provincia.id.toString() === idProvincia)[0].id.toString();
-    return id;
-  }
+    try {
+      const id = localidades
+        .filter((l) => l.provincia.id.toString() === idProvincia)[0]
+        .id.toString();
+      return id;
+    } catch (e) {
+      return "1";
+    }
+  };
+
+  const handleChangeProvincia = (e, values, handleChange) => {
+    // esta funcion esta para que cuando cambie la marca, se cambie el modelo
+    values.provincia = e.target.value
+    try{
+      guardarLocalidadesDeProvincia(localidades, e.target.value)
+      values.localidad = getLocalidadInitial(e.target.value)
+      
+    }catch{
+      values.localidad = "1";
+    }
+    handleChange(e);
+    
+  };
+
   useEffect(() => {
     fetchAllDataForm();
   }, []);
@@ -129,7 +167,7 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
               numero: isEdit ? empleado.direccion.numero : "",
               provincia: isEdit ? empleado.direccion.localidad.provincia.id.toString() : provincias[0].id.toString(),
               localidad: isEdit ? empleado.direccion.localidad.id.toString() : getLocalidadInitial(provincias[0].id.toString()),
-              pais: "Argentina"
+              pais: "1"
             }}
             validate={(valores) => validateValues(valores)}
             onSubmit={(valores, { resetForm }) =>
@@ -137,7 +175,7 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
             }
             
           >
-            {({ errors, values }) => (
+            {({ errors, values, handleChange}) => (
               <Form
                 className="formulario"
                 style={{ display: "flex", justifyContent: "center" }}
@@ -209,7 +247,7 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
                   <Grid item md={6} xs={12}>
                     <label htmlFor="telefono">Telefono</label>
                     <Field
-                      type="number"
+                      type="text"
                       id="telefono"
                       name="telefono"
                       placeholder="Teléfono del empleado"
@@ -313,7 +351,9 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
                   </Grid>
                   <Grid item md={6} xs={12}>
                     <label htmlFor="provincia">Provincia</label>
-                    <Field as="select" id="provincia" name="provincia">
+                    <Field as="select" id="provincia" name="provincia" onChange={(e) => {
+                        handleChangeProvincia(e, values, handleChange);
+                      }}>
                       {
                         provincias.map((provincia) => (
                           <option key={provincia.id} value={provincia.id}>{provincia.nombre}</option>
@@ -326,13 +366,11 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
                     <label htmlFor="localidad">Localidad</label>
                     <Field as="select" id="localidad" name="localidad">
                       {
-                        localidades.map((localidad) => { 
-                          if(localidad.provincia.id.toString() === values.provincia){
-                            return <option key={localidad.id} value={localidad.id}>{localidad.nombre}</option>
-                          }else{
-                            return null
-                          }
-                        })
+                        localidadesDeProvincia.map((localidad) => (
+                          
+                            <option key={localidad.id} value={localidad.id}>{localidad.nombre}</option>
+                          )
+                        )
                       }
 
                     </Field>

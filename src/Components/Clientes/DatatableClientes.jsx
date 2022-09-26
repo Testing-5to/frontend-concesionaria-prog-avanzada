@@ -55,6 +55,8 @@ const DataTableClientes = ({ loading, setLoading, busqueda }) => {
       email: cliente.email,
       telefono: cliente.telefono,
       dni: cliente.dni,
+      provincia: cliente.direccion.localidad.provincia.nombre,
+      localidad: cliente.direccion.localidad.nombre,
       esCliente: cliente.esCliente,
       direccion: `${cliente.direccion.calle} ${cliente.direccion.numero}`,
     }));
@@ -73,11 +75,14 @@ const DataTableClientes = ({ loading, setLoading, busqueda }) => {
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
-    { field: "nombre", headerName: "Nombre", flex: 1 },
-    { field: "apellido", headerName: "Apellido", flex: 1 },
+    { field: "nombre", headerName: "Nombre", flex: 0.6 },
+    { field: "apellido", headerName: "Apellido", flex: 0.6 },
     { field: "telefono", headerName: "Telefono", flex: 1 },
     { field: "email", headerName: "Email", flex: 1 },
-    { field: "direccion", headerName: "Direccion", flex: 1 },
+    { field: "direccion", headerName: "Direccion", flex: 1.1 },
+    { field: "dni", headerName: "DNI", flex: 0.7 },
+    { field: "provincia", headerName: "Provincia", flex: 0.7 },
+    { field: "localidad", headerName: "Localidad", flex: 0.7 },
     {
       field: "esCliente",
       headerName: "Cliente",
