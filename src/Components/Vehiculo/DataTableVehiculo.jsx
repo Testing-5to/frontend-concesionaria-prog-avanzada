@@ -40,6 +40,7 @@ const DataTableVehiculo = ({ loading, setLoading, busqueda }) => {
     { field: "id", headerName: "ID", flex: 1 },
     { field: "nombre", headerName: "VIN", flex: 1 },
     { field: "marca", headerName: "Marca", flex: 1 },
+    { field: "modelo", headerName: "Modelo", flex: 1 },
     { field: "tipoVehiculo", headerName: "Tipo de Vehículo", flex: 1 },
     { field: "pais", headerName: "País", flex: 1 },
     { field: "anio", headerName: "Año", flex: 1 },
@@ -88,13 +89,14 @@ const DataTableVehiculo = ({ loading, setLoading, busqueda }) => {
   };
   const filtrarVehiculos = (vehiculos, busqueda) => {
     const primerFiltro = vehiculos.filter((vehiculo) => {
-      return vehiculo.nombre.toLowerCase().includes(busqueda.toLowerCase());
+      return vehiculo.modelo.nombre.toLowerCase().includes(busqueda.toLowerCase());
     });
  
     const segundoFiltro = primerFiltro.map((vehiculo) => ({
       id: vehiculo.id,
       nombre: vehiculo.nombre,
       marca: vehiculo.modelo.marca.nombre,
+      modelo: vehiculo.modelo.nombre,
       tipoVehiculo: vehiculo.modelo.tipoVehiculo.nombre,
       pais: vehiculo.modelo.marca.pais.abreviatura,
       anio: vehiculo.anio,

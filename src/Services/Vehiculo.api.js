@@ -16,6 +16,7 @@ const saveVehiculo = async (vehiculo) => {
     precioCompra: vehiculo.precioCompra,
     precioVenta: vehiculo.precioVenta,
   };
+  console.log(vehiculo_parsed)
   const response = await axios.post(url + "vehiculo", vehiculo_parsed);
   return response.data;
 };

@@ -13,15 +13,21 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
   const [loadingModal, setLoadingModal] = useState(true);
   const [marcas, setMarcas] = useState([]);
   const [modelos, setModelos] = useState([]);
-  const [tipos, setTipos] = useState([]);
+  const [modelosDeMarca, setModelosDeMarca] = useState([]);
 
   // traemos toda la data necesaria para popular el formulario
   const fetchAllDataForm = async () => {
     const data = await getAllDatosFormVehiculo();
     setMarcas(data.marcas);
     setModelos(data.modelos);
-    setTipos(data.tiposVehiculo);
+    if(!isEdit){
+      guardarModelosDeMarca(data.modelos, data.marcas[0].id);
+
+    }else{
+      guardarModelosDeMarca(data.modelos, vehiculo.modelo.marca.id.toString());
+    }
     setLoadingModal(false);
+
   };
 
   const guardarVehiculo = async (valores) => {
@@ -78,34 +84,38 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
     fetchAllDataForm();
   }, []);
 
-  const getModeloInitialValue = () => {
-    // devolver el primer modelo que su marca no sea un objeto vacio
-    const id = modelos.find(
-      (modelo) => Object.keys(modelo.marca).length !== 0
-    ).id;
-    if (id) {
-      return id.toString();
-    } else {
+  const guardarModelosDeMarca = (modelos, idMarca) => {
+    const modelosDeMarcaFiltrados = modelos.filter((modelo) => modelo?.marca.id.toString() === idMarca.toString());  
+    console.log(modelosDeMarcaFiltrados);
+    setModelosDeMarca(modelosDeMarcaFiltrados);
+  }
+
+  const getModeloInitialValue = (idMarca) => {
+    
+    const modelosDeMarcaFiltrados = modelos.filter((modelo) => modelo?.marca.id.toString() === idMarca);
+    if(modelosDeMarcaFiltrados.length > 0){
+      return modelosDeMarcaFiltrados[0].id.toString();
+    }
+    else{
       return "0";
     }
+
+    // the above code is generating a infinite loop because of the setModelosDeMarca
   };
 
-  const getMarcaInitialValue = (idModelo) => {
-    const id = modelos.find((m) => m.id.toString() === idModelo).marca.id;
-    if (id) {
-      return id.toString();
-    } else {
-      return "0";
-    }
-  };
+  
+  
   const handleChangeMarca = (e, values, handleChange) => {
     // esta funcion esta para que cuando cambie la marca, se cambie el modelo
     values.marca = e.target.value
     try{
-      const idModelo = modelos.filter((modelo) => modelo?.marca.id.toString() === e.target.value.toString())[0].id;  
-      values.modelo = idModelo;
+      const modelosDeMarcaFiltrados = modelos.filter((modelo) => modelo?.marca.id.toString() === e.target.value.toString());  
+      setModelosDeMarca(modelosDeMarcaFiltrados);
+      console.log(modelosDeMarca)
+      values.modelo = modelosDeMarcaFiltrados[0].id.toString();
+      
     }catch{
-      values.modelo = 0;
+      values.modelo = "1";
     }
     handleChange(e);
     
@@ -124,11 +134,11 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
             initialValues={{
               nombre: isEdit ? vehiculo.nombre : "",
               modelo: isEdit
-                ? vehiculo.modelo.id
-                : getMarcaInitialValue(getModeloInitialValue()),
+                ? vehiculo.modelo.id.toString()
+                : getModeloInitialValue(marcas[0].id.toString()),
               marca: isEdit
-                ? vehiculo.modelo.marca.id
-                : getModeloInitialValue(),
+                ? vehiculo.modelo.marca.id.toString()
+                : marcas[0].id.toString(),
               anio: isEdit ? vehiculo.anio : "",
               kilometros: isEdit ? vehiculo.kilometros : "",
               importado: isEdit ? vehiculo.importado : false,
@@ -247,7 +257,9 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
                               {marca.nombre}
                             </option>
                           );
+
                         }
+                        
                       })}
                     </Field>
                   </Grid>
@@ -259,20 +271,13 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
                       name="modelo"
                       id="modelo"
                     >
-                        {modelos.map((modelo) => {
-                          if (
-                            modelo.marca.id.toString() ===
-                            values.marca.toString()
-                          ) {
-                            return (
-                              <option key={modelo.id} value={modelo.id}>
+                     {
+                      modelosDeMarca.map((modelo)=>(
+                        <option key={modelo.id} value={modelo.id}>
                                 {modelo.nombre}
                               </option>
-                            );
-                          } else {
-                            return null;
-                          }
-                        })}
+                      ))
+                     }
                     </Field>
                   </Grid>
 
