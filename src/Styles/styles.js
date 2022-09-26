@@ -3,6 +3,8 @@ import { yellow } from "@mui/material/colors";
 const styles = {
   sideBar: {
     position: "absolute",
+    height: "100vh",
+    zIndex: 100000,
     top: 0,
     left: 0,
   },

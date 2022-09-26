@@ -25,7 +25,7 @@ const Sidebar = () => {
       onMouseLeave={() => setCollapsed(true)}
       style={styles.sideBar}
     >
-      <SidebarContent style={{ marginTop: "10px" }}>
+      <SidebarContent style={{ marginTop: "10px"}}>
         <Menu iconShape="square">
           {/* Abmc's de autos */}
           <Box sx={styles.sidebarLabels}>

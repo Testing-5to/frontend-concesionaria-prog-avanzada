@@ -7,6 +7,7 @@ import Sidebar from "./Components/Sidebar";
 import Clientes from "./Pages/Clientes";
 import Modelo from "./Pages/Modelo";
 import Vehiculo from "./Pages/Vehiculo";
+import DashboardHome from "./Pages/DashboardHome";
 
 const App = () => {
   return (
@@ -26,7 +27,7 @@ const App = () => {
           <Route path="/clientes" element={<Clientes />} />
           <Route path="/modelo" element={<Modelo />} />
           <Route path="/vehiculo" element={<Vehiculo />} />
-          <Route path="*" element={<Vehiculo />} />
+          <Route path="*" element={<DashboardHome />} />
         </Routes>
       </Box>
     </BrowserRouter>
