@@ -9,7 +9,7 @@ import RecommendCarCard from "./UI/RecommendCarCard";
 import recommendCarsData from "./assets/dummy-data/recommendCars";
 
 const carObj = {
-  title: "Total de autos",
+  title: "Total de vehículos",
   totalNumber: 32,
   icon: "ri-police-car-line",
 };
