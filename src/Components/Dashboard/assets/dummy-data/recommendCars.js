@@ -9,7 +9,7 @@ const recommendCars = [
     rentPrice: 32,
     retweet: "132",
     imgUrl: car1,
-    percentage: "74",
+    percentage: "86",
   },
   {
     id: "02",
@@ -21,11 +21,11 @@ const recommendCars = [
   },
   {
     id: "03",
-    carName: "Porsche 911 Carrera",
+    carName: "Porsche 911 Terreno",
     rentPrice: 28,
     retweet: "130",
     imgUrl: car3,
-    percentage: "74",
+    percentage: "82",
   },
 ];
 
