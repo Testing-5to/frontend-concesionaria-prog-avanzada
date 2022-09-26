@@ -13,6 +13,7 @@ import FormularioModelo from "./FormularioModelo";
 import { useState } from "react";
 import styles from "../../Styles/styles";
 
+// styled components
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -55,10 +56,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+
 const NavbarModelo = ({setBusqueda}) => {
+  // estados para el modal
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  // renderizamos el navbar
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar style={{ background: "#1D1D1D" }} position="static">

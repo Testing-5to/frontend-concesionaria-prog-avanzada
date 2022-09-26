@@ -9,6 +9,8 @@ import {
 import { Grid, Checkbox, FormControlLabel } from "@mui/material";
 
 const FormularioClientes = ({ onClose, isEdit, cliente }) => {
+ 
+  // estados para los datos del formulario
   const [saving, setSaving] = useState(false);
   const [loadingModal, setLoadingModal] = useState(true);
   const [paises, setPaises] = useState([]);
@@ -33,6 +35,7 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
     setLoadingModal(false);
   };
 
+  // funcion para guardar un cliente, este manda los valores a la api y luego cierra el modal
   const guardarCliente = async (valores) => {
     await saveCliente(valores).then((response) => {
       onClose();
@@ -40,6 +43,7 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
     });
   };
 
+  // funcion para actualizar un cliente, este manda los valores a la api y luego cierra el modal
   const actualizarCliente = async (valores) => {
     valores.id = cliente.id;
     await updateCliente(valores).then((response) => {
@@ -47,6 +51,7 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
       window.location.reload();
     });
   };
+
   // este metodo es para setear las localidades que se van a mostrar en el select
   const guardarLocalidadesDeProvincia = (localidades, idProvincia) => {
     const localidadesFiltradas = localidades.filter(
@@ -55,8 +60,8 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
     setLocalidadesDeProvincia(localidadesFiltradas);
   };
 
+  // este metodo es para validar los campos del formulario
   const validateValues = (valores) => {
-    console.log(valores)
     let errores = {};
     // Validacion empleado
     if (!valores.nombre) {
@@ -97,6 +102,7 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
     return errores;
   };
 
+  // este metodo es para submitear el formulario y resetearlo, llama a los metodos de guardar y actualizar
   const onSubmit = (valores, { resetForm }) => {
     setSaving(true);
     if (!isEdit) {
@@ -112,6 +118,7 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
     }
   };
 
+  // este metodo es para setear la localidad inicial del formulario
   const getLocalidadInitial = (idProvincia) => {
     try {
       const id = localidades
@@ -123,8 +130,8 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
     }
   };
 
+  // esta funcion esta para que cuando cambie la marca, se cambie el modelo, y setearle sus valores en el formulario
   const handleChangeProvincia = (e, values, handleChange) => {
-    // esta funcion esta para que cuando cambie la marca, se cambie el modelo
     values.provincia = e.target.value
     try{
       guardarLocalidadesDeProvincia(localidades, e.target.value)
@@ -137,14 +144,12 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
     
   };
 
-
-
-
+  // este metodo es para traer los datos iniciales del formulario
   useEffect(() => {
-    console.log("cliente", cliente);
     fetchAllDataForm();
   }, []);
 
+  // renderizamos el formulario
   return (
     <>
       {loadingModal ? (

@@ -9,8 +9,10 @@ import Modelo from "./Pages/Modelo";
 import Vehiculo from "./Pages/Vehiculo";
 import DashboardHome from "./Pages/DashboardHome";
 
+// componentes principal de la app
 const App = () => {
   return (
+    // wrapper de las rutas
     <BrowserRouter>
       <Box
         sx={{
@@ -20,7 +22,9 @@ const App = () => {
           height: "100vh",
         }}
       >
+        {/* renderizamos el sidebar a este nivel porque aparece en todas las pantallas */}
         <Sidebar />
+        {/* renderizamos las rutas */}
         <Routes>
           <Route path="/marca" element={<Marca />} />
           <Route path="/empleados" element={<Empleados />} />

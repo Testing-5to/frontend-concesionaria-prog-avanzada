@@ -9,6 +9,7 @@ import {
 import { Checkbox, FormControlLabel, Grid } from "@mui/material";
 
 const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
+  // estados para el formulario
   const [saving, setSaving] = useState(false);
   const [loadingModal, setLoadingModal] = useState(true);
   const [marcas, setMarcas] = useState([]);
@@ -30,6 +31,7 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
 
   };
 
+  // funcion para guardar el vehiculo, este metodo llama a la api y cierren el componente
   const guardarVehiculo = async (valores) => {
     await saveVehiculo(valores).then((response) => {
       onClose();
@@ -37,6 +39,7 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
     });
   };
 
+  // funcion para actualizar el vehiculo, este metodo llama a la api y cierren el componente
   const actualizarVehiculo = async (valores) => {
     valores.id = vehiculo.id;
     await updateVehiculo(valores).then((response) => {
@@ -45,6 +48,7 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
     });
   };
 
+  // funcion para validar el formulario
   const validateValues = (valores) => {
     console.log("VALORES", valores);
     let errores = {};
@@ -65,6 +69,7 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
     return errores;
   };
 
+  // funcion para submitear el formulario y guardar o actualizar el vehiculo segun corresponda
   const onSubmit = (valores, { resetForm }) => {
     setSaving(true);
     if (!isEdit) {
@@ -80,16 +85,19 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
     }
   };
 
+  // funcion para obtener los datos del formulario cuando renderiza el componente
   useEffect(() => {
     fetchAllDataForm();
   }, []);
 
+  // funcion para guardar los modelos de una marca
   const guardarModelosDeMarca = (modelos, idMarca) => {
     const modelosDeMarcaFiltrados = modelos.filter((modelo) => modelo?.marca.id.toString() === idMarca.toString());  
     console.log(modelosDeMarcaFiltrados);
     setModelosDeMarca(modelosDeMarcaFiltrados);
   }
 
+  // funcion para obtener el modelo inicial del formulario
   const getModeloInitialValue = (idMarca) => {
     
     const modelosDeMarcaFiltrados = modelos.filter((modelo) => modelo?.marca.id.toString() === idMarca);
@@ -105,6 +113,7 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
 
   
   
+  // funcion para actualizar el modelo cuando cambiar la marca, y setear sus valores en el formulario
   const handleChangeMarca = (e, values, handleChange) => {
     // esta funcion esta para que cuando cambie la marca, se cambie el modelo
     values.marca = e.target.value
@@ -122,6 +131,7 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
   };
 
 
+  // renderizamos el componente
   return (
     <>
       {loadingModal ? (

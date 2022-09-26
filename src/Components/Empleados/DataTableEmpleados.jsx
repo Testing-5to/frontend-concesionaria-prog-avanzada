@@ -11,19 +11,26 @@ import { Modal } from "@mui/material";
 import FormularioEmpleado from "./FormularioEmpleados";
 
 const DataTableEmpleados = ({ loading, setLoading, busqueda }) => {
+
+  // estados para la datatable
   const [empleados, setEmpleados] = useState([]);
   const [empleadosFiltered, setEmpleadosFiltered] = useState([]);
   const [open, setOpen] = useState(false);
   const [empleado, setEmpleado] = useState({});
 
+  // funcion para abrir el modal
   const handleOpen = () => setOpen(true);
+  // funcion para cerrar el modal
   const handleClose = () => setOpen(false);
+
+  // funcion para abrir el modal del form y pasarle el empleado a editar
   const editarUnEmpleado = (empleado) => {
     const empleadoFound = empleados.filter((e) => e.id === empleado.row.id)[0];
     setEmpleado(empleadoFound);
     handleOpen();
   };
 
+  // funcion para eliminar un empleado
   const eliminarEmpleado = async (cellValues) => {
     if (window.confirm("¿Estas seguro de eliminar esta empleado?")) {
       const { id } = cellValues;
@@ -36,6 +43,8 @@ const DataTableEmpleados = ({ loading, setLoading, busqueda }) => {
     }
   };
 
+
+  // funcion para obtener todos los empleados
   const getEmpleados = async () => {
     const response = await getAllEmpleados();
     setEmpleados(response);
@@ -43,6 +52,7 @@ const DataTableEmpleados = ({ loading, setLoading, busqueda }) => {
     setLoading(false);
   };
 
+  // funcion para filtrar los empleados, recibe la busqueda y los empleados y develve los empleados filtrados
   const filtrarEmpleados = (empleados, busqueda = "") => {
     const primerFiltro = empleados.filter((empleado) => {
       return empleado.nombre.toLowerCase().includes(busqueda.toLowerCase());
@@ -62,15 +72,17 @@ const DataTableEmpleados = ({ loading, setLoading, busqueda }) => {
     setEmpleadosFiltered(segundoFiltro);
   };
 
+  // funcion para filtrar los empleados cuando cambia la busqueda
   useEffect(() => {
     filtrarEmpleados(empleados, busqueda);
   }, [busqueda]);
 
+  // funcion para obtener los empleados cuando se renderiza el componente
   useEffect(() => {
-    console.log("re-render");
     getEmpleados();
   }, []);
 
+  // columnas de la datatable
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
     { field: "nombre", headerName: "Nombre", flex: 0.6 },
@@ -115,6 +127,7 @@ const DataTableEmpleados = ({ loading, setLoading, busqueda }) => {
     },
   ];
 
+  // renderizamos la datatable
   return (
     <>
       <div style={styles.divDataTable}>

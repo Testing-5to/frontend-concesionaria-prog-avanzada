@@ -1,6 +1,8 @@
 import axios from "axios";
 import { url } from ".";
 
+// abmc para marcas, usamos axios para hacer las llamadas a la api
+
 const getAllMarcas = async () => {
   const response = await axios.get(url + "marca");
   const marcas = response.data.map((marca) => ({

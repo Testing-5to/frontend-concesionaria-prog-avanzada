@@ -5,6 +5,8 @@ import { getAllDatosFormEmpleados, saveEmpleado, updateEmpleado } from "../../Se
 import { Grid } from "@mui/material";
 
 const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
+
+  // estados del formulario
   const [saving, setSaving] = useState(false);
   const [loadingModal, setLoadingModal] = useState(true);
   const [paises, setPaises] = useState([]);
@@ -32,6 +34,7 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
     setLoadingModal(false);
   };
 
+  // funcion para guardar un empleado nuevo, esta llama a la api y luego cierra el modal
   const guardarEmpleado = async (valores) => {
     await saveEmpleado(valores).then((response) => {
       onClose();
@@ -39,6 +42,7 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
     });
   };
 
+  // funcion para editar un empleado, esta llama a la api y luego cierra el modal
   const actualizarEmpleado = async (valores) => {
     valores.id = empleado.id;
     await updateEmpleado(valores).then((response) => {
@@ -47,6 +51,7 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
     });
   };
 
+  // funcion para validar los valores del formulario
   const validateValues = (valores) => {
     let errores = {};
     // Validacion empleado
@@ -92,6 +97,7 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
     return errores;
   };
 
+  // funcion para submitear el formulario, esta llama a la funcion de guardar o editar segun corresponda y resetea el modal
   const onSubmit = (valores, { resetForm }) => {
     setSaving(true);
     if (!isEdit) {
@@ -107,14 +113,15 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
     }
   };
 
-    // este metodo es para setear las localidades que se van a mostrar en el select
-    const guardarLocalidadesDeProvincia = (localidades, idProvincia) => {
-      const localidadesFiltradas = localidades.filter(
-        (localidad) => localidad.provincia.id.toString() === idProvincia.toString()
-      );
-      setLocalidadesDeProvincia(localidadesFiltradas);
-    };
+  // este metodo es para setear las localidades que se van a mostrar en el select
+  const guardarLocalidadesDeProvincia = (localidades, idProvincia) => {
+    const localidadesFiltradas = localidades.filter(
+      (localidad) => localidad.provincia.id.toString() === idProvincia.toString()
+    );
+    setLocalidadesDeProvincia(localidadesFiltradas);
+  };
 
+  // este metodo es para obtener la localidad inicial para el formulario y para el select
   const getLocalidadInitial = (idProvincia) => {
     try {
       const id = localidades
@@ -126,6 +133,7 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
     }
   };
 
+  // este metodo es para cambiar la localidad que se muestra en el select si cambia la provincia y setearle sus valores
   const handleChangeProvincia = (e, values, handleChange) => {
     // esta funcion esta para que cuando cambie la marca, se cambie el modelo
     values.provincia = e.target.value
@@ -140,10 +148,12 @@ const FormularioEmpleados = ({ onClose, isEdit, empleado }) => {
     
   };
 
+  // este metodo es para traer todos los datos que necesita el formulario cuando se renderiza el componente
   useEffect(() => {
     fetchAllDataForm();
   }, []);
 
+  // renderizamos el componente
   return (
     <>
       {loadingModal ? (

@@ -33,15 +33,19 @@ const distanceObj = {
   icon: "ri-timer-flash-line",
 };
 
+
 const Dashboard = () => {
+  // estados del dashboard
   const [loading, setLoading] = useState(true);
 
+  // funcion para obtener los datos de los graficos
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
     }, 1000);
   }, []);
 
+  // renderizamos el dashboard
   return (
     loading ? <div style={{height: "100vh", width:"100%", display: "flex", justifyContent: "center", alignItems: "center"}}><DotLoader color="#1D1D1D" /></div>
    : 

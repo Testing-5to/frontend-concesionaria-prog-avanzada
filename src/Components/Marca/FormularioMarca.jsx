@@ -4,20 +4,24 @@ import { BeatLoader, DotLoader } from "react-spinners";
 import { getAllPaises, saveMarca, updateMarca } from "../../Services";
 
 const FormularioMarca = ({ onClose, isEdit, marca }) => {
+  // estados para el formulario
   const [saving, setSaving] = useState(false);
   const [loadingModal, setLoadingModal] = useState(true);
   const [paises, setPaises] = useState([]);
 
+  // funcion para obtener los paises
   const getPaises = async () => {
     const paises = await getAllPaises();
     setPaises(paises);
     setLoadingModal(false);
   };
 
+  // funcion para obtener los paises cuando se renderiza el componente
   useEffect(() => {
     getPaises();
   }, []);
 
+  // funcion para guardar la marca, este metodo llama a la api y cierren el componente
   const guardarMarca = async (valores) => {
     await saveMarca(valores).then((response) => {
       onClose();
@@ -25,6 +29,7 @@ const FormularioMarca = ({ onClose, isEdit, marca }) => {
     });
   };
 
+  // funcion para actualizar la marca, este metodo llama a la api y cierren el componente
   const actualizarMarca = async (valores) => {
     await updateMarca({
       id: marca.id,
@@ -36,6 +41,7 @@ const FormularioMarca = ({ onClose, isEdit, marca }) => {
     });
   };
 
+  // function para obtener el id del pais del formulario
   const getPais = (nombre) => {
     const pais = paises.find((pais) => pais.nombre === nombre);
     if (pais) {
@@ -45,6 +51,7 @@ const FormularioMarca = ({ onClose, isEdit, marca }) => {
     }
   };
 
+  // funcion para validar el formulario
   const validateValues = (valores) => {
     let errores = {};
     // Validacion marca
@@ -70,6 +77,8 @@ const FormularioMarca = ({ onClose, isEdit, marca }) => {
       });
     }
   };
+
+  // renderizamos el componente
   return (
     <>
       {loadingModal ? (

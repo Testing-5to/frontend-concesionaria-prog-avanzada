@@ -1,3 +1,5 @@
+// importamos los componentes necesarios
+
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { getAllClientes, deleteCliente } from "../../Services/";
@@ -11,20 +13,29 @@ import { Modal } from "@mui/material";
 import FormularioClientes from "./FormularioClientes";
 import CheckIcon from "@mui/icons-material/Check";
 
+
+// este componente es el que se encarga de renderizar la datatable de clientes
 const DataTableClientes = ({ loading, setLoading, busqueda }) => {
+
+  // estados para la datatable
   const [clientes, setClientes] = useState([]);
   const [clientesFiltered, setClientesFiltered] = useState([]);
   const [open, setOpen] = useState(false);
   const [cliente, setCliente] = useState({});
 
+  // funcion para abrir el modal
   const handleOpen = () => setOpen(true);
+  // funcion para cerrar el modal
   const handleClose = () => setOpen(false);
+
+  // funcion para abrir el modal del form y pasarle el cliente a editar
   const editarUnCliente = (cliente) => {
     const clienteFound = clientes.filter((e) => e.id === cliente.row.id)[0];
     setCliente(clienteFound);
     handleOpen();
   };
 
+  // funcion para eliminar un cliente
   const eliminarCliente = async (cellValues) => {
     if (window.confirm("¿Estas seguro de eliminar esta empleado?")) {
       const { id } = cellValues;
@@ -37,6 +48,8 @@ const DataTableClientes = ({ loading, setLoading, busqueda }) => {
     }
   };
 
+
+  // funcion para obtener todos los clientes
   const getClientes = async () => {
     const response = await getAllClientes();
     setClientes(response);
@@ -44,6 +57,7 @@ const DataTableClientes = ({ loading, setLoading, busqueda }) => {
     setLoading(false);
   };
 
+  // funcion para filtrar los clientes, recibe la busqueda y los clientes y develve los clientes filtrados
   const filtrarClientes = (clientes, busqueda = "") => {
     const primerFiltro = clientes.filter((cliente) => {
       return cliente.nombre.toLowerCase().includes(busqueda.toLowerCase());
@@ -64,15 +78,19 @@ const DataTableClientes = ({ loading, setLoading, busqueda }) => {
     setClientesFiltered(segundoFiltro);
   };
 
+
+  // funcion para filtrar los clientes cuando cambia la busqueda
   useEffect(() => {
     filtrarClientes(clientes, busqueda);
   }, [busqueda]);
 
+  // funcion para obtener los clientes cuando se renderiza el componente
   useEffect(() => {
-    console.log("re-render");
     getClientes();
   }, []);
 
+
+  // columnas de la datatable
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
     { field: "nombre", headerName: "Nombre", flex: 0.6 },
@@ -124,6 +142,8 @@ const DataTableClientes = ({ loading, setLoading, busqueda }) => {
     },
   ];
 
+
+  // renderizamos la datatable y el modal se renderiza cuando se abre
   return (
     <>
       <div style={styles.divDataTable}>

@@ -3,6 +3,7 @@ import React from 'react'
 import Dashboard from '../Components/Dashboard/Dashboard'
 import NavbarDashboard from '../Components/Dashboard/NavbarDashboard'
 
+// componente principal de la pagina de dashboard
 const DashboardHome = () => {
   return (
     <Box sx={{width: "100%", display: "flex", flexDirection: "column", alignItems: "center", marginLeft: "80px"}}>

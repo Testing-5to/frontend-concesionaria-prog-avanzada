@@ -7,6 +7,8 @@ import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 
+
+// styled components del navbar
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -50,6 +52,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const NavbardDashboard = ({ setBusqueda }) => {
+
+  // renderizamos el dashboard
   return (
     <Box sx={{ flexGrow: 1, width: "100%"}}>
       <AppBar style={{ background: "#1D1D1D", width: "calc(100% - 80px)" }} position="absolute">

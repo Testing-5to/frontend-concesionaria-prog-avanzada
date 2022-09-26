@@ -1,6 +1,8 @@
 import axios from "axios";
 import { url } from ".";
 
+// abmc para empleados, usamos axios para hacer las llamadas a la api
+
 const getAllEmpleados = async () => {
   const response = await axios.get(url + "empleado");
   const empleados = response.data;

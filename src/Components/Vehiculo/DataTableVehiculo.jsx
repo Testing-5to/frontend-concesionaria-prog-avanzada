@@ -11,19 +11,25 @@ import { Modal } from "@mui/material";
 import FormularioVehiculo from "./FormularioVehiculo";
 
 const DataTableVehiculo = ({ loading, setLoading, busqueda }) => {
+  // estados para la datatable
   const [vehiculos, setVehiculos] = useState([]);
   const [vehiculosFiltered, setVehiculosFiltered] = useState([]);
   const [open, setOpen] = useState(false);
   const [vehiculo, setVehiculo] = useState({});
 
+  // funcion para abrir el modal
   const handleOpen = () => setOpen(true);
+  // funcion para cerrar el modal
   const handleClose = () => setOpen(false);
+
+  // funcion para abrir el modal del form y pasarle el vehiculo a editar
   const editarUnVehiculo = (vehiculo) => {
     const vehiculoFiltered = vehiculos.find((m) => m.id === vehiculo.row.id);
     setVehiculo(vehiculoFiltered);
     handleOpen();
   };
 
+  // funcion para eliminar un vehiculo
   const eliminarVehiculo = async (cellValues) => {
     if (window.confirm("¿Estas seguro de eliminar esta vehiculo?")) {
       const { id } = cellValues;
@@ -35,6 +41,8 @@ const DataTableVehiculo = ({ loading, setLoading, busqueda }) => {
       return;
     }
   };
+
+  // definimos las columnas de la tabla
   const columns = [
 
     { field: "id", headerName: "ID", flex: 1 },
@@ -81,12 +89,15 @@ const DataTableVehiculo = ({ loading, setLoading, busqueda }) => {
     },
   ];
 
+  // funcion para obtener todos los vehiculos
   const getVehiculos = async () => {
     const response = await getAllVehiculos();
     setVehiculos(response);
     filtrarVehiculos(response, "");
     setLoading(false);
   };
+
+  // funcion para filtrar los vehiculos, recibe la busqueda y el array de vehiculos, y retorna un array filtrado
   const filtrarVehiculos = (vehiculos, busqueda) => {
     const primerFiltro = vehiculos.filter((vehiculo) => {
       return vehiculo.modelo.nombre.toLowerCase().includes(busqueda.toLowerCase());
@@ -108,14 +119,17 @@ const DataTableVehiculo = ({ loading, setLoading, busqueda }) => {
     setVehiculosFiltered(segundoFiltro);
   }
 
+  // funcion para filtrar los vehiculos cuando cambia la busqueda
   useEffect(() => {
     filtrarVehiculos(vehiculos, busqueda);
   }, [busqueda]);
 
+  // funcion para obtener los vehiculos cuando renderiza el componente
   useEffect(() => {
     getVehiculos();
   }, []);
 
+  // renderizamos el componente
   return (
     <>
       <div style={styles.divDataTable}>

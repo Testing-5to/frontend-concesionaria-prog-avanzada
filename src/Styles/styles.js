@@ -1,5 +1,6 @@
 import { yellow } from "@mui/material/colors";
 
+// styles
 const styles = {
   sideBar: {
     position: "absolute",

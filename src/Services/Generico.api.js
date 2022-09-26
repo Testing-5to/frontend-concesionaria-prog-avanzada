@@ -6,6 +6,7 @@ import { getAllMarcas } from "./Marca.api";
 import { getAllTiposVehiculo } from "./TipoVehiculo.api";
 import { getAllModelos } from "./Modelo.api";
 
+// genericos para formularios
 const getAllDatosFormEmpleados = async () => {
   const paises = await getAllPaises();
   const roles = await getAllRoles();
