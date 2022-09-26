@@ -15,7 +15,7 @@ const carObj = {
 };
 
 const tripObj = {
-  title: "Ventas mensuales",
+  title: "Ventas del mes",
   totalNumber: 12,
   icon: "ri-steering-2-line",
 };
