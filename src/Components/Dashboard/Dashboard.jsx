@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./styles/dashboard.css";
 import SingleCard from "./reuseable/SingleCard";
 
@@ -7,6 +7,7 @@ import CarStatsChart from "./charts/CarStatsChart";
 import RecommendCarCard from "./UI/RecommendCarCard";
 
 import recommendCarsData from "./assets/dummy-data/recommendCars";
+import { DotLoader } from "react-spinners";
 
 const carObj = {
   title: "Total de vehículos",
@@ -33,42 +34,54 @@ const distanceObj = {
 };
 
 const Dashboard = () => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, []);
+
   return (
-    <div
-      className="layout"
-    >
-      <div
-        className="dashboard"
-        style={{ display: "flex", justifyContent: "center", alignItems: "flex-start"}}
-      >
-        <div className="dashboard__wrapper">
-          <div className="dashboard__cards">
-            <SingleCard item={carObj} />
-            <SingleCard item={tripObj} />
-            <SingleCard item={clientObj} />
-            <SingleCard item={distanceObj} />
-          </div>
+    loading ? <div style={{height: "100vh", width:"100%", display: "flex", justifyContent: "center", alignItems: "center"}}><DotLoader color="#1D1D1D" /></div>
+   : 
+   <div className="layout">
+   <div
+     className="dashboard"
+     style={{
+       display: "flex",
+       justifyContent: "center",
+       alignItems: "flex-start",
+     }}
+   >
+     <div className="dashboard__wrapper">
+       <div className="dashboard__cards">
+         <SingleCard item={carObj} />
+         <SingleCard item={tripObj} />
+         <SingleCard item={clientObj} />
+         <SingleCard item={distanceObj} />
+       </div>
 
-          <div className="statics">
-            <div className="stats">
-              <h3 className="stats__title">Ventas Mensuales</h3>
-              <MileChart />
-            </div>
+       <div className="statics">
+         <div className="stats">
+           <h3 className="stats__title">Ventas Mensuales</h3>
+           <MileChart />
+         </div>
 
-            <div className="stats">
-              <h3 className="stats__title">Flujo Mensual</h3>
-              <CarStatsChart />
-            </div>
-          </div>
+         <div className="stats">
+           <h3 className="stats__title">Flujo Mensual</h3>
+           <CarStatsChart />
+         </div>
+       </div>
 
-          <div className="recommend__cars-wrapper">
-            {recommendCarsData.map((item) => (
-              <RecommendCarCard item={item} key={item.id} />
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
+       <div className="recommend__cars-wrapper">
+         {recommendCarsData.map((item) => (
+           <RecommendCarCard item={item} key={item.id} />
+         ))}
+       </div>
+     </div>
+   </div>
+ </div>
   );
 };
 
