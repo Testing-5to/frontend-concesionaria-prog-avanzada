@@ -50,7 +50,6 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
 
   // funcion para validar el formulario
   const validateValues = (valores) => {
-    console.log("VALORES", valores);
     let errores = {};
     // Validacion vehiculo
     if (!valores.nombre) {
@@ -65,9 +64,16 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
     if(!valores.precioVenta){
       errores.precioVenta = "Por favor ingresa el precio de venta";
     }
+    if(!valores.cantidad){
+      errores.cantidad = "Por favor ingresa la marca";
+    }
 
     return errores;
   };
+  
+  const hola = () => [
+    console.log("Asdfasdf")
+  ]
 
   // funcion para submitear el formulario y guardar o actualizar el vehiculo segun corresponda
   const onSubmit = (valores, { resetForm }) => {
@@ -142,7 +148,6 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
 
           <Formik
             initialValues={{
-              nombre: isEdit ? vehiculo.nombre : "",
               modelo: isEdit
                 ? vehiculo.modelo.id.toString()
                 : getModeloInitialValue(marcas[0].id.toString()),
@@ -150,103 +155,24 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
                 ? vehiculo.modelo.marca.id.toString()
                 : marcas[0].id.toString(),
               anio: isEdit ? vehiculo.anio : "",
-              kilometros: isEdit ? vehiculo.kilometros : "",
               importado: isEdit ? vehiculo.importado : false,
               precioCompra: isEdit ? vehiculo.precioCompra : "",
               precioVenta: isEdit ? vehiculo.precioVenta : "",
+              cantidad: isEdit ? vehiculo.cantidad : ""
             }}
             validate={(valores) => validateValues(valores)}
             onSubmit={(valores, { resetForm }) =>
               onSubmit(valores, { resetForm })
             }
           >
-            {({ errors, values, handleChange }) => (
+            {({ errors, values, handleChange, resetForm }) => (
               <Form
                 className="formulario"
                 style={{ display: "flex", justifyContent: "center" }}
               >
                 <Grid container spacing={2}>
-                  <Grid item lg={4} md={6} xs={12}>
-                    <label htmlFor="nombre">VIN</label>
-                    <Field
-                      type="text"
-                      id="nombre"
-                      name="nombre"
-                      placeholder="VIN del vehiculo"
-                    />
-                    <ErrorMessage
-                      name="nombre"
-                      component={() => (
-                        <div className="error">{errors.nombre}</div>
-                      )}
-                    />
-                  </Grid>
-
-                  <Grid item lg={4} md={6} xs={12}>
-                    <label htmlFor="anio">Año</label>
-                    <Field
-                      type="number"
-                      id="anio"
-                      name="anio"
-                      placeholder="Año del vehiculo"
-                    />
-                    <ErrorMessage
-                      name="anio"
-                      component={() => (
-                        <div className="error">{errors.anio}</div>
-                      )}
-                    />
-                  </Grid>
-
-                  <Grid item lg={4} md={6} xs={12}>
-                    <label htmlFor="kilometros">Kilómetros</label>
-                    <Field
-                      type="number"
-                      id="kilometros"
-                      name="kilometros"
-                      placeholder="Kilómetros del vehiculo"
-                    />
-                    <ErrorMessage
-                      name="kilometros"
-                      component={() => (
-                        <div className="error">{errors.kilometros}</div>
-                      )}
-                    />
-                  </Grid>
-
-                  <Grid item lg={4} md={6} xs={12}>
-                    <label htmlFor="precioCompra">Precio de compra</label>
-                    <Field
-                      type="number"
-                      id="precioCompra"
-                      name="precioCompra"
-                      placeholder="Precio de compra"
-                    />
-                    <ErrorMessage
-                      name="precioCompra"
-                      component={() => (
-                        <div className="error">{errors.precioCompra}</div>
-                      )}
-                    />
-                  </Grid>
-
-                  <Grid item lg={4} md={6} xs={12}>
-                    <label htmlFor="precioVenta">Precio de venta</label>
-                    <Field
-                      type="number"
-                      id="precioVenta"
-                      name="precioVenta"
-                      placeholder="Precio de venta"
-                    />
-                    <ErrorMessage
-                      name="precioVenta"
-                      component={() => (
-                        <div className="error">{errors.precioVenta}</div>
-                      )}
-                    />
-                  </Grid>
-
-                  <Grid item lg={4} md={6} xs={12}>
+                  
+                <Grid item lg={4} md={6} xs={12}>
                     <label htmlFor="marca">Marca</label>
                     <Field
                       as="select"
@@ -290,7 +216,71 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
                      }
                     </Field>
                   </Grid>
+                  <Grid item lg={4} md={6} xs={12}>
+                    <label htmlFor="anio">Año</label>
+                    <Field
+                      type="number"
+                      id="anio"
+                      name="anio"
+                      placeholder="Año del vehiculo"
+                    />
+                    <ErrorMessage
+                      name="anio"
+                      component={() => (
+                        <div className="error">{errors.anio}</div>
+                      )}
+                    />
+                  </Grid>
 
+
+                  <Grid item lg={4} md={6} xs={12}>
+                    <label htmlFor="precioCompra">Precio de compra</label>
+                    <Field
+                      type="number"
+                      id="precioCompra"
+                      name="precioCompra"
+                      placeholder="Precio de compra"
+                    />
+                    <ErrorMessage
+                      name="precioCompra"
+                      component={() => (
+                        <div className="error">{errors.precioCompra}</div>
+                      )}
+                    />
+                  </Grid>
+
+                  <Grid item lg={4} md={6} xs={12}>
+                    <label htmlFor="precioVenta">Precio de venta</label>
+                    <Field
+                      type="number"
+                      id="precioVenta"
+                      name="precioVenta"
+                      placeholder="Precio de venta"
+                    />
+                    <ErrorMessage
+                      name="precioVenta"
+                      component={() => (
+                        <div className="error">{errors.precioVenta}</div>
+                      )}
+                    />
+                  </Grid>
+
+                  
+                  <Grid item lg={4} md={6} xs={12}>
+                    <label htmlFor="cantidad">Cantidad</label>
+                    <Field
+                      type="number"
+                      id="cantidad"
+                      name="cantidad"
+                      placeholder="Cantidad"
+                    />
+                    <ErrorMessage
+                      name="cantidad"
+                      component={() => (
+                        <div className="error">{errors.cantidad}</div>
+                      )}
+                    />
+                  </Grid>
 
                   <Grid
                     item
@@ -313,7 +303,7 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
                   </Grid>
 
                   <Grid item xs={12}>
-                    <button type="submit">
+                    <button type="submit" onClick={()=>onSubmit(values, { resetForm })}>
                       {!saving ? (
                         <span>Enviar</span>
                       ) : (
