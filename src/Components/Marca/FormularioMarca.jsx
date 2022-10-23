@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { BeatLoader, DotLoader } from "react-spinners";
 import { getAllPaises, saveMarca, updateMarca } from "../../Services";
 
-const FormularioMarca = ({ onClose, isEdit, marca }) => {
+const FormularioMarca = ({ onClose, isEdit, marca, isEmbedded, fetchAllDataFormVehiculo}) => {
   // estados para el formulario
   const [saving, setSaving] = useState(false);
   const [loadingModal, setLoadingModal] = useState(true);
@@ -25,7 +25,12 @@ const FormularioMarca = ({ onClose, isEdit, marca }) => {
   const guardarMarca = async (valores) => {
     await saveMarca(valores).then((response) => {
       onClose();
-      window.location.reload();
+      if(!isEmbedded){
+        window.location.reload();
+      }else{
+        fetchAllDataFormVehiculo();
+      }
+
     });
   };
 

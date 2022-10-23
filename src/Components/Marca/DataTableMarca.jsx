@@ -94,7 +94,7 @@ const DataTableMarca = ({ loading, setLoading, busqueda }) => {
   // funcion para filtrar las marcas cada vez que cambia la busqueda
   useEffect(() => {
     const marcasFiltered = marcas.filter((marca) => {
-      return marca.nombre.toLowerCase().includes(busqueda.toLowerCase());
+      return marca.nombre.toLowerCase().trim().includes(busqueda.toLowerCase().trim());
     });
     setMarcasFiltered(marcasFiltered);
   }, [busqueda]);
@@ -134,7 +134,7 @@ const DataTableMarca = ({ loading, setLoading, busqueda }) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={styles.box}>
-          <FormularioMarca onClose={handleClose} isEdit={true} marca={marca} />
+          <FormularioMarca onClose={handleClose} isEdit={true} isEmbedded={false} marca={marca} />
         </Box>
       </Modal>
     </>

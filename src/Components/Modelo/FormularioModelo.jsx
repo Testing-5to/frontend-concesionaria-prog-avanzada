@@ -4,7 +4,7 @@ import { BeatLoader, DotLoader } from "react-spinners";
 import { getAllDatosFormModelo, saveModelo, updateModelo } from "../../Services";
 import { Grid } from "@mui/material";
 
-const FormularioModelos = ({ onClose, isEdit, modelo }) => {
+const FormularioModelos = ({ onClose, isEdit, modelo, isEmbedded, fetchAllDataFormVehiculo }) => {
 
   // estados para el formulario
   const [saving, setSaving] = useState(false);
@@ -26,7 +26,12 @@ const FormularioModelos = ({ onClose, isEdit, modelo }) => {
   const guardarModelo = async (valores) => {
     await saveModelo(valores).then((response) => {
       onClose();
-      window.location.reload();
+      if(!isEmbedded){
+        window.location.reload();
+
+      }{
+        fetchAllDataFormVehiculo();
+      }
     });
   };
 

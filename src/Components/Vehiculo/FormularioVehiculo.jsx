@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { BeatLoader, DotLoader } from "react-spinners";
 import {
@@ -6,7 +6,11 @@ import {
   saveVehiculo,
   updateVehiculo,
 } from "../../Services";
-import { Checkbox, FormControlLabel, Grid } from "@mui/material";
+import { Box, Checkbox, FormControlLabel, Grid, Modal, Typography } from "@mui/material";
+import FormularioMarca from "../Marca/FormularioMarca";
+import styles from "../../Styles/styles";
+import FormularioModelos from "../Modelo/FormularioModelo";
+
 
 const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
   // estados para el formulario
@@ -15,9 +19,22 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
   const [marcas, setMarcas] = useState([]);
   const [modelos, setModelos] = useState([]);
   const [modelosDeMarca, setModelosDeMarca] = useState([]);
+  const [marcaSelected, setMarcaSelected] = useState([]);
+
+  // estados para manejar el modal de marca
+  const [openMarca, setOpenMarca] = useState(false);
+  const handleOpenMarca = () => setOpenMarca(true);
+  const handleCloseMarca = () => setOpenMarca(false);
+
+    // estados para manejar el modal de marca
+    const [openModelo, setOpenModelo] = useState(false);
+    const handleOpenModelo = () => setOpenModelo(true);
+    const handleCloseModelo = () => setOpenModelo(false);
+
 
   // traemos toda la data necesaria para popular el formulario
   const fetchAllDataForm = async () => {
+    setLoadingModal(true);
     const data = await getAllDatosFormVehiculo();
     setMarcas(data.marcas);
     setModelos(data.modelos);
@@ -28,6 +45,9 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
       guardarModelosDeMarca(data.modelos, vehiculo.modelo.marca.id.toString());
     }
     setLoadingModal(false);
+ 
+      setMarcaSelected(data.marcas[0].id.toString());
+    
 
   };
 
@@ -71,9 +91,7 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
     return errores;
   };
   
-  const hola = () => [
-    console.log("Asdfasdf")
-  ]
+
 
   // funcion para submitear el formulario y guardar o actualizar el vehiculo segun corresponda
   const onSubmit = (valores, { resetForm }) => {
@@ -96,10 +114,10 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
     fetchAllDataForm();
   }, []);
 
+  
   // funcion para guardar los modelos de una marca
   const guardarModelosDeMarca = (modelos, idMarca) => {
     const modelosDeMarcaFiltrados = modelos.filter((modelo) => modelo?.marca.id.toString() === idMarca.toString());  
-    console.log(modelosDeMarcaFiltrados);
     setModelosDeMarca(modelosDeMarcaFiltrados);
   }
 
@@ -144,16 +162,41 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
         <DotLoader color="#1D1D1D" />
       ) : (
         <>
+         
+
+          <Modal
+            open={openMarca}
+            onClose={handleCloseMarca}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={styles.box}>
+              <FormularioMarca onClose={handleCloseMarca} isEdit={false} isEmbedded={true} fetchAllDataFormVehiculo={fetchAllDataForm}/>
+            </Box>
+          </Modal>
+
+
+          <Modal
+            open={openModelo}
+            onClose={handleCloseModelo}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={styles.box}>
+              <FormularioModelos onClose={handleCloseModelo} isEdit={false} isEmbedded={true} fetchAllDataFormVehiculo={fetchAllDataForm}/>
+            </Box>
+          </Modal>
+
           {!isEdit ? <h2>Nuevo Vehiculo</h2> : <h2>Editar Vehiculo</h2>}
 
           <Formik
             initialValues={{
               modelo: isEdit
                 ? vehiculo.modelo.id.toString()
-                : getModeloInitialValue(marcas[0].id.toString()),
+                : getModeloInitialValue(marcaSelected),
               marca: isEdit
                 ? vehiculo.modelo.marca.id.toString()
-                : marcas[0].id.toString(),
+                : marcaSelected,
               anio: isEdit ? vehiculo.anio : "",
               importado: isEdit ? vehiculo.importado : false,
               precioCompra: isEdit ? vehiculo.precioCompra : "",
@@ -173,7 +216,10 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
                 <Grid container spacing={2}>
                   
                 <Grid item lg={4} md={6} xs={12}>
-                    <label htmlFor="marca">Marca</label>
+                    <Box sx={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                      <label htmlFor="marca">Marca</label>
+                      <Typography onClick={handleOpenMarca} sx={{fontSize: 20, color: "#0F52BA", mb: 1, "&:hover":{cursor: "pointer", color: "#0818A8"}}}>+</Typography>
+                    </Box>
                     <Field
                       as="select"
                       name="marca"
@@ -201,7 +247,10 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
                   </Grid>
 
                   <Grid item lg={4} md={6} xs={12}>
-                    <label htmlFor="modelo">Modelo</label>
+                    <Box sx={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                      <label htmlFor="modelo">Modelo</label>
+                      <Typography onClick={handleOpenModelo} sx={{fontSize: 20, color: "#0F52BA", mb: 1, "&:hover":{cursor: "pointer", color: "#0818A8"}}}>+</Typography>
+                    </Box>
                     <Field
                       as="select"
                       name="modelo"
@@ -217,7 +266,10 @@ const FormularioVehiculos = ({ onClose, isEdit, vehiculo }) => {
                     </Field>
                   </Grid>
                   <Grid item lg={4} md={6} xs={12}>
-                    <label htmlFor="anio">Año</label>
+                    <Box sx={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                      <label htmlFor="modelo">Año</label>
+                      <Typography sx={{fontSize: 20, mb: 1, opacity: 0}}>+</Typography>
+                    </Box>
                     <Field
                       type="number"
                       id="anio"

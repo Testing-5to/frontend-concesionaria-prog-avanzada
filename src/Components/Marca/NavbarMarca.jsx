@@ -64,7 +64,7 @@ const NavbarMarca = ({ setBusqueda }) => {
             aria-describedby="modal-modal-description"
           >
             <Box sx={styles.box}>
-              <FormularioMarca onClose={handleClose} isEdit={false} />
+              <FormularioMarca onClose={handleClose} isEdit={false} isEmbedded={false}/>
             </Box>
           </Modal>
         </Toolbar>
