@@ -70,6 +70,22 @@ const styles = {
     opacity: 1,
     transition: "visibility 0s linear 0s, opacity 300ms",
   },
+  boxVenta: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    transform: "translate(-50%, -50%)",
+    minWidth: "1000px",
+    minHeight: "600px",
+    bgcolor: "#FFFFFF",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+  }
 };
 
 export default styles;

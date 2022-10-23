@@ -83,7 +83,7 @@ const Sidebar = () => {
               <Typography style={hidden}>Ventas</Typography>
             </Box>
             <MenuItem icon={<StoreIcon />}>
-              <strong>Venta</strong> <Link to="/ventas" />
+              <strong>Venta</strong> <Link to="/venta" />
             </MenuItem>
           </Menu>
         </SidebarContent>

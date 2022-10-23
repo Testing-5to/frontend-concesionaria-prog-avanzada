@@ -5,6 +5,10 @@ import { getAllProvincias } from "./Provincia.api";
 import { getAllMarcas } from "./Marca.api";
 import { getAllTiposVehiculo } from "./TipoVehiculo.api";
 import { getAllModelos } from "./Modelo.api";
+import { getAllImpuestos } from "./Impuesto.api";
+import { getAllVehiculos } from "./Vehiculo.api";
+import { getAllEmpleados } from "./Empleado.api";
+import { getAllClientes } from "./Cliente.api";
 
 // genericos para formularios
 const getAllDatosFormEmpleados = async () => {
@@ -37,10 +41,27 @@ const getAllDatosFormVehiculo = async () => {
     const modelos = await getAllModelos();
     const tiposVehiculo = await getAllTiposVehiculo();
     const datos = {
-        marcas: marcas,
-        modelos: modelos,
-        tiposVehiculo: tiposVehiculo,
+        marcas,
+        modelos,
+        tiposVehiculo,
     };
     return datos;
 }
-export { getAllDatosFormEmpleados, getAllDatosFormModelo, getAllDatosFormVehiculo };
+
+const getAllDatosFormVentas = async () => {
+  const impuestos = await getAllImpuestos();
+  const vehiculos = await getAllVehiculos();
+  const vendedores = await getAllEmpleados();
+  const clientes = await getAllClientes();
+
+  const datos = {
+    impuestos,
+    vehiculos,
+    vendedores,
+    clientes
+  }
+
+  return datos;
+}
+
+export { getAllDatosFormEmpleados, getAllDatosFormModelo, getAllDatosFormVehiculo, getAllDatosFormVentas };
