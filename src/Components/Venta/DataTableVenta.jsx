@@ -13,18 +13,6 @@ const DataTableVentas = ({ loading, setLoading, busqueda }) => {
   const [ventas, setVentas] = useState([]);
   const [ventasFiltered, setVentasFiltered] = useState([]);
 
-  // funcion para eliminar un venta
-  const eliminarVenta = async (cellValues) => {
-    if (window.confirm("¿Estas seguro de eliminar esta venta?")) {
-      const { id } = cellValues;
-      await deleteVenta(id);
-      setLoading(true);
-      await getVentas();
-      setLoading(false);
-    } else {
-      return;
-    }
-  };
 
   const dateFormatter = (_date) => {
     // Create a date object from a date string
@@ -114,9 +102,7 @@ const DataTableVentas = ({ loading, setLoading, busqueda }) => {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => {
-                eliminarVenta(cellValues);
-              }}
+             
             >
               <PreviewIcon />
             </Button>
