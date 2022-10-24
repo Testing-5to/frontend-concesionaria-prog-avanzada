@@ -64,7 +64,7 @@ const NavbarVentas = ({ setBusqueda }) => {
             aria-describedby="modal-modal-description"
           >
             <Box sx={styles.boxVenta}>
-              <FormularioMarca onClose={handleClose} isEdit={false} />
+              <FormularioMarca sx={{height: "100%"}} onClose={handleClose} isEdit={false} />
             </Box>
           </Modal>
         </Toolbar>

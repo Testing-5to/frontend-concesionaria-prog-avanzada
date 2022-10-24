@@ -4,6 +4,7 @@ import { BeatLoader, DotLoader } from "react-spinners";
 import { getAllDatosFormVentas, saveVenta, updateVenta } from "../../Services";
 import { Button, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import DataTableVehiculoEnVenta from "./DataTableVehiculoEnVenta";
 
 const FormularioVentas = ({ onClose, isEdit, venta }) => {
   // estados del formulario
@@ -102,6 +103,7 @@ const FormularioVentas = ({ onClose, isEdit, venta }) => {
             onSubmit={(valores, { resetForm }) =>
               onSubmit(valores, { resetForm })
             }
+            sx={{ width: "100%", height: "100%" }}
           >
             {({ errors, values, handleChange }) => (
               <Form
@@ -110,13 +112,14 @@ const FormularioVentas = ({ onClose, isEdit, venta }) => {
                   display: "flex",
                   justifyContent: "center",
                   width: "100%",
+                  height: "1000px",
                 }}
               >
                 <Grid container spacing={2}>
                   <Grid
                     item
                     xs={12}
-                    sx={{ display: "flex", flexDirection: "column" }}
+                    sx={{ display: "flex", flexDirection: "column"}}
                   >
                     <label htmlFor="cliente">Cliente</label>
                     <Box
@@ -159,6 +162,14 @@ const FormularioVentas = ({ onClose, isEdit, venta }) => {
                       <Typography variant="h6" sx={{fontStyle: 'bold'}}>Datos del cliente seleccionado: </Typography>
                       <Typography>{getDatosClienteSeleccionado(values.cliente)}</Typography>
                     </Box>
+                  </Grid>
+
+                  <Grid
+                    item
+                    xs={12}
+                    sx={{ display: "flex", flexDirection: "row", height: "100%", width: "100%", alignItems: "flex-start" }}
+                  >
+                    <DataTableVehiculoEnVenta/>
                   </Grid>
 
                   {/* <Grid item md={6} xs={12}>
