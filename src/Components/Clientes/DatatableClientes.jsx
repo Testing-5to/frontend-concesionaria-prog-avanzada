@@ -72,7 +72,11 @@ const DataTableClientes = ({ loading, setLoading, busqueda }) => {
   }, []);
 
   const columns = [
-    { field: "id", headerName: "ID", flex: 0.5 },
+    {
+      field: "id",
+      headerName: "ID",
+      flex: 0.5,
+    },
     { field: "nombre", headerName: "Nombre", flex: 1 },
     { field: "apellido", headerName: "Apellido", flex: 1 },
     { field: "telefono", headerName: "Telefono", flex: 1 },
@@ -132,7 +136,7 @@ const DataTableClientes = ({ loading, setLoading, busqueda }) => {
               autoPageSize={true}
               disableColumnFilter={true}
               disableColumnMenu={true}
-              empleadoFound
+              clienteFound
               initialState={{
                 sorting: {
                   sortModel: [{ field: "id", sort: "asc" }],

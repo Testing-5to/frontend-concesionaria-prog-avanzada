@@ -25,6 +25,7 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
   };
 
   const guardarCliente = async (valores) => {
+    console.log(valores);
     await saveCliente(valores).then((response) => {
       onClose();
       window.location.reload();
@@ -84,6 +85,8 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
     setSaving(true);
     if (!isEdit) {
       guardarCliente(valores).then(() => {
+        console.log("Cliente guardado");
+        console.log(valores);
         resetForm();
         setSaving(false);
       });
