@@ -17,9 +17,12 @@ import {
 } from "../../Styles/material";
 
 const NavbarEmpleados = ({ setBusqueda }) => {
+  // estados para el modal
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  // renderizamos el navbar
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar style={{ background: "#1D1D1D" }} position="static">

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { url } from ".";
 
+// abmc para vehiculo, usamos axios para hacer las llamadas a la api
 const getAllVehiculos = async () => {
   const response = await axios.get(url + "vehiculo");
   return response.data;
@@ -8,14 +9,14 @@ const getAllVehiculos = async () => {
 
 const saveVehiculo = async (vehiculo) => {
   const vehiculo_parsed = {
-    nombre: vehiculo.nombre,
     modelo: { id: vehiculo.modelo },
     anio: vehiculo.anio,
-    kilometros: vehiculo.kilometros,
     importado: vehiculo.importado,
     precioCompra: vehiculo.precioCompra,
     precioVenta: vehiculo.precioVenta,
+    cantidad: vehiculo.cantidad
   };
+  console.log(vehiculo_parsed + "asdf")
   const response = await axios.post(url + "vehiculo", vehiculo_parsed);
   return response.data;
 };
@@ -27,13 +28,13 @@ const deleteVehiculo = async (id) => {
 
 const updateVehiculo = async (vehiculo) => {
   const vehiculo_parsed = {
-    nombre: vehiculo.nombre,
     modelo: { id: vehiculo.modelo },
     anio: vehiculo.anio,
-    kilometros: vehiculo.kilometros,
     importado: vehiculo.importado,
     precioCompra: vehiculo.precioCompra,
     precioVenta: vehiculo.precioVenta,
+    cantidad: vehiculo.cantidad
+
   };
 
 

@@ -16,9 +16,13 @@ import {
   StyledInputBase,
 } from "../../Styles/material";
 const NavbarMarca = ({ setBusqueda }) => {
+
+  // estados para manejar el modal
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  // renderizamos el navbar
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar style={{ background: "#1D1D1D" }} position="static">
@@ -60,7 +64,7 @@ const NavbarMarca = ({ setBusqueda }) => {
             aria-describedby="modal-modal-description"
           >
             <Box sx={styles.box}>
-              <FormularioMarca onClose={handleClose} isEdit={false} />
+              <FormularioMarca onClose={handleClose} isEdit={false} isEmbedded={false}/>
             </Box>
           </Modal>
         </Toolbar>

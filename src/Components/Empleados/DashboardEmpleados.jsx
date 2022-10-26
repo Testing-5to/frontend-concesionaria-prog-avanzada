@@ -4,8 +4,11 @@ import DataTableEmpleados from "./DataTableEmpleados";
 import NavbarEmpleados from "./NavbarEmpleados";
 
 const DashboardEmpleados = () => {
+  // estados para el loader y la busqueda, a este nivel para compartirlos entre componentes
   const [loading, setLoading] = useState(true);
   const [busqueda, setBusqueda] = useState("");
+
+  // renderizamos el navbar y la datatable
   return (
     <Box
       sx={{

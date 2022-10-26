@@ -44,8 +44,20 @@ export { saveVehiculo } from "./Vehiculo.api";
 export { deleteVehiculo } from "./Vehiculo.api";
 export { updateVehiculo } from "./Vehiculo.api";
 
+// Ventas
+export { getAllVentas } from "./Venta.api";
+export { saveVenta } from "./Venta.api";
+export { deleteVenta } from "./Venta.api";
+export { updateVenta } from "./Venta.api";
+
+// Impuestos
+export { getAllImpuestos } from "./Impuesto.api";
+export { saveImpuesto } from "./Impuesto.api";
+export { deleteImpuesto } from "./Impuesto.api";
+export { updateImpuesto } from "./Impuesto.api";
 
 // Genericos para formularios
 export { getAllDatosFormEmpleados } from "./Generico.api";
 export { getAllDatosFormModelo } from "./Generico.api";
 export { getAllDatosFormVehiculo } from "./Generico.api";
+export { getAllDatosFormVentas} from "./Generico.api"

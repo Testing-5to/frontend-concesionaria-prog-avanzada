@@ -11,19 +11,26 @@ import { Modal } from "@mui/material";
 import FormularioModelo from "./FormularioModelo";
 
 const DataTableModelo = ({ loading, setLoading, busqueda }) => {
+
+  // estados para la datatable
   const [modelos, setModelos] = useState([]);
   const [modelosFiltered, setModelosFiltered] = useState([]);
   const [open, setOpen] = useState(false);
   const [modelo, setModelo] = useState({});
 
+  // funcion para abrir el modal
   const handleOpen = () => setOpen(true);
+  // funcion para cerrar el modal
   const handleClose = () => setOpen(false);
+
+  // funcion para abrir el modal del form y pasarle el modelo a editar
   const editarUnModelo = (modelo) => {
     const modeloFiltered = modelos.find((m) => m.id === modelo.row.id);
     setModelo(modeloFiltered);
     handleOpen();
   };
 
+  // funcion para eliminar un modelo
   const eliminarModelo = async (cellValues) => {
     if (window.confirm("¿Estas seguro de eliminar esta modelo?")) {
       const { id } = cellValues;
@@ -35,6 +42,8 @@ const DataTableModelo = ({ loading, setLoading, busqueda }) => {
       return;
     }
   };
+
+  // definimos las columnas de la datatable
   const columns = [
     { field: "id", headerName: "ID", flex: 1 },
     { field: "nombre", headerName: "Modelo", flex: 1 },
@@ -75,12 +84,15 @@ const DataTableModelo = ({ loading, setLoading, busqueda }) => {
     },
   ];
 
+  // funcion para obtener los modelos
   const getModelos = async () => {
     const response = await getAllModelos();
     setModelos(response);
     filtrarModelos(response, "");
     setLoading(false);
   };
+
+  // funcion para filtrar los modelos segun la busqueda
   const filtrarModelos = (modelos, busqueda) => {
     const primerFiltro = modelos.filter((modelo) => {
       return modelo.nombre.toLowerCase().includes(busqueda.toLowerCase());
@@ -95,14 +107,19 @@ const DataTableModelo = ({ loading, setLoading, busqueda }) => {
     }));
     setModelosFiltered(segundoFiltro);
   }
+
+  // funcion para actualizar la busqueda
   useEffect(() => {
     filtrarModelos(modelos, busqueda);
   }, [busqueda]);
 
+  // funcion para obtener los modelos al renderizar el componente
   useEffect(() => {
     getModelos();
   }, []);
 
+
+  // renderizamos el componente
   return (
     <>
       <div style={styles.divDataTable}>

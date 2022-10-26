@@ -1,6 +1,8 @@
+// importamos los componentes necesarios
+
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { getAllClientes, deleteCliente } from "../../Services/";
+import { getAllClientes, deleteCliente, updateCliente } from "../../Services/";
 import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -11,20 +13,27 @@ import { Modal } from "@mui/material";
 import FormularioClientes from "./FormularioClientes";
 import CheckIcon from "@mui/icons-material/Check";
 
-const DataTableClientes = ({ loading, setLoading, busqueda }) => {
+// este componente es el que se encarga de renderizar la datatable de clientes
+const DataTableClientes = ({ loading, setLoading, busqueda, filtros }) => {
+  // estados para la datatable
   const [clientes, setClientes] = useState([]);
   const [clientesFiltered, setClientesFiltered] = useState([]);
   const [open, setOpen] = useState(false);
   const [cliente, setCliente] = useState({});
 
+  // funcion para abrir el modal
   const handleOpen = () => setOpen(true);
+  // funcion para cerrar el modal
   const handleClose = () => setOpen(false);
+
+  // funcion para abrir el modal del form y pasarle el cliente a editar
   const editarUnCliente = (cliente) => {
     const clienteFound = clientes.filter((e) => e.id === cliente.row.id)[0];
     setCliente(clienteFound);
     handleOpen();
   };
 
+  // funcion para eliminar un cliente
   const eliminarCliente = async (cellValues) => {
     if (window.confirm("¿Estas seguro de eliminar esta empleado?")) {
       const { id } = cellValues;
@@ -37,6 +46,37 @@ const DataTableClientes = ({ loading, setLoading, busqueda }) => {
     }
   };
 
+  useEffect(() => {
+    const { nombre, apellido, email, telefono, dni } = filtros;
+    console.log(nombre, apellido, email);
+    const clientesFiltrados = clientes.filter((cliente) => {
+      return (
+        cliente.nombre.toLowerCase().includes(nombre.toLowerCase()) &&
+        cliente.apellido.toLowerCase().includes(apellido.toLowerCase()) &&
+        cliente.email.toLowerCase().includes(email.toLowerCase()) &&
+        cliente.telefono.includes(telefono) &&
+        cliente.dni.toString().startsWith(dni.toString())
+      );
+    });
+    const clientesMapped = clientesFiltrados.map((cliente) => {
+      return {
+        id: cliente.id,
+        nombre: cliente.nombre,
+        apellido: cliente.apellido,
+        email: cliente.email,
+        telefono: cliente.telefono,
+        dni: cliente.dni,
+        provincia: cliente.direccion.localidad.provincia.nombre,
+        localidad: cliente.direccion.localidad.nombre,
+        esCliente: cliente.esCliente,
+        direccion: `${cliente.direccion.calle} ${cliente.direccion.numero}`,
+      };
+    });
+
+    setClientesFiltered(clientesMapped);
+  }, [filtros]);
+
+  // funcion para obtener todos los clientes
   const getClientes = async () => {
     const response = await getAllClientes();
     setClientes(response);
@@ -44,6 +84,7 @@ const DataTableClientes = ({ loading, setLoading, busqueda }) => {
     setLoading(false);
   };
 
+  // funcion para filtrar los clientes, recibe la busqueda y los clientes y develve los clientes filtrados
   const filtrarClientes = (clientes, busqueda = "") => {
     const primerFiltro = clientes.filter((cliente) => {
       return cliente.nombre.toLowerCase().includes(busqueda.toLowerCase());
@@ -55,6 +96,8 @@ const DataTableClientes = ({ loading, setLoading, busqueda }) => {
       email: cliente.email,
       telefono: cliente.telefono,
       dni: cliente.dni,
+      provincia: cliente.direccion.localidad.provincia.nombre,
+      localidad: cliente.direccion.localidad.nombre,
       esCliente: cliente.esCliente,
       direccion: `${cliente.direccion.calle} ${cliente.direccion.numero}`,
     }));
@@ -62,26 +105,27 @@ const DataTableClientes = ({ loading, setLoading, busqueda }) => {
     setClientesFiltered(segundoFiltro);
   };
 
+  // funcion para filtrar los clientes cuando cambia la busqueda
   useEffect(() => {
     filtrarClientes(clientes, busqueda);
   }, [busqueda]);
 
+  // funcion para obtener los clientes cuando se renderiza el componente
   useEffect(() => {
-    console.log("re-render");
     getClientes();
   }, []);
 
+  // columnas de la datatable
   const columns = [
-    {
-      field: "id",
-      headerName: "ID",
-      flex: 0.5,
-    },
+    { field: "id", headerName: "ID", flex: 0.5 },
     { field: "nombre", headerName: "Nombre", flex: 1 },
     { field: "apellido", headerName: "Apellido", flex: 1 },
     { field: "telefono", headerName: "Telefono", flex: 1 },
     { field: "email", headerName: "Email", flex: 1 },
-    { field: "direccion", headerName: "Direccion", flex: 1 },
+    { field: "direccion", headerName: "Direccion", flex: 1.1 },
+    { field: "dni", headerName: "DNI", flex: 0.7 },
+    { field: "provincia", headerName: "Provincia", flex: 0.7 },
+    { field: "localidad", headerName: "Localidad", flex: 0.7 },
     {
       field: "esCliente",
       headerName: "Cliente",
@@ -123,6 +167,7 @@ const DataTableClientes = ({ loading, setLoading, busqueda }) => {
     },
   ];
 
+  // renderizamos la datatable y el modal se renderiza cuando se abre
   return (
     <>
       <div style={styles.divDataTable}>

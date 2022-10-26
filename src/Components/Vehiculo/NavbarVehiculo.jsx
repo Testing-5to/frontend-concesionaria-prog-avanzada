@@ -13,6 +13,7 @@ import FormularioVehiculo from "./FormularioVehiculo";
 import { useState } from "react";
 import styles from "../../Styles/styles";
 
+// styled components
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,

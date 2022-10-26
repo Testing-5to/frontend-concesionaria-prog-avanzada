@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');
 
+/* estilos globales */
+
 * {
 	padding: 0px;
 	margin: 0;
@@ -25,7 +27,7 @@ body {
 	border-radius: 5px;
 	padding: 20px;
 	box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-	overflow-y: auto; 
+	overflow-y: auto;
 	overflow-x: hidden;
 	max-height: 85vh;
 
@@ -34,8 +36,8 @@ body {
 .formulario>div {
 	margin-bottom: 20px;
 	margin: 10px;
-    padding: 10px;
-    flex: 25%;
+	padding: 10px;
+	flex: 25%;
 }
 
 .formulario label {
@@ -102,13 +104,27 @@ body {
 select {
 	-webkit-appearance: none;
 	-moz-appearance: none;
-	appearance: none;       /* Remove default arrow */
+	appearance: none;
+	/* Remove default arrow */
 	background-image: url("https://cdn1.iconfinder.com/data/icons/arrows-vol-1-4/24/dropdown_arrow-512.png");
 	background-repeat: no-repeat;
 	background-position: right 10px top 50%;
 	background-size: 18px;
 
-	   
- }
 
+}
 
+#logo {
+	width: 80px;
+	margin-top: 8px;
+	padding: 5px;
+	transition: all .1s ease-in-out;
+}
+
+#logo:hover {
+	width: 90px;
+	margin-top: 8px;
+	padding: 5px;
+	transform: scale(1.1); 
+	cursor: pointer;
+}

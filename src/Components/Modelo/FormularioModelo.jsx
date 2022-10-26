@@ -4,7 +4,9 @@ import { BeatLoader, DotLoader } from "react-spinners";
 import { getAllDatosFormModelo, saveModelo, updateModelo } from "../../Services";
 import { Grid } from "@mui/material";
 
-const FormularioModelos = ({ onClose, isEdit, modelo }) => {
+const FormularioModelos = ({ onClose, isEdit, modelo, isEmbedded, fetchAllDataFormVehiculo }) => {
+
+  // estados para el formulario
   const [saving, setSaving] = useState(false);
   const [loadingModal, setLoadingModal] = useState(true);
   const [marcas, setMarcas] = useState([]);
@@ -20,13 +22,20 @@ const FormularioModelos = ({ onClose, isEdit, modelo }) => {
     setLoadingModal(false);
   };
 
+  // funcion para guardar el modelo, este metodo llama a la api y cierren el componente
   const guardarModelo = async (valores) => {
     await saveModelo(valores).then((response) => {
       onClose();
-      window.location.reload();
+      if(!isEmbedded){
+        window.location.reload();
+
+      }{
+        fetchAllDataFormVehiculo();
+      }
     });
   };
 
+  // funcion para actualizar el modelo, este metodo llama a la api y cierren el componente
   const actualizarModelo = async (valores) => {
     valores.id = modelo.id;
     await updateModelo(valores).then((response) => {
@@ -35,6 +44,7 @@ const FormularioModelos = ({ onClose, isEdit, modelo }) => {
     });
   };
 
+  // funcion para validar el formulario
   const validateValues = (valores) => {
     let errores = {};
     // Validacion modelo
@@ -45,6 +55,7 @@ const FormularioModelos = ({ onClose, isEdit, modelo }) => {
     return errores;
   };
 
+  // funcion para submitear el formulario y guardar o actualizar el modelo segun corresponda
   const onSubmit = (valores, { resetForm }) => {
     setSaving(true);
     if (!isEdit) {
@@ -60,11 +71,12 @@ const FormularioModelos = ({ onClose, isEdit, modelo }) => {
     }
   };
 
-
+  // funcion para traer todos los datos necesarios del formulario cuando se renderiza el componente
   useEffect(() => {
     fetchAllDataForm();
   }, []);
 
+  // renderizamos el componente
   return (
     <>
       {loadingModal ? (

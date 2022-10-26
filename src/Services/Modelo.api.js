@@ -1,6 +1,7 @@
 import axios from "axios";
 import { url } from ".";
 
+// abmc para modelos, usamos axios para hacer las llamadas a la api
 const getAllModelos = async () => {
   const response = await axios.get(url + "modelo");
   return response.data;

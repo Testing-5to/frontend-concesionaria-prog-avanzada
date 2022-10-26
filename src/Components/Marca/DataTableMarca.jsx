@@ -11,13 +11,19 @@ import { Modal } from "@mui/material";
 import FormularioMarca from "./FormularioMarca";
 
 const DataTableMarca = ({ loading, setLoading, busqueda }) => {
+
+  // estados para la datatable
   const [marcas, setMarcas] = useState([]);
   const [marcasFiltered, setMarcasFiltered] = useState([]);
   const [open, setOpen] = useState(false);
   const [marca, setMarca] = useState({});
 
+  // funcion para abrir el modal
   const handleOpen = () => setOpen(true);
+  // funcion para cerrar el modal
   const handleClose = () => setOpen(false);
+
+  // funcion para abrir el modal del form y pasarle la marca a editar
   const editarUnaMarca = (marca) => {
     const id = marca.row.id;
     const nombre = marca.row.nombre;
@@ -26,6 +32,7 @@ const DataTableMarca = ({ loading, setLoading, busqueda }) => {
     handleOpen();
   };
 
+  // funcion para eliminar una marca
   const eliminarMarca = async (cellValues) => {
     if (window.confirm("¿Estas seguro de eliminar esta marca?")) {
       const { id } = cellValues;
@@ -37,11 +44,12 @@ const DataTableMarca = ({ loading, setLoading, busqueda }) => {
       return;
     }
   };
+
+  // se definen las columnas de la datatable
   const columns = [
     { field: "id", headerName: "ID", flex: 1 },
     { field: "nombre", headerName: "Marca", flex: 1 },
     { field: "pais", headerName: "País", flex: 1 },
-
     {
       field: "Print",
       headerName: "Actions",
@@ -75,6 +83,7 @@ const DataTableMarca = ({ loading, setLoading, busqueda }) => {
     },
   ];
 
+  // funcion para obtener todas las marcas
   const getMarcas = async () => {
     const response = await getAllMarcas();
     setMarcas(response);
@@ -82,17 +91,20 @@ const DataTableMarca = ({ loading, setLoading, busqueda }) => {
     setLoading(false);
   };
 
+  // funcion para filtrar las marcas cada vez que cambia la busqueda
   useEffect(() => {
     const marcasFiltered = marcas.filter((marca) => {
-      return marca.nombre.toLowerCase().includes(busqueda.toLowerCase());
+      return marca.nombre.toLowerCase().trim().includes(busqueda.toLowerCase().trim());
     });
     setMarcasFiltered(marcasFiltered);
   }, [busqueda]);
 
+  // funcion para obtener todas las marcas cada vez que se renderiza el componente
   useEffect(() => {
     getMarcas();
   }, []);
 
+  // renderizamos el componente
   return (
     <>
       <div style={styles.divDataTable}>
@@ -122,7 +134,7 @@ const DataTableMarca = ({ loading, setLoading, busqueda }) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={styles.box}>
-          <FormularioMarca onClose={handleClose} isEdit={true} marca={marca} />
+          <FormularioMarca onClose={handleClose} isEdit={true} isEmbedded={false} marca={marca} />
         </Box>
       </Modal>
     </>

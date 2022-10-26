@@ -9,10 +9,12 @@ import {
 import { Grid, Checkbox, FormControlLabel } from "@mui/material";
 
 const FormularioClientes = ({ onClose, isEdit, cliente }) => {
+  // estados para los datos del formulario
   const [saving, setSaving] = useState(false);
   const [loadingModal, setLoadingModal] = useState(true);
   const [paises, setPaises] = useState([]);
   const [localidades, setLocalidades] = useState([]);
+  const [localidadesDeProvincia, setLocalidadesDeProvincia] = useState([]);
   const [provincias, setProvincias] = useState([]);
 
   // traemos toda la data necesaria para popular el formulario
@@ -21,9 +23,18 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
     setPaises(data.paises);
     setLocalidades(data.localidades);
     setProvincias(data.provincias);
+    if (!isEdit) {
+      guardarLocalidadesDeProvincia(data.localidades, data.provincias[0].id);
+    } else {
+      guardarLocalidadesDeProvincia(
+        data.localidades,
+        cliente.direccion.localidad.provincia.id.toString()
+      );
+    }
     setLoadingModal(false);
   };
 
+  // funcion para guardar un cliente, este manda los valores a la api y luego cierra el modal
   const guardarCliente = async (valores) => {
     console.log(valores);
     await saveCliente(valores).then((response) => {
@@ -32,6 +43,7 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
     });
   };
 
+  // funcion para actualizar un cliente, este manda los valores a la api y luego cierra el modal
   const actualizarCliente = async (valores) => {
     valores.id = cliente.id;
     await updateCliente(valores).then((response) => {
@@ -40,6 +52,18 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
     });
   };
 
+  // este metodo es para setear las localidades que se van a mostrar en el select
+  const guardarLocalidadesDeProvincia = (localidades, idProvincia) => {
+    const localidadesFiltradas = localidades.filter(
+      (localidad) =>
+        localidad.provincia.id.toString() === idProvincia.toString()
+    );
+    setLocalidadesDeProvincia(localidadesFiltradas);
+  };
+
+  const regexTelefono = /^[0-9]*$/;
+
+  // este metodo es para validar los campos del formulario
   const validateValues = (valores) => {
     let errores = {};
     // Validacion empleado
@@ -74,13 +98,14 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
     }
 
     // Validacion teléfono
-    if (!valores.telefono) {
-      errores.telefono = "Por favor ingresa un telefono";
+    if (!valores.telefono || !regexTelefono.test(valores.telefono)) {
+      errores.telefono = "Por favor ingresa un telefono valido";
     }
 
     return errores;
   };
 
+  // este metodo es para submitear el formulario y resetearlo, llama a los metodos de guardar y actualizar
   const onSubmit = (valores, { resetForm }) => {
     setSaving(true);
     if (!isEdit) {
@@ -98,18 +123,36 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
     }
   };
 
+  // este metodo es para setear la localidad inicial del formulario
   const getLocalidadInitial = (idProvincia) => {
-    const id = localidades
-      .filter((l) => l.provincia.id.toString() === idProvincia)[0]
-      .id.toString();
-    return id;
+    try {
+      const id = localidades
+        .filter((l) => l.provincia.id.toString() === idProvincia)[0]
+        .id.toString();
+      return id;
+    } catch (e) {
+      return "1";
+    }
   };
 
+  // esta funcion esta para que cuando cambie la marca, se cambie el modelo, y setearle sus valores en el formulario
+  const handleChangeProvincia = (e, values, handleChange) => {
+    values.provincia = e.target.value;
+    try {
+      guardarLocalidadesDeProvincia(localidades, e.target.value);
+      values.localidad = getLocalidadInitial(e.target.value);
+    } catch {
+      values.localidad = "1";
+    }
+    handleChange(e);
+  };
+
+  // este metodo es para traer los datos iniciales del formulario
   useEffect(() => {
-    console.log("cliente", cliente);
     fetchAllDataForm();
   }, []);
 
+  // renderizamos el formulario
   return (
     <>
       {loadingModal ? (
@@ -134,9 +177,7 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
               localidad: isEdit
                 ? cliente.direccion.localidad.id.toString()
                 : getLocalidadInitial(provincias[0].id.toString()),
-              pais: isEdit
-                ? cliente.direccion.localidad.provincia.pais.id.toString()
-                : paises[0].id,
+              pais: "1",
             }}
             validate={(valores) => validateValues(valores)}
             onSubmit={(valores, { resetForm }) =>
@@ -150,7 +191,7 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
               >
                 <Grid container spacing={2}>
                   <Grid item md={6} xs={12}>
-                    <label htmlFor="nombre">Cliente</label>
+                    <label htmlFor="nombre">Nombre</label>
                     <Field
                       type="text"
                       id="nombre"
@@ -215,7 +256,7 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
                   <Grid item md={6} xs={12}>
                     <label htmlFor="telefono">Telefono</label>
                     <Field
-                      type="number"
+                      type="text"
                       id="telefono"
                       name="telefono"
                       placeholder="Teléfono del empleado"
@@ -261,7 +302,14 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
 
                   <Grid item md={6} xs={12}>
                     <label htmlFor="provincia">Provincia</label>
-                    <Field as="select" id="provincia" name="provincia">
+                    <Field
+                      as="select"
+                      id="provincia"
+                      name="provincia"
+                      onChange={(e) => {
+                        handleChangeProvincia(e, values, handleChange);
+                      }}
+                    >
                       {provincias.map((provincia) => (
                         <option key={provincia.id} value={provincia.id}>
                           {provincia.nombre}
@@ -272,24 +320,16 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
                   <Grid item md={6} xs={12}>
                     <label htmlFor="localidad">Localidad</label>
                     <Field as="select" id="localidad" name="localidad">
-                      {localidades.map((localidad) => {
-                        if (
-                          localidad.provincia.id.toString() === values.provincia
-                        ) {
-                          return (
-                            <option key={localidad.id} value={localidad.id}>
-                              {localidad.nombre}
-                            </option>
-                          );
-                        } else {
-                          return null;
-                        }
-                      })}
+                      {localidadesDeProvincia.map((localidad) => (
+                        <option key={localidad.id} value={localidad.id}>
+                          {localidad.nombre}
+                        </option>
+                      ))}
                     </Field>
                   </Grid>
                   <Grid item md={6} xs={12}>
                     <label htmlFor="pais">Pais</label>
-                    <Field as="select" id="pais" name="pais">
+                    <Field disabled as="select" id="pais" name="pais">
                       {paises.map((pais) => (
                         <option key={pais.id} value={pais.id}>
                           {pais.nombre}
