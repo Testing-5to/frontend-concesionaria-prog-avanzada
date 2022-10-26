@@ -47,7 +47,16 @@ const DataTableClientes = ({ loading, setLoading, busqueda, filtros }) => {
   };
 
   useEffect(() => {
-    const { nombre, apellido, email, telefono, dni } = filtros;
+    const {
+      nombre,
+      apellido,
+      email,
+      telefono,
+      dni,
+      direccion,
+      localidad,
+      provincia,
+    } = filtros;
     console.log(nombre, apellido, email);
     const clientesFiltrados = clientes.filter((cliente) => {
       return (
@@ -55,7 +64,17 @@ const DataTableClientes = ({ loading, setLoading, busqueda, filtros }) => {
         cliente.apellido.toLowerCase().includes(apellido.toLowerCase()) &&
         cliente.email.toLowerCase().includes(email.toLowerCase()) &&
         cliente.telefono.includes(telefono) &&
-        cliente.dni.toString().startsWith(dni.toString())
+        cliente.dni.toString().startsWith(dni.toString()) &&
+        (cliente.direccion.calle + " " + cliente.direccion.numero)
+          .toString()
+          .toLowerCase()
+          .includes(direccion.toLowerCase()) &&
+        cliente.direccion.localidad.nombre
+          .toLowerCase()
+          .includes(localidad.toLowerCase()) &&
+        cliente.direccion.localidad.provincia.nombre
+          .toLowerCase()
+          .includes(provincia.toLowerCase())
       );
     });
     const clientesMapped = clientesFiltrados.map((cliente) => {
@@ -118,10 +137,10 @@ const DataTableClientes = ({ loading, setLoading, busqueda, filtros }) => {
   // columnas de la datatable
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
-    { field: "nombre", headerName: "Nombre", flex: 1 },
-    { field: "apellido", headerName: "Apellido", flex: 1 },
+    { field: "nombre", headerName: "Nombre", flex: 0.7 },
+    { field: "apellido", headerName: "Apellido", flex: 0.7 },
     { field: "telefono", headerName: "Telefono", flex: 1 },
-    { field: "email", headerName: "Email", flex: 1 },
+    { field: "email", headerName: "Email", flex: 1.5 },
     { field: "direccion", headerName: "Direccion", flex: 1.1 },
     { field: "dni", headerName: "DNI", flex: 0.7 },
     { field: "provincia", headerName: "Provincia", flex: 0.7 },
@@ -129,7 +148,7 @@ const DataTableClientes = ({ loading, setLoading, busqueda, filtros }) => {
     {
       field: "esCliente",
       headerName: "Cliente",
-      flex: 0.5,
+      flex: 0.4,
       renderCell: (cliente) => {
         return <div>{cliente.row.esCliente ? <CheckIcon /> : ""}</div>;
       },

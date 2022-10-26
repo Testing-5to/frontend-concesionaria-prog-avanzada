@@ -54,9 +54,9 @@ export const FiltrosBar = ({ handleFiltros }) => {
       <Grid item sx={{}}>
         <input
           type="text"
-          placeholder="Buscar por mail"
+          placeholder="Buscar por email"
           onChange={(e) => handleChange(e)}
-          name="mail"
+          name="email"
         />
       </Grid>
       <Grid item sx={{}}>
@@ -72,7 +72,7 @@ export const FiltrosBar = ({ handleFiltros }) => {
           type="text"
           placeholder="Buscar por dni"
           onChange={(e) => handleChange(e)}
-          name="dni"
+          name="direccion"
         />
       </Grid>
       <Grid item sx={{}}>
@@ -88,10 +88,6 @@ export const FiltrosBar = ({ handleFiltros }) => {
           <option value="Catamarca">Catamarca</option>
           <option value="Chaco">Chaco</option>
         </select>
-      </Grid>
-      <Grid item sx={{}}>
-        <label htmlFor="esCliente">Es cliente</label>
-        <input type="checkbox" name="esCliente" id="esCliente" />
       </Grid>
     </Grid>
   );

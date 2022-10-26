@@ -17,7 +17,7 @@ const DashboardClientes = () => {
     dni: "",
     provincia: "",
     localidad: "",
-    esCliente: true,
+    direccion: "",
   });
 
   const handleFiltros = (e) => {

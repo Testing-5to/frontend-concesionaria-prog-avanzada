@@ -28,7 +28,7 @@ const styles = {
   },
   divDataTable: {
     margin: "auto",
-    height: "90%",
+    height: "80%",
     width: "95%",
     backgroundColor: "white",
     display: "flex",
