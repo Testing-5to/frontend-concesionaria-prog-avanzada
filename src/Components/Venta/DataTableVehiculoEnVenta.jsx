@@ -127,7 +127,6 @@ const DataTableVehiculoEnVenta = ({
           <DotLoader color="#1D1D1D" />
         ) : (
           <>
-          {console.log(vehiculosFiltered)}
             <DataGrid
               rows={vehiculosFiltered}
               columns={columns}

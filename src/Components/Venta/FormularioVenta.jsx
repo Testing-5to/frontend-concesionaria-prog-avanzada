@@ -85,8 +85,7 @@ const FormularioVentas = ({ onClose }) => {
   // devolver el texto del precio total
   const getTotal = () => {
     if (vehiculoSeleccionado.precioVenta) {
-      console.log("subtotal", subtotal);
-      console.log("impuestos", impuestosDeLaVenta);
+  
       const tot = (parseFloat(subtotal) + parseFloat(impuestosDeLaVenta)).toFixed(2);
       setTotal(tot);
       return total;
@@ -94,10 +93,22 @@ const FormularioVentas = ({ onClose }) => {
     return 0;
   };
 
+  // manejamos la cantidad
+  const handleCantidad = (e, values, errors) => {
+ 
+    if(e.target.value > vehiculoSeleccionado.cantidad){
+      setCantidad(e.target.value);
+      values.cantidad = e.target.value;
+      errors.cantidad = "No hay suficiete stock";
+    }else{
+      setCantidad(e.target.value);
+      values.cantidad = e.target.value;
+    }
+  }
+
   // calcular el impuesto del vehiculo seleccionado
   const calcularImpuestoVehiculoSeleccionado = async (precio, pais) => {
     const impuesto = await getImpuestoDelVehiculo(precio, pais);
-    console.log(impuesto);
     setImpuestoDelVehiculo(impuesto);
   };
 
@@ -158,7 +169,10 @@ const FormularioVentas = ({ onClose }) => {
   const validateValues = (valores) => {
     let errores = {};
     // Validacion venta
-
+    console.log(valores.cantidad, vehiculoSeleccionado.cantidad);
+    if (valores.cantidad > vehiculoSeleccionado.cantidad) {
+      errores.cantidad = "No hay suficiente stock";
+    }
     return errores;
   };
 
@@ -399,14 +413,15 @@ const FormularioVentas = ({ onClose }) => {
                           >
                             Cantidad:{" "}
                           </Typography>
+                          <Box sx={{display: "flex", flexDirection:"column"}}>
                           <Field
                             type="number"
                             id="cantidad"
                             name="cantidad"
                             placeholder="Cantidad"
                             onChange={(e) => {
-                              setCantidad(e.target.value);
-                              values.cantidad = e.target.value;
+                              handleCantidad(e, values, errors);
+                              
                             }}
                             style={{ height: "40px", width: "150px" }}
                           />
@@ -416,6 +431,7 @@ const FormularioVentas = ({ onClose }) => {
                               <div className="error">{errors.cantidad}</div>
                             )}
                           />
+                          </Box>
                         </Grid>
                       </CardContent>
                     </Card>
