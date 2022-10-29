@@ -88,14 +88,9 @@ const DataTableVehiculoEnVenta = ({vehiculos, vehiculoSeleccionado, setVehiculoS
   ];
 
   // funcion para filtrar los vehiculos, recibe la busqueda y el array de vehiculos, y retorna un array filtrado
-  const filtrarVehiculos = (vehiculos, busqueda) => {
-    const primerFiltro = vehiculos.filter((vehiculo) => {
-      return vehiculo.modelo.nombre
-        .toLowerCase()
-        .includes(busqueda.toLowerCase());
-    });
+  const filtrarVehiculos = (vehiculos) => {
 
-    const segundoFiltro = primerFiltro.map((vehiculo) => ({
+    const vehiculosAcondicionados = primerFiltro.map((vehiculo) => ({
       id: vehiculo.id,
       marca: vehiculo.modelo.marca.nombre,
       modelo: vehiculo.modelo.nombre,
@@ -105,13 +100,13 @@ const DataTableVehiculoEnVenta = ({vehiculos, vehiculoSeleccionado, setVehiculoS
       pais: vehiculo.modelo.marca.pais.abreviatura,
       precioVenta: "$" + vehiculo.precioVenta,
     }));
-    setVehiculosFiltered(segundoFiltro);
+    setVehiculosFiltered(vehiculosAcondicionados);
   };
 
 
   // funcion para obtener los vehiculos cuando renderiza el componente
   useEffect(() => {
-    filtrarVehiculos(vehiculos, "")
+    filtrarVehiculos(vehiculos);
     setLoading(false);
   }, []);
 

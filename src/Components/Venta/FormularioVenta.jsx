@@ -15,6 +15,7 @@ const FormularioVentas = ({ onClose }) => {
   const [vendedores, setVendedores] = useState([]);
   const [vehiculos, setVehiculos] = useState([]);
   const [vehiculoSeleccionado, setVehiculoSeleccionado] = useState([]);
+  const [vehiculosFiltradosDT, setVehiculosFiltradosDT] = useState([]);
 
   // traemos toda la data necesaria para popular el formulario
   const fetchAllDataForm = async () => {
@@ -25,8 +26,21 @@ const FormularioVentas = ({ onClose }) => {
       data.vendedores.filter((vendedor) => vendedor.rol.nombre === "Vendedor")
     );
     setVehiculos(data.vehiculos);
+    setVehiculosFiltrados(data.vehiculos);
     setLoadingModal(false);
   };
+
+  // funcion para filtrar los vehiculos segun la busqueda y la propiedad
+  const filtrarVehiculos = (vehiculos, busqueda, propiedad) => {
+    const vehiculosAcondicionados = vehiculos.filter((vehiculo) => {
+      return vehiculo.propiedad.nombre.toLowerCase().includes(busqueda.toLowerCase());
+    });
+ 
+    setVehiculosFiltradosDT(vehiculosAcondicionados);
+    
+  }
+
+
 
   // funcion para guardar un venta nuevo, esta llama a la api y luego cierra el modal
   const guardarVenta = async (valores) => {
