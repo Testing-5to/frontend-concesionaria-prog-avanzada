@@ -38,9 +38,9 @@ const styles = {
     overflowX: "auto",
   },
   divDataTableVehiculo: {
-    margin: "auto",
+    margin: "2px auto auto auto",
     height: "90%",
-    width: "95%",
+    width: "100%",
     backgroundColor: "white",
     display: "flex",
     justifyContent: "center",
