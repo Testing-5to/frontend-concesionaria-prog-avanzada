@@ -7,7 +7,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import Modal from "@mui/material/Modal";
-import FormularioMarca from "./FormularioVenta";
+import FormularioVentas from "./FormularioVenta";
 import { useState } from "react";
 import styles from "../../Styles/styles";
 import {
@@ -64,7 +64,7 @@ const NavbarVentas = ({ setBusqueda }) => {
             aria-describedby="modal-modal-description"
           >
             <Box sx={styles.boxVenta}>
-              <FormularioMarca sx={{height: "100%"}} onClose={handleClose} isEdit={false} />
+              <FormularioVentas sx={{height: "100%"}} onClose={handleClose} />
             </Box>
           </Modal>
         </Toolbar>

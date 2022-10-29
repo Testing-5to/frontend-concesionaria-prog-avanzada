@@ -1,33 +1,54 @@
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { getAllVehiculos, deleteVehiculo } from "../../Services";
-import Button from "@mui/material/Button";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { DotLoader } from "react-spinners";
 import styles from "../../Styles/styles";
 import { FormControlLabel, Switch } from "@mui/material";
 
-const DataTableVehiculoEnVenta = () => {
+const DataTableVehiculoEnVenta = ({vehiculos, vehiculoSeleccionado, setVehiculoSeleccionado}) => {
+
+  const generateSwitches = () => {
+    const swGenerated = [];
+    vehiculos.forEach(vehiculo=> {swGenerated.push({id: vehiculo.id, checked: false})});
+    return swGenerated;
+  }
+
   // estados para la datatable
-  const [vehiculos, setVehiculos] = useState([]);
   const [vehiculosFiltered, setVehiculosFiltered] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // I have to do a switch to change the state of the switch one per vehiculo
-  const [switches, setSwitches] = useState([]);
+  const [switches, setSwitches] = useState(()=>generateSwitches());
 
 
 
-  const handleChangeSwitch = (e) =>{
-    console.log(e);
+  const handleChangeSwitch = (e, cellValues) =>{
+    const idRow = cellValues.row.id;
+    const newState = switches.map(obj => {
+      // 👇️ if id equals 2, update country property
+      if (obj.id === idRow) {
+        if(!obj.checked){
+          const vSeleccionado = vehiculos.find((v) => v.id === idRow);
+          setVehiculoSeleccionado(vSeleccionado);
+        }else{
+          setVehiculoSeleccionado({})
+        }
+        return {...obj, checked: obj.checked ? false : true};
+      } else{
+        return {...obj, checked: false};
+      }
+    });
+
+    setSwitches(newState);
+    
   }
 
-  const getSwitchValue = (id) => {
-    const switchValue = switches.find((m) => m.id === id);
-    console.log(switchValue);
-    return switchValue.value;
+  const getSwitchValue = (cellValues) => {
+    const idRow = cellValues.row.id;
+    const switchValue = switches.find((m) => m.id === idRow);
+    return switchValue.checked;
   }
+
+  
 
   // definimos las columnas de la tabla
   const columns = [
@@ -40,48 +61,31 @@ const DataTableVehiculoEnVenta = () => {
     { field: "pais", headerName: "País", flex: 1 },
     { field: "precioVenta", headerName: "Venta", flex: 1 },
 
-    // {
-    //   field: "Print",
-    //   headerName: "Actions",
-    //   flex: 2,
-    //   renderCell: (cellValues) => {
-    //     return (
-    //       <div>
-    //         <FormControlLabel
-    //           sx={{
-    //             display: "block",
-    //           }}
-    //           control={
-    //             <Switch
-    //               checked={false}
-    //               onChange={(e) => handleChangeSwitch(e)}
-    //               name="switch"
-    //               color="primary"
-    //             />
-    //           }
-    //         />
-    //       </div>
-    //     );
-    //   },
-    // },
+    {
+      field: "Print",
+      headerName: "Actions",
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div>
+            <FormControlLabel
+              sx={{
+                display: "block",
+              }}
+              control={
+                <Switch
+                  checked={getSwitchValue(cellValues)}
+                  onChange={(e) => handleChangeSwitch(e, cellValues)}
+                  name="switch"
+                  color="primary"
+                />
+              }
+            />
+          </div>
+        );
+      },
+    },
   ];
-
-  // funcion para obtener todos los vehiculos
-  const getVehiculos = async () => {
-    const response = await getAllVehiculos();
-    setVehiculos(response);
-    filtrarVehiculos(response, "");
-
-    const switchesValues = response.map((vehiculo) => {
-      return {
-        id: vehiculo.id,
-        value: false,
-      };
-    });
-
-    setSwitches(switchesValues);
-    setLoading(false);
-  };
 
   // funcion para filtrar los vehiculos, recibe la busqueda y el array de vehiculos, y retorna un array filtrado
   const filtrarVehiculos = (vehiculos, busqueda) => {
@@ -107,7 +111,8 @@ const DataTableVehiculoEnVenta = () => {
 
   // funcion para obtener los vehiculos cuando renderiza el componente
   useEffect(() => {
-    getVehiculos();
+    filtrarVehiculos(vehiculos, "")
+    setLoading(false);
   }, []);
 
   // renderizamos el componente
@@ -124,11 +129,11 @@ const DataTableVehiculoEnVenta = () => {
               autoPageSize={true}
               disableColumnFilter={true}
               disableColumnMenu={true}
-              autoHeight={true}
               sx={{
                 "& .MuiDataGrid-virtualScroller": {
                   overflow: "hidden",
                 },
+                height: "300px"
               }}
               initialState={{
                 sorting: {
