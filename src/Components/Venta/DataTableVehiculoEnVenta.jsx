@@ -69,7 +69,7 @@ const DataTableVehiculoEnVenta = ({
 
     {
       field: "Print",
-      headerName: "Actions",
+      headerName: "Acciones",
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -138,7 +138,7 @@ const DataTableVehiculoEnVenta = ({
                 "& .MuiDataGrid-virtualScroller": {
                   overflow: "hidden",
                 },
-                height: "300px"
+                height: "267px"
               }}
               initialState={{
                 sorting: {

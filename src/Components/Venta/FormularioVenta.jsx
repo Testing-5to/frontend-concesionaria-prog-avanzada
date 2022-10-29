@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { BeatLoader, DotLoader } from "react-spinners";
-import { getAllDatosFormVentas, saveVenta, updateVenta } from "../../Services";
-import { Button, Grid, Typography } from "@mui/material";
+import {
+  getAllDatosFormVentas,
+  saveVenta,
+  getImpuestoDelVehiculo,
+} from "../../Services";
+import { Button, Card, CardContent, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import DataTableVehiculoEnVenta from "./DataTableVehiculoEnVenta";
 
@@ -24,6 +28,11 @@ const FormularioVentas = ({ onClose }) => {
   const [vehiculoSeleccionado, setVehiculoSeleccionado] = useState({});
   const [vehiculosFiltradosDT, setVehiculosFiltradosDT] = useState([]);
   const [filtroVehiculo, setFiltroVehiculo] = useState("marca");
+  const [cantidad, setCantidad] = useState(0);
+  const [impuestoDelVehiculo, setImpuestoDelVehiculo] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [subtotal, setSubtotal] = useState(0);
+  const [impuestosDeLaVenta, setImpuestosDeLaVenta] = useState(0);
 
   // traemos toda la data necesaria para popular el formulario
   const fetchAllDataForm = async () => {
@@ -37,6 +46,62 @@ const FormularioVentas = ({ onClose }) => {
     setVehiculosFiltradosDT(data.vehiculos);
     setLoadingModal(false);
   };
+
+  // devolver el texto del precio unitario
+  const getPrecioUnitario = () => {
+    if (vehiculoSeleccionado.precioVenta) {
+      // fix number to 2 decimals
+      const precioUnitario = vehiculoSeleccionado.precioVenta.toFixed(2);
+      return precioUnitario;
+    }
+    return 0;
+  };
+
+  const getSubtotal = () => {
+    if (vehiculoSeleccionado.precioVenta) {
+      // fix number to 2 decimals
+      const st = (vehiculoSeleccionado.precioVenta * cantidad).toFixed(2);
+      setSubtotal(st);
+      return subtotal;
+    }
+    return 0;
+  };
+
+  // devolver el texto del impuesto
+  const getImpuestos = () => {
+    if (vehiculoSeleccionado.precioVenta) {
+      if(impuestoDelVehiculo.porcentaje){
+        const impVenta = (subtotal * (impuestoDelVehiculo.porcentaje / 100)).toFixed(2);
+        setImpuestosDeLaVenta(impVenta);
+      return impuestosDeLaVenta;
+      }else{
+        setImpuestosDeLaVenta(0);
+        return impuestosDeLaVenta;
+      }
+    }
+    return 0;
+  };
+
+  // devolver el texto del precio total
+  const getTotal = () => {
+    if (vehiculoSeleccionado.precioVenta) {
+      console.log("subtotal", subtotal);
+      console.log("impuestos", impuestosDeLaVenta);
+      const tot = (parseFloat(subtotal) + parseFloat(impuestosDeLaVenta)).toFixed(2);
+      setTotal(tot);
+      return total;
+    };
+    return 0;
+  };
+
+  // calcular el impuesto del vehiculo seleccionado
+  const calcularImpuestoVehiculoSeleccionado = async (precio, pais) => {
+    const impuesto = await getImpuestoDelVehiculo(precio, pais);
+    console.log(impuesto);
+    setImpuestoDelVehiculo(impuesto);
+  };
+
+  
 
   // funcion para filtrar los vehiculos segun la busqueda y la propiedad
   const filtrarVehiculos = (vehiculos, busqueda, propiedad) => {
@@ -102,15 +167,16 @@ const FormularioVentas = ({ onClose }) => {
     if (vehiculoSeleccionado.id) {
       return `${vehiculoSeleccionado.modelo.marca.nombre} ${vehiculoSeleccionado.modelo.nombre} ${vehiculoSeleccionado.anio}`;
     } else {
-      return "Seleccione un vehiculo";
+      return "Seleccione un vehículo";
     }
-  }
+  };
 
   // funcion para submitear el formulario, esta llama a la funcion de guardar o editar segun corresponda y resetea el modal
   const onSubmit = (valores, { resetForm }) => {
     valores.vehiculo = vehiculoSeleccionado.id;
+    valores.precioUnitario = vehiculoSeleccionado.precioVenta;
+    valores.impuesto = impuestoDelVehiculo.id;
     setSaving(true);
-
     guardarVenta(valores).then(() => {
       resetForm();
       setSaving(false);
@@ -132,6 +198,16 @@ const FormularioVentas = ({ onClose }) => {
     fetchAllDataForm();
   }, []);
 
+  useEffect(() => {
+    if (vehiculoSeleccionado.id) {
+      calcularImpuestoVehiculoSeleccionado(
+        vehiculoSeleccionado.precioVenta,
+        vehiculoSeleccionado.modelo.marca.pais.nombre
+      );
+    } else {
+      setImpuestoDelVehiculo([]);
+    }
+  }, [vehiculoSeleccionado]);
   // renderizamos el componente
   return (
     <>
@@ -145,7 +221,7 @@ const FormularioVentas = ({ onClose }) => {
               cliente: clientes[0].id,
               vehiculo: "",
               cantidad: 0,
-              vendedor: "",
+              vendedor: vendedores[0].id,
             }}
             validate={(valores) => validateValues(valores)}
             onSubmit={(valores, { resetForm }) =>
@@ -153,7 +229,7 @@ const FormularioVentas = ({ onClose }) => {
             }
             sx={{ width: "100%", height: "100%" }}
           >
-            {({ errors, values, handleChange }) => (
+            {({ errors, values, handleSubmit }) => (
               <Form
                 className="formulario"
                 style={{
@@ -163,7 +239,7 @@ const FormularioVentas = ({ onClose }) => {
                   height: "1000px",
                 }}
               >
-                <Grid container spacing={2}>
+                <Grid container spacing={1}>
                   <Grid
                     item
                     xs={12}
@@ -197,22 +273,22 @@ const FormularioVentas = ({ onClose }) => {
                   <Grid
                     item
                     xs={12}
-                    sx={{ display: "flex", flexDirection: "column" }}
+                    sx={{ display: "flex", flexDirection: "row" }}
                   >
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Typography variant="h6" sx={{ fontStyle: "bold" }}>
-                        Datos del cliente seleccionado:{" "}
-                      </Typography>
-                      <Typography>
-                        {getDatosClienteSeleccionado(values.cliente)}
-                      </Typography>
-                    </Box>
+                    <Card variant="outlined" sx={{ width: "100%" }}>
+                      <CardContent>
+                        <Typography
+                          sx={{ fontSize: 14 }}
+                          color="text.secondary"
+                          gutterBottom
+                        >
+                          Datos del cliente seleccionado:{" "}
+                        </Typography>
+                        <Typography variant="h6" component="div">
+                          {getDatosClienteSeleccionado(values.cliente)}
+                        </Typography>
+                      </CardContent>
+                    </Card>
                   </Grid>
 
                   <Grid
@@ -262,6 +338,7 @@ const FormularioVentas = ({ onClose }) => {
                       display: "flex",
                       flexDirection: "row",
                       alignItems: "flex-start",
+                      height: "305px",
                     }}
                   >
                     <DataTableVehiculoEnVenta
@@ -270,65 +347,153 @@ const FormularioVentas = ({ onClose }) => {
                       setVehiculoSeleccionado={setVehiculoSeleccionado}
                     />
                   </Grid>
+                  <Grid item xs={12}>
+                    <Card variant="outlined" sx={{ width: "100%" }}>
+                      <CardContent sx={{ display: "flex" }}>
+                        <Grid item xs={6} md={5}>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "flex-start",
+                            }}
+                          >
+                            <Typography variant="h6" sx={{ fontStyle: "bold", whiteSpace: "nowrap" }}>
+                              Vehículo seleccionado:{" "}
+                            </Typography>
+                            <Typography variant="h6" sx={{ whiteSpace: "nowrap"}}>
+                              {getVehiculoSeleccionado()}
+                            </Typography>
+                          </Box>
+                        </Grid>
 
-                  <Grid item xs={6} md={5}>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "fkex-start",
-                      }}
-                    >
-                      <Typography variant="h6" sx={{ fontStyle: "bold" }}>
-                        Vehiculo seleccionado:{" "}
-                      </Typography>
-                      <Typography>
-                        {getVehiculoSeleccionado()}
-                      </Typography>
-                    </Box>
+                        <Grid item xs={6} md={3}>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
+                          >
+                            <Typography
+                              variant="h6"
+                              sx={{ fontStyle: "bold", mr: 1 }}
+                            >
+                              Fecha:{" "}
+                            </Typography>
+                            <Typography variant="h6">
+                              {new Date().toLocaleDateString("es-AR")}
+                            </Typography>
+                          </Box>
+                        </Grid>
+
+                        <Grid
+                          item
+                          xs={6}
+                          md={4}
+                          sx={{ display: "flex", flexDirection: "row" }}
+                        >
+                          <Typography
+                            variant="h6"
+                            sx={{ fontStyle: "bold", mr: 1 }}
+                          >
+                            Cantidad:{" "}
+                          </Typography>
+                          <Field
+                            type="number"
+                            id="cantidad"
+                            name="cantidad"
+                            placeholder="Cantidad"
+                            onChange={(e) => {
+                              setCantidad(e.target.value);
+                              values.cantidad = e.target.value;
+                            }}
+                            style={{ height: "40px", width: "150px" }}
+                          />
+                          <ErrorMessage
+                            name="cantidad"
+                            component={() => (
+                              <div className="error">{errors.cantidad}</div>
+                            )}
+                          />
+                        </Grid>
+                      </CardContent>
+                    </Card>
                   </Grid>
 
-                  <Grid item xs={6} md={3}>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        
-                      }}
-                    >
-                      <Typography variant="h6" sx={{ fontStyle: "bold", mr: 1 }}>
-                        Fecha:{" "}
+                  <Grid
+                    item
+                    xs={12}
+                    sx={{ display: "flex", justifyContent: "flex-end" }}
+                  >
+                    <Box sx={{ width: "40%" }}>
+                      <Typography
+                        variant="h6"
+                        sx={{ fontStyle: "bold", mr: 1 }}
+                      >
+                        Vendedor:{" "}
                       </Typography>
-                      <Typography variant="h6">
-                        {new Date().toLocaleDateString("es-AR")}
-                      </Typography>
+                      <Field as="select" id="vendedor" name="vendedor">
+                        {vendedores.map((vendedor) => (
+                          <option key={vendedor.id} value={vendedor.id}>
+                            {vendedor.nombre + " " + vendedor.apellido}
+                          </option>
+                        ))}
+                      </Field>
+                      <ErrorMessage
+                        name="vendedor"
+                        component={() => (
+                          <div className="error">{errors.vendedor}</div>
+                        )}
+                      />
                     </Box>
                   </Grid>
 
                   <Grid
                     item
-                    xs={6}
-                    md={4}
-                    sx={{ display: "flex", flexDirection: "row" }}
+                    xs={12}
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "flex-end",
+                    }}
                   >
-                    <Typography variant="h6" sx={{ fontStyle: "bold", mr: 1 }}>
-                      Cantidad:{" "}
-                    </Typography>
-                    <Field
-                      type="text"
-                      id="cantidad"
-                      name="cantidad"
-                      placeholder="Cantidad"
-                      style={{height: "40px", width: "150px"}}
+                    <Card variant="outlined" sx={{ width: "40%", display: "flex", justifyContent: "flex-start"}}>
+                      <CardContent>
+                        <Typography variant="h6" component="div" color="text.secondary">
+                          P. Unitario: ${getPrecioUnitario()}
+                        </Typography>
+                        <Typography variant="h6" component="div" color="text.secondary">
+                          Subtotal: ${getSubtotal()}
+                        </Typography>
+                        <Typography variant="h6" component="div"color="text.secondary">
+                          Impuestos: ${getImpuestos()}
+                        </Typography>
+                        <Typography variant="h5" component="div">
+                          Total: ${getTotal()}
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  </Grid>
 
-                    />
-                    <ErrorMessage
-                      name="cantidad"
-                      component={() => (
-                        <div className="error">{errors.cantidad}</div>
-                      )}
-                    />
+                  <Grid item xs={12} sx={{display: "flex", justifyContent: "flex-end"}}>
+                   <Box sx={{width: "40%"}}>
+                    <Box sx={{display:"flex", width: "100%", justifyContent: "flex-end"}}>
+                        <Button onClick={onClose} variant="contained" size="large" color="error">
+                          <span>Cancelar</span>
+                            
+                        </Button>
+                        <Button onClick={handleSubmit} sx={{ml: 1}} variant="contained" size="large" color="success">
+                        {!saving ? (
+                            <span>Registrar venta</span>
+                          ) : (
+                            <BeatLoader color="white" />
+                          )}
+                            
+                        </Button>
+                      
+                      </Box>
+                   </Box>
                   </Grid>
                 </Grid>
               </Form>

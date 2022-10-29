@@ -94,7 +94,7 @@ const DataTableVentas = ({ loading, setLoading, busqueda }) => {
     
     {
       field: "Print",
-      headerName: "Actions",
+      headerName: "Acciones",
       flex: 0.5,
       renderCell: (cellValues) => {
         return (

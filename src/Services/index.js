@@ -47,14 +47,10 @@ export { updateVehiculo } from "./Vehiculo.api";
 // Ventas
 export { getAllVentas } from "./Venta.api";
 export { saveVenta } from "./Venta.api";
-export { deleteVenta } from "./Venta.api";
-export { updateVenta } from "./Venta.api";
 
 // Impuestos
 export { getAllImpuestos } from "./Impuesto.api";
-export { saveImpuesto } from "./Impuesto.api";
-export { deleteImpuesto } from "./Impuesto.api";
-export { updateImpuesto } from "./Impuesto.api";
+export { getImpuestoDelVehiculo } from "./Impuesto.api";
 
 // Genericos para formularios
 export { getAllDatosFormEmpleados } from "./Generico.api";
