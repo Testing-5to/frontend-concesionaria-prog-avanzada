@@ -9,6 +9,7 @@ import {
 import { Button, Card, CardContent, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import DataTableVehiculoEnVenta from "./DataTableVehiculoEnVenta";
+import { parseCurrency } from "../../Utils/Utils";
 
 const filtrosVehiculo = [
   { id: 1, nombre: "Marca", value: "marca" },
@@ -52,9 +53,9 @@ const FormularioVentas = ({ onClose }) => {
     if (vehiculoSeleccionado.precioVenta) {
       // fix number to 2 decimals
       const precioUnitario = vehiculoSeleccionado.precioVenta.toFixed(2);
-      return precioUnitario;
+      return parseCurrency(precioUnitario);
     }
-    return 0;
+    return parseCurrency(0);
   };
 
   const getSubtotal = () => {
@@ -62,9 +63,9 @@ const FormularioVentas = ({ onClose }) => {
       // fix number to 2 decimals
       const st = (vehiculoSeleccionado.precioVenta * cantidad).toFixed(2);
       setSubtotal(st);
-      return subtotal;
+      return parseCurrency(st);
     }
-    return 0;
+    return parseCurrency(0);
   };
 
   // devolver el texto del impuesto
@@ -73,13 +74,13 @@ const FormularioVentas = ({ onClose }) => {
       if(impuestoDelVehiculo.porcentaje){
         const impVenta = (subtotal * (impuestoDelVehiculo.porcentaje / 100)).toFixed(2);
         setImpuestosDeLaVenta(impVenta);
-      return impuestosDeLaVenta;
+      return parseCurrency(impVenta);
       }else{
         setImpuestosDeLaVenta(0);
-        return impuestosDeLaVenta;
+        return parseCurrency(0);
       }
     }
-    return 0;
+    return parseCurrency(0);
   };
 
   // devolver el texto del precio total
@@ -88,11 +89,19 @@ const FormularioVentas = ({ onClose }) => {
   
       const tot = (parseFloat(subtotal) + parseFloat(impuestosDeLaVenta)).toFixed(2);
       setTotal(tot);
-      return total;
+      return parseCurrency(tot);
     };
-    return 0;
+    return parseCurrency(0);
   };
 
+  // impuesto del vehiculo
+  const getPorcentajeImpuesto = () => {
+    if (vehiculoSeleccionado.id) {
+      return impuestoDelVehiculo.porcentaje+"%";
+    }else{
+      return "0%";
+    }
+  };
   // manejamos la cantidad
   const handleCantidad = (e, values, errors) => {
  
@@ -100,7 +109,12 @@ const FormularioVentas = ({ onClose }) => {
       setCantidad(e.target.value);
       values.cantidad = e.target.value;
       errors.cantidad = "No hay suficiete stock";
-    }else{
+    }else if(e.target.value <= 0){
+      setCantidad(e.target.value);
+      values.cantidad = e.target.value;
+      errors.cantidad = "La cantidad debe ser mayor a cero";
+    }
+    else{
       setCantidad(e.target.value);
       values.cantidad = e.target.value;
     }
@@ -172,6 +186,9 @@ const FormularioVentas = ({ onClose }) => {
     console.log(valores.cantidad, vehiculoSeleccionado.cantidad);
     if (valores.cantidad > vehiculoSeleccionado.cantidad) {
       errores.cantidad = "No hay suficiente stock";
+    }
+    if(valores.cantidad <= 0){
+      errores.cantidad = "La cantidad debe ser mayor a cero";
     }
     return errores;
   };
@@ -477,16 +494,16 @@ const FormularioVentas = ({ onClose }) => {
                     <Card variant="outlined" sx={{ width: "40%", display: "flex", justifyContent: "flex-start"}}>
                       <CardContent>
                         <Typography variant="h6" component="div" color="text.secondary">
-                          P. Unitario: ${getPrecioUnitario()}
+                          P. Unitario: {getPrecioUnitario()}
                         </Typography>
                         <Typography variant="h6" component="div" color="text.secondary">
-                          Subtotal: ${getSubtotal()}
+                          Subtotal: {getSubtotal()}
                         </Typography>
                         <Typography variant="h6" component="div"color="text.secondary">
-                          Impuestos: ${getImpuestos()}
+                          Impuestos ({getPorcentajeImpuesto()}): {getImpuestos()}
                         </Typography>
                         <Typography variant="h5" component="div">
-                          Total: ${getTotal()}
+                          Total: {getTotal()}
                         </Typography>
                       </CardContent>
                     </Card>

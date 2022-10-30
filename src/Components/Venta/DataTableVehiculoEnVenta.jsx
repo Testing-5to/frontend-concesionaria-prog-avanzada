@@ -3,6 +3,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { DotLoader } from "react-spinners";
 import styles from "../../Styles/styles";
 import { FormControlLabel, Switch } from "@mui/material";
+import { parseCurrency } from "../../Utils/Utils";
 
 const DataTableVehiculoEnVenta = ({
   vehiculos,
@@ -61,8 +62,8 @@ const DataTableVehiculoEnVenta = ({
     { field: "id", headerName: "ID", flex: 0 },
     { field: "marca", headerName: "Marca", flex: 1 },
     { field: "modelo", headerName: "Modelo", flex: 1 },
-    { field: "tipoVehiculo", headerName: "Tipo de Vehículo", flex: 1 },
-    { field: "cantidad", headerName: "Cantidad", flex: 1 },
+    { field: "tipoVehiculo", headerName: "Tipo de Vehículo", flex: 1.1 },
+    { field: "cantidad", headerName: "Stock", flex: 0.9 },
     { field: "anio", headerName: "Año", flex: 1 },
     { field: "pais", headerName: "País", flex: 1 },
     { field: "precioVenta", headerName: "P. Venta", flex: 1 },
@@ -103,7 +104,7 @@ const DataTableVehiculoEnVenta = ({
       cantidad: vehiculo.cantidad,
       anio: vehiculo.anio,
       pais: vehiculo.modelo.marca.pais.abreviatura,
-      precioVenta: "$" + vehiculo.precioVenta,
+      precioVenta: parseCurrency(vehiculo.precioVenta),
     }));
     setVehiculosFiltered(vehiculosAcondicionados);
   };
