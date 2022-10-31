@@ -10,7 +10,8 @@ import { Box } from "@mui/system";
 import { Modal } from "@mui/material";
 import FormularioVehiculo from "./FormularioVehiculo";
 import { parseCurrency } from "../../Utils/Utils";
-const DataTableVehiculo = ({ loading, setLoading, busqueda }) => {
+
+const DataTableVehiculo = ({ loading, setLoading, busqueda, filtros }) => {
   // estados para la datatable
   const [vehiculos, setVehiculos] = useState([]);
   const [vehiculosFiltered, setVehiculosFiltered] = useState([]);
@@ -44,7 +45,6 @@ const DataTableVehiculo = ({ loading, setLoading, busqueda }) => {
 
   // definimos las columnas de la tabla
   const columns = [
-
     { field: "id", headerName: "ID", flex: 1 },
     { field: "marca", headerName: "Marca", flex: 1 },
     { field: "modelo", headerName: "Modelo", flex: 1 },
@@ -100,9 +100,11 @@ const DataTableVehiculo = ({ loading, setLoading, busqueda }) => {
   // funcion para filtrar los vehiculos, recibe la busqueda y el array de vehiculos, y retorna un array filtrado
   const filtrarVehiculos = (vehiculos, busqueda) => {
     const primerFiltro = vehiculos.filter((vehiculo) => {
-      return vehiculo.modelo.nombre.toLowerCase().includes(busqueda.toLowerCase());
+      return vehiculo.modelo.nombre
+        .toLowerCase()
+        .includes(busqueda.toLowerCase());
     });
- 
+
     const segundoFiltro = primerFiltro.map((vehiculo) => ({
       id: vehiculo.id,
       marca: vehiculo.modelo.marca.nombre,
@@ -113,10 +115,10 @@ const DataTableVehiculo = ({ loading, setLoading, busqueda }) => {
       importado: vehiculo.importado ? "Si" : "No",
       precioCompra: parseCurrency(vehiculo.precioCompra),
       precioVenta: parseCurrency(vehiculo.precioVenta),
-      cantidad: vehiculo.cantidad
+      cantidad: vehiculo.cantidad,
     }));
     setVehiculosFiltered(segundoFiltro);
-  }
+  };
 
   // funcion para filtrar los vehiculos cuando cambia la busqueda
   useEffect(() => {
@@ -127,6 +129,73 @@ const DataTableVehiculo = ({ loading, setLoading, busqueda }) => {
   useEffect(() => {
     getVehiculos();
   }, []);
+
+  useEffect(() => {
+    const {
+      marca,
+      modelo,
+      tipoVehiculo,
+      pais,
+      anio,
+      importado,
+      compraMin,
+      compraMax,
+      ventaMin,
+      ventaMax,
+      cantidad,
+    } = filtros;
+    let primerFiltro = vehiculos.filter((vehiculo) => {
+      return (
+        vehiculo.modelo.nombre.toLowerCase().includes(modelo.toLowerCase()) &&
+        vehiculo.modelo.marca.nombre
+          .toLowerCase()
+          .includes(marca.toLowerCase()) &&
+        vehiculo.modelo.tipoVehiculo.nombre
+          .toLowerCase()
+          .includes(tipoVehiculo.toLowerCase()) &&
+        vehiculo.modelo.marca.pais.abreviatura
+          .toLowerCase()
+          .includes(pais.toLowerCase()) &&
+        vehiculo.anio.toString().includes(anio) &&
+        vehiculo.importado.toString().includes(importado) &&
+        vehiculo.cantidad.toString().includes(cantidad.toString())
+      );
+    });
+
+    if (compraMin > 0 && compraMax > 0) {
+      primerFiltro = primerFiltro.filter((vehiculo) => {
+        return (
+          vehiculo.precioCompra >= compraMin &&
+          vehiculo.precioCompra <= compraMax
+        );
+      });
+    }
+
+    if (ventaMin > 0 && ventaMax > 0) {
+      primerFiltro = primerFiltro.filter((vehiculo) => {
+        return (
+          vehiculo.precioVenta >= ventaMin && vehiculo.precioVenta <= ventaMax
+        );
+      });
+    }
+
+    let segundoFiltro = primerFiltro.map((vehiculo) => {
+      return {
+        id: vehiculo.id,
+        marca: vehiculo.modelo.marca.nombre,
+        modelo: vehiculo.modelo.nombre,
+        tipoVehiculo: vehiculo.modelo.tipoVehiculo.nombre,
+        pais: vehiculo.modelo.marca.pais.abreviatura,
+        anio: vehiculo.anio,
+        importado: vehiculo.importado ? "Si" : "No",
+        precioCompra: parseCurrency(vehiculo.precioCompra),
+        precioVenta: parseCurrency(vehiculo.precioVenta),
+        cantidad: vehiculo.cantidad,
+      };
+    });
+
+    setVehiculosFiltered(segundoFiltro);
+  }, [filtros]);
 
   // renderizamos el componente
   return (
@@ -144,8 +213,8 @@ const DataTableVehiculo = ({ loading, setLoading, busqueda }) => {
               disableColumnMenu={true}
               sx={{
                 "& .MuiDataGrid-virtualScroller": {
-                  overflow: "hidden"
-                }
+                  overflow: "hidden",
+                },
               }}
               initialState={{
                 sorting: {

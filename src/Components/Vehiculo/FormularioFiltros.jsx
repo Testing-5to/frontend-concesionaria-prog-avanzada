@@ -1,8 +1,9 @@
 import * as React from "react";
 import TextField from "@mui/material/TextField";
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, Select } from "@mui/material";
 import { Form, Formik } from "formik";
 import styles from "../../Styles/styles";
+import { CheckBox } from "@mui/icons-material";
 
 export const FormularioFiltros = ({ onClose, setFiltros }) => {
   const onSubmit = async (valores) => {
@@ -22,18 +23,17 @@ export const FormularioFiltros = ({ onClose, setFiltros }) => {
     >
       <Formik
         initialValues={{
-          fechaDesde: "",
-          fechaHasta: "",
-          modelo: "",
           marca: "",
+          modelo: "",
+          tipoVehiculo: "",
           pais: "",
+          anio: "",
+          importado: "",
+          compraMin: 0,
+          compraMax: 0,
+          ventaMin: 0,
+          ventaMax: 0,
           cantidad: "",
-          pUnitarioMin: 0,
-          pUnitarioMax: 0,
-          totalMin: 0,
-          totalMax: 0,
-          vendedor: "",
-          cliente: "",
         }}
         onSubmit={(valores, { resetForm }) => onSubmit(valores, { resetForm })}
       >
@@ -58,31 +58,15 @@ export const FormularioFiltros = ({ onClose, setFiltros }) => {
                       marginBottom: "15px",
                     }}
                   >
-                    <h3>Fecha desde - hasta</h3>
+                    <h3>Marca</h3>
                   </div>
                   <TextField
-                    id="date"
-                    label="Fecha desde"
-                    type="datetime-local"
-                    sx={{ width: 220 }}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    name="fechaDesde"
-                    value={values.fechaDesde}
-                    onChange={handleChange}
-                  />
-                  <br />
-                  <TextField
-                    id="date"
-                    label="Fecha hasta"
-                    type="datetime-local"
-                    sx={{ width: 220 }}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    name="fechaHasta"
-                    value={values.fechaHasta}
+                    id="outlined-basic"
+                    label="Ingrese marca"
+                    variant="outlined"
+                    fullWidth
+                    name="marca"
+                    value={values.marca}
                     onChange={handleChange}
                   />
                 </div>
@@ -115,15 +99,15 @@ export const FormularioFiltros = ({ onClose, setFiltros }) => {
                       padding: "15px",
                     }}
                   >
-                    <h3>Marca</h3>
+                    <h3>Tipo de vehiculo</h3>
                   </div>
                   <TextField
                     id="outlined-basic"
-                    label="Ingrese marca"
+                    label="Ingrese tipo de vehiculo"
                     variant="outlined"
                     fullWidth
-                    name="marca"
-                    value={values.marca}
+                    name="tipoVehiculo"
+                    value={values.tipoVehiculo}
                     onChange={handleChange}
                   />
                 </div>
@@ -155,6 +139,118 @@ export const FormularioFiltros = ({ onClose, setFiltros }) => {
                       padding: "15px",
                     }}
                   >
+                    <h3>Año</h3>
+                  </div>
+                  <TextField
+                    id="outlined-basic"
+                    label="Ingrese año"
+                    variant="outlined"
+                    fullWidth
+                    type={"number"}
+                    min={0}
+                    name={"anio"}
+                    value={values.anio}
+                    onChange={handleChange}
+                  />
+                </div>
+              </Grid>
+              <Grid item xs={1}>
+                <div style={styles.boxFilter}>
+                  <div
+                    style={{
+                      marginBottom: "15px",
+                    }}
+                  >
+                    <h3>Importado</h3>
+                  </div>
+                  <Select
+                    native
+                    fullWidth
+                    name="importado"
+                    value={values.importado}
+                    onChange={handleChange}
+                  >
+                    <option value={""}>Seleccione</option>
+                    <option value={true}>Si</option>
+                    <option value={false}>No</option>
+                  </Select>
+                </div>
+              </Grid>
+              <Grid item xs={1}>
+                <div style={styles.boxFilter}>
+                  <div
+                    style={{
+                      marginBottom: "15px",
+                    }}
+                  >
+                    <h3>Precio compra min - max</h3>
+                  </div>
+                  <TextField
+                    id="outlined-basic"
+                    label="Ingrese compra min"
+                    variant="outlined"
+                    fullWidth
+                    type={"number"}
+                    min={0}
+                    name={"compraMin"}
+                    value={values.compraMin}
+                    onChange={handleChange}
+                  />
+                  <br />
+                  <TextField
+                    id="outlined-basic"
+                    label="Ingrese compra max"
+                    variant="outlined"
+                    fullWidth
+                    type={"number"}
+                    min={0}
+                    name="compraMax"
+                    value={values.compraMax}
+                    onChange={handleChange}
+                  />
+                </div>
+              </Grid>
+              <Grid item xs={1}>
+                <div style={styles.boxFilter}>
+                  <div
+                    style={{
+                      padding: "15px",
+                    }}
+                  >
+                    <h3>Precio venta min - max</h3>
+                  </div>
+                  <TextField
+                    id="outlined-basic"
+                    label="Ingrese venta min"
+                    variant="outlined"
+                    fullWidth
+                    type={"number"}
+                    min={0}
+                    name={"ventaMin"}
+                    value={values.ventaMin}
+                    onChange={handleChange}
+                  />
+                  <br />
+                  <TextField
+                    id="outlined-basic"
+                    label="Ingrese venta max"
+                    variant="outlined"
+                    fullWidth
+                    type={"number"}
+                    min={0}
+                    name="ventaMax"
+                    value={values.ventaMax}
+                    onChange={handleChange}
+                  />
+                </div>
+              </Grid>
+              <Grid item xs={1}>
+                <div style={styles.boxFilter}>
+                  <div
+                    style={{
+                      padding: "15px",
+                    }}
+                  >
                     <h3>Cantidad</h3>
                   </div>
                   <TextField
@@ -162,118 +258,8 @@ export const FormularioFiltros = ({ onClose, setFiltros }) => {
                     label="Ingrese cantidad"
                     variant="outlined"
                     fullWidth
-                    type={"number"}
-                    min={0}
-                    name={"cantidad"}
+                    name="cantidad"
                     value={values.cantidad}
-                    onChange={handleChange}
-                  />
-                </div>
-              </Grid>
-              <Grid item xs={1}>
-                <div style={styles.boxFilter}>
-                  <div
-                    style={{
-                      marginBottom: "15px",
-                    }}
-                  >
-                    <h3>Precio unitario min - max</h3>
-                  </div>
-                  <TextField
-                    id="outlined-basic"
-                    label="Ingrese precio min"
-                    variant="outlined"
-                    fullWidth
-                    type="number"
-                    min={0}
-                    name={"pUnitarioMin"}
-                    value={values.pUnitarioMin}
-                    onChange={handleChange}
-                  />
-                  <br />
-                  <TextField
-                    id="outlined-basic"
-                    label="Ingrese precio max"
-                    variant="outlined"
-                    fullWidth
-                    type={"number"}
-                    min={0}
-                    name={"pUnitarioMax"}
-                    value={values.pUnitarioMax}
-                    onChange={handleChange}
-                  />
-                </div>
-              </Grid>
-              <Grid item xs={1}>
-                <div style={styles.boxFilter}>
-                  <div
-                    style={{
-                      marginBottom: "15px",
-                    }}
-                  >
-                    <h3>Precio total min - max</h3>
-                  </div>
-                  <TextField
-                    id="outlined-basic"
-                    label="Ingrese precio min"
-                    variant="outlined"
-                    fullWidth
-                    type={"number"}
-                    min={0}
-                    name={"totalMin"}
-                    value={values.totalMin}
-                    onChange={handleChange}
-                  />
-                  <br />
-                  <TextField
-                    id="outlined-basic"
-                    label="Ingrese precio max"
-                    variant="outlined"
-                    fullWidth
-                    type={"number"}
-                    min={0}
-                    name="totalMax"
-                    value={values.totalMax}
-                    onChange={handleChange}
-                  />
-                </div>
-              </Grid>
-              <Grid item xs={1}>
-                <div style={styles.boxFilter}>
-                  <div
-                    style={{
-                      padding: "15px",
-                    }}
-                  >
-                    <h3>Vendedor</h3>
-                  </div>
-                  <TextField
-                    id="outlined-basic"
-                    label="Ingrese vendedor"
-                    variant="outlined"
-                    fullWidth
-                    name="vendedor"
-                    value={values.vendedor}
-                    onChange={handleChange}
-                  />
-                </div>
-              </Grid>
-              <Grid item xs={1}>
-                <div style={styles.boxFilter}>
-                  <div
-                    style={{
-                      padding: "15px",
-                    }}
-                  >
-                    <h3>Cliente</h3>
-                  </div>
-                  <TextField
-                    id="outlined-basic"
-                    label="Ingrese cliente"
-                    variant="outlined"
-                    fullWidth
-                    name="cliente"
-                    value={values.cliente}
                     onChange={handleChange}
                   />
                 </div>
@@ -292,7 +278,7 @@ export const FormularioFiltros = ({ onClose, setFiltros }) => {
                 color="primary"
                 onClick={handleSubmit}
               >
-                Filtrar ventas
+                Filtrar vehiculos
               </Button>
             </div>
           </Form>

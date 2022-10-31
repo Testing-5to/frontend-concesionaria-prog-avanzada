@@ -1,8 +1,9 @@
 import * as React from "react";
 import TextField from "@mui/material/TextField";
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, Select } from "@mui/material";
 import { Form, Formik } from "formik";
 import styles from "../../Styles/styles";
+import { CheckBox } from "@mui/icons-material";
 
 export const FormularioFiltros = ({ onClose, setFiltros }) => {
   const onSubmit = async (valores) => {
@@ -22,17 +23,14 @@ export const FormularioFiltros = ({ onClose, setFiltros }) => {
     >
       <Formik
         initialValues={{
-          fechaDesde: "",
-          fechaHasta: "",
-          modelo: "",
-          marca: "",
-          pais: "",
-          cantidad: "",
-          pUnitarioMin: 0,
-          pUnitarioMax: 0,
-          totalMin: 0,
-          totalMax: 0,
-          vendedor: "",
+          nombre: "",
+          apellido: "",
+          telefono: "",
+          email: "",
+          direccion: "",
+          dni: "",
+          provincia: "",
+          localidad: "",
           cliente: "",
         }}
         onSubmit={(valores, { resetForm }) => onSubmit(valores, { resetForm })}
@@ -58,31 +56,15 @@ export const FormularioFiltros = ({ onClose, setFiltros }) => {
                       marginBottom: "15px",
                     }}
                   >
-                    <h3>Fecha desde - hasta</h3>
+                    <h3>Nombre</h3>
                   </div>
                   <TextField
-                    id="date"
-                    label="Fecha desde"
-                    type="datetime-local"
-                    sx={{ width: 220 }}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    name="fechaDesde"
-                    value={values.fechaDesde}
-                    onChange={handleChange}
-                  />
-                  <br />
-                  <TextField
-                    id="date"
-                    label="Fecha hasta"
-                    type="datetime-local"
-                    sx={{ width: 220 }}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    name="fechaHasta"
-                    value={values.fechaHasta}
+                    id="outlined-basic"
+                    label="Ingrese nombre"
+                    variant="outlined"
+                    fullWidth
+                    name="nombre"
+                    value={values.nombre}
                     onChange={handleChange}
                   />
                 </div>
@@ -94,16 +76,16 @@ export const FormularioFiltros = ({ onClose, setFiltros }) => {
                       padding: "15px",
                     }}
                   >
-                    <h3>Modelo</h3>
+                    <h3>Apellido</h3>
                   </div>
 
                   <TextField
                     id="outlined-basic"
-                    label="Ingrese modelo"
+                    label="Ingrese apellido"
                     variant="outlined"
                     fullWidth
-                    name="modelo"
-                    value={values.modelo}
+                    name="apellido"
+                    value={values.apellido}
                     onChange={handleChange}
                   />
                 </div>
@@ -115,15 +97,15 @@ export const FormularioFiltros = ({ onClose, setFiltros }) => {
                       padding: "15px",
                     }}
                   >
-                    <h3>Marca</h3>
+                    <h3>Telefono</h3>
                   </div>
                   <TextField
                     id="outlined-basic"
-                    label="Ingrese marca"
+                    label="Ingrese telefono"
                     variant="outlined"
                     fullWidth
-                    name="marca"
-                    value={values.marca}
+                    name="telefono"
+                    value={values.telefono}
                     onChange={handleChange}
                   />
                 </div>
@@ -135,15 +117,15 @@ export const FormularioFiltros = ({ onClose, setFiltros }) => {
                       padding: "15px",
                     }}
                   >
-                    <h3>Pais</h3>
+                    <h3>Email</h3>
                   </div>
                   <TextField
                     id="outlined-basic"
-                    label="Ingrese pais"
+                    label="Ingrese email"
                     variant="outlined"
                     fullWidth
-                    name="pais"
-                    value={values.pais}
+                    name="email"
+                    value={values.email}
                     onChange={handleChange}
                   />
                 </div>
@@ -155,17 +137,17 @@ export const FormularioFiltros = ({ onClose, setFiltros }) => {
                       padding: "15px",
                     }}
                   >
-                    <h3>Cantidad</h3>
+                    <h3>Direccion</h3>
                   </div>
                   <TextField
                     id="outlined-basic"
-                    label="Ingrese cantidad"
+                    label="Ingrese direccion"
                     variant="outlined"
                     fullWidth
-                    type={"number"}
+                    type={"text"}
                     min={0}
-                    name={"cantidad"}
-                    value={values.cantidad}
+                    name={"direccion"}
+                    value={values.direccion}
                     onChange={handleChange}
                   />
                 </div>
@@ -177,29 +159,15 @@ export const FormularioFiltros = ({ onClose, setFiltros }) => {
                       marginBottom: "15px",
                     }}
                   >
-                    <h3>Precio unitario min - max</h3>
+                    <h3>DNI</h3>
                   </div>
                   <TextField
                     id="outlined-basic"
-                    label="Ingrese precio min"
+                    label="Ingrese DNI"
                     variant="outlined"
                     fullWidth
-                    type="number"
-                    min={0}
-                    name={"pUnitarioMin"}
-                    value={values.pUnitarioMin}
-                    onChange={handleChange}
-                  />
-                  <br />
-                  <TextField
-                    id="outlined-basic"
-                    label="Ingrese precio max"
-                    variant="outlined"
-                    fullWidth
-                    type={"number"}
-                    min={0}
-                    name={"pUnitarioMax"}
-                    value={values.pUnitarioMax}
+                    name="dni"
+                    value={values.dni}
                     onChange={handleChange}
                   />
                 </div>
@@ -211,29 +179,16 @@ export const FormularioFiltros = ({ onClose, setFiltros }) => {
                       marginBottom: "15px",
                     }}
                   >
-                    <h3>Precio total min - max</h3>
+                    <h3>Provincia</h3>
                   </div>
                   <TextField
                     id="outlined-basic"
-                    label="Ingrese precio min"
+                    label="Ingrese provincia"
                     variant="outlined"
                     fullWidth
-                    type={"number"}
-                    min={0}
-                    name={"totalMin"}
-                    value={values.totalMin}
-                    onChange={handleChange}
-                  />
-                  <br />
-                  <TextField
-                    id="outlined-basic"
-                    label="Ingrese precio max"
-                    variant="outlined"
-                    fullWidth
-                    type={"number"}
-                    min={0}
-                    name="totalMax"
-                    value={values.totalMax}
+                    type={"text"}
+                    name={"provincia"}
+                    value={values.provincia}
                     onChange={handleChange}
                   />
                 </div>
@@ -245,15 +200,16 @@ export const FormularioFiltros = ({ onClose, setFiltros }) => {
                       padding: "15px",
                     }}
                   >
-                    <h3>Vendedor</h3>
+                    <h3>Localidad</h3>
                   </div>
                   <TextField
                     id="outlined-basic"
-                    label="Ingrese vendedor"
+                    label="Ingrese localidad"
                     variant="outlined"
                     fullWidth
-                    name="vendedor"
-                    value={values.vendedor}
+                    type={"text"}
+                    name={"localidad"}
+                    value={values.localidad}
                     onChange={handleChange}
                   />
                 </div>
@@ -267,15 +223,17 @@ export const FormularioFiltros = ({ onClose, setFiltros }) => {
                   >
                     <h3>Cliente</h3>
                   </div>
-                  <TextField
-                    id="outlined-basic"
-                    label="Ingrese cliente"
-                    variant="outlined"
+                  <Select
+                    native
                     fullWidth
                     name="cliente"
                     value={values.cliente}
                     onChange={handleChange}
-                  />
+                  >
+                    <option value={""}>Seleccione</option>
+                    <option value={"true"}>Si</option>
+                    <option value={"false"}>No</option>
+                  </Select>
                 </div>
               </Grid>
             </Grid>
@@ -292,7 +250,7 @@ export const FormularioFiltros = ({ onClose, setFiltros }) => {
                 color="primary"
                 onClick={handleSubmit}
               >
-                Filtrar ventas
+                Filtrar clientes
               </Button>
             </div>
           </Form>

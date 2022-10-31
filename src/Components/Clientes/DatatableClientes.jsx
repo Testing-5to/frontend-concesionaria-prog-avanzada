@@ -13,10 +13,8 @@ import { Modal } from "@mui/material";
 import FormularioClientes from "./FormularioClientes";
 import CheckIcon from "@mui/icons-material/Check";
 
-
 // este componente es el que se encarga de renderizar la datatable de clientes
-const DataTableClientes = ({ loading, setLoading, busqueda }) => {
-
+const DataTableClientes = ({ loading, setLoading, busqueda, filtros }) => {
   // estados para la datatable
   const [clientes, setClientes] = useState([]);
   const [clientesFiltered, setClientesFiltered] = useState([]);
@@ -48,6 +46,65 @@ const DataTableClientes = ({ loading, setLoading, busqueda }) => {
     }
   };
 
+  useEffect(() => {
+    let {
+      nombre,
+      apellido,
+      email,
+      telefono,
+      dni,
+      direccion,
+      localidad,
+      provincia,
+      cliente,
+    } = filtros;
+    console.log(cliente);
+    let clientesFiltrados = clientes.filter((cliente) => {
+      return (
+        cliente.nombre.toLowerCase().includes(nombre.toLowerCase()) &&
+        cliente.apellido.toLowerCase().includes(apellido.toLowerCase()) &&
+        cliente.email.toLowerCase().includes(email.toLowerCase()) &&
+        cliente.telefono.includes(telefono) &&
+        cliente.dni.toString().startsWith(dni.toString()) &&
+        (cliente.direccion.calle + " " + cliente.direccion.numero)
+          .toString()
+          .toLowerCase()
+          .includes(direccion.toLowerCase()) &&
+        cliente.direccion.localidad.nombre
+          .toLowerCase()
+          .includes(localidad.toLowerCase()) &&
+        cliente.direccion.localidad.provincia.nombre
+          .toLowerCase()
+          .includes(provincia.toLowerCase())
+      );
+    });
+
+    if (cliente === "true") {
+      clientesFiltrados = clientesFiltrados.filter((cliente) => {
+        return cliente.esCliente === true;
+      });
+    } else if (cliente === "false") {
+      clientesFiltrados = clientesFiltrados.filter((cliente) => {
+        return cliente.esCliente === false;
+      });
+    }
+    const clientesMapped = clientesFiltrados.map((cliente) => {
+      return {
+        id: cliente.id,
+        nombre: cliente.nombre,
+        apellido: cliente.apellido,
+        email: cliente.email,
+        telefono: cliente.telefono,
+        dni: cliente.dni,
+        provincia: cliente.direccion.localidad.provincia.nombre,
+        localidad: cliente.direccion.localidad.nombre,
+        esCliente: cliente.esCliente,
+        direccion: `${cliente.direccion.calle} ${cliente.direccion.numero}`,
+      };
+    });
+
+    setClientesFiltered(clientesMapped);
+  }, [filtros]);
 
   // funcion para obtener todos los clientes
   const getClientes = async () => {
@@ -78,7 +135,6 @@ const DataTableClientes = ({ loading, setLoading, busqueda }) => {
     setClientesFiltered(segundoFiltro);
   };
 
-
   // funcion para filtrar los clientes cuando cambia la busqueda
   useEffect(() => {
     filtrarClientes(clientes, busqueda);
@@ -88,7 +144,6 @@ const DataTableClientes = ({ loading, setLoading, busqueda }) => {
   useEffect(() => {
     getClientes();
   }, []);
-
 
   // columnas de la datatable
   const columns = [
@@ -141,7 +196,6 @@ const DataTableClientes = ({ loading, setLoading, busqueda }) => {
       },
     },
   ];
-
 
   // renderizamos la datatable y el modal se renderiza cuando se abre
   return (

@@ -6,7 +6,7 @@ import {
   saveVenta,
   getImpuestoDelVehiculo,
 } from "../../Services";
-import { Button, Card, CardContent, Grid, Typography } from "@mui/material";
+import { Alert, Button, Card, CardContent, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import DataTableVehiculoEnVenta from "./DataTableVehiculoEnVenta";
 import { parseCurrency } from "../../Utils/Utils";
@@ -34,6 +34,7 @@ const FormularioVentas = ({ onClose }) => {
   const [total, setTotal] = useState(0);
   const [subtotal, setSubtotal] = useState(0);
   const [impuestosDeLaVenta, setImpuestosDeLaVenta] = useState(0);
+  const [errorVehiculoSeleccionado, setErrorVehiculoSeleccionado] = useState(false)
 
   // traemos toda la data necesaria para popular el formulario
   const fetchAllDataForm = async () => {
@@ -190,6 +191,7 @@ const FormularioVentas = ({ onClose }) => {
     if(valores.cantidad <= 0){
       errores.cantidad = "La cantidad debe ser mayor a cero";
     }
+    
     return errores;
   };
 
@@ -204,14 +206,19 @@ const FormularioVentas = ({ onClose }) => {
 
   // funcion para submitear el formulario, esta llama a la funcion de guardar o editar segun corresponda y resetea el modal
   const onSubmit = (valores, { resetForm }) => {
-    valores.vehiculo = vehiculoSeleccionado.id;
-    valores.precioUnitario = vehiculoSeleccionado.precioVenta;
-    valores.impuesto = impuestoDelVehiculo.id;
-    setSaving(true);
-    guardarVenta(valores).then(() => {
-      resetForm();
-      setSaving(false);
-    });
+    if(vehiculoSeleccionado.id){
+      valores.vehiculo = vehiculoSeleccionado.id;
+      valores.precioUnitario = vehiculoSeleccionado.precioVenta;
+      valores.impuesto = impuestoDelVehiculo.id;
+      setSaving(true);
+      guardarVenta(valores).then(() => {
+        resetForm();
+        setSaving(false);
+      });
+    }else{
+      setErrorVehiculoSeleccionado(true);
+    }
+    
   };
 
   const getDatosClienteSeleccionado = (idCliente) => {
@@ -235,8 +242,11 @@ const FormularioVentas = ({ onClose }) => {
         vehiculoSeleccionado.precioVenta,
         vehiculoSeleccionado.modelo.marca.pais.nombre
       );
+      setErrorVehiculoSeleccionado(false)
+
     } else {
       setImpuestoDelVehiculo([]);
+      setErrorVehiculoSeleccionado(true)
     }
   }, [vehiculoSeleccionado]);
   // renderizamos el componente
@@ -378,6 +388,8 @@ const FormularioVentas = ({ onClose }) => {
                       setVehiculoSeleccionado={setVehiculoSeleccionado}
                     />
                   </Grid>
+                  {errorVehiculoSeleccionado && <Alert severity="error">Debe seleccionar un vehículo!</Alert>}
+
                   <Grid item xs={12}>
                     <Card variant="outlined" sx={{ width: "100%" }}>
                       <CardContent sx={{ display: "flex" }}>
