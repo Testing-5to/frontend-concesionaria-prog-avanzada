@@ -200,7 +200,7 @@ const DataTableClientes = ({ loading, setLoading, busqueda, filtros }) => {
   // renderizamos la datatable y el modal se renderiza cuando se abre
   return (
     <>
-      <div style={styles.divDataTable}>
+      <div style={styles.divDataTableVenta}>
         {loading ? (
           <DotLoader color="#1D1D1D" />
         ) : (

@@ -14,7 +14,7 @@ const images = [
     original: 'https://1000marcas.net/wp-content/uploads/2020/01/Fiat-logo.png',
   },
   {
-    original: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Ford_Motor_Company_Logo.svg/1024px-Ford_Motor_Company_Logo.svg.png',
+    original: 'https://upload.wikimedia.org/wikipedia/en/thumb/d/df/Lamborghini_Logo.svg/1200px-Lamborghini_Logo.svg.png',
   },
   {
     original: 'https://www.carlogos.org/car-logos/porsche-logo-950x1100.png',
@@ -65,7 +65,7 @@ const Dashboard = () => {
         </Box>
 
         <Box sx={{display: "flex", justifyContent: "center", height: "100%", marginTop: "30px"}}>
-          <ImageGallery sx={{height: "100%"}} items={images} autoPlay={true} showPlayButton={false} showBullets={false} showFullscreenButton={false} showNav={false}/>
+          <ImageGallery sx={{height: "100%"}} items={images} autoPlay={true} showPlayButton={false} showBullets={false} showFullscreenButton={false} showNav={true}/>
 
         </Box>
     </Box>
