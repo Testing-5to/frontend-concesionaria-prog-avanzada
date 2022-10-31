@@ -1,5 +1,6 @@
 const url_remoto = "https://concesionaria-prog-avanzada.herokuapp.com/api/v1/";
-const url = "http://localhost:8080/api/v1/";
+const url_local = "http://localhost:8080/api/v1/";
+const url = url_remoto;
 
 export { url };
 
