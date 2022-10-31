@@ -1,39 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { DataGrid } from "@mui/x-data-grid";
-import { getAllVentas, deleteVenta } from "../../Services";
+import { DataGrid, GridToolbar, esES } from "@mui/x-data-grid";
+import { getAllVentas } from "../../Services";
 import Button from "@mui/material/Button";
-import PreviewIcon from '@mui/icons-material/Preview';
+import PreviewIcon from "@mui/icons-material/Preview";
 import { DotLoader } from "react-spinners";
 import styles from "../../Styles/styles";
+import { parseCurrency, dateFormatter } from "../../Utils/Utils";
+import ModalDetalleVenta from "./ModalDetalleVenta";
+
 
 
 const DataTableVentas = ({ loading, setLoading, busqueda }) => {
+  // estados para el modal
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   // estados para la datatable
   const [ventas, setVentas] = useState([]);
   const [ventasFiltered, setVentasFiltered] = useState([]);
-
-
-  const dateFormatter = (_date) => {
-    // Create a date object from a date string
-    const date = new Date(_date);
-
-    // Get year, month, and day part from the date
-    const year = date.toLocaleString("default", { year: "numeric" });
-    const month = date.toLocaleString("default", { month: "2-digit" });
-    const day = date.toLocaleString("default", { day: "2-digit" });
-    let hour;
-    if(date.getMinutes()< 10){
-      hour = date.getHours()+":0"+date.getMinutes();
-    }else{
-      hour = date.getHours()+":"+date.getMinutes();
-    }
-    
-
-    // Generate yyyy-mm-dd date string
-    const formattedDate = day + "-" + month + "-" + year + " " + hour;
-    return formattedDate
-  }
+  const [ventaSeleccionada, setVentaSeleccionada] = useState({});
 
 
   // funcion para obtener todos los ventas
@@ -44,11 +30,22 @@ const DataTableVentas = ({ loading, setLoading, busqueda }) => {
     setLoading(false);
   };
 
+  const getTotal = (venta) => {
+    const total = parseCurrency(
+      venta.precioUnitario * venta.cantidadVehiculos +
+        venta.precioUnitario *
+          venta.cantidadVehiculos *
+          (venta.impuestoPorcentaje / 100)
+    );
+    return total;
+  };
+
   // funcion para filtrar los ventas, recibe la busqueda y los ventas y develve los ventas filtrados
   const filtrarVentas = (ventas, busqueda = "") => {
-
     const primerFiltro = ventas.filter((venta) => {
-      return venta.vehiculo.modelo.nombre.toLowerCase().includes(busqueda.toLowerCase());
+      return venta.vehiculo.modelo.nombre
+        .toLowerCase()
+        .includes(busqueda.toLowerCase());
     });
     const segundoFiltro = primerFiltro.map((venta) => ({
       id: venta.id,
@@ -57,15 +54,25 @@ const DataTableVentas = ({ loading, setLoading, busqueda }) => {
       marca: venta.vehiculo.modelo.marca.nombre,
       pais: venta.vehiculo.modelo.marca.pais.nombre,
       cantidad: venta.cantidadVehiculos,
-      precioUnitario: "$"+venta.precioUnitario,
-      impuesto: venta.impuesto.porcentaje+"%",
-      total: "$"+parseFloat(((venta.precioUnitario)*(venta.cantidadVehiculos)+(venta.precioUnitario)*(venta.cantidadVehiculos)*(venta.impuesto.porcentaje/100)).toFixed(2)),
+      precioUnitario: parseCurrency(venta.precioUnitario),
+      impuesto: venta.impuestoPorcentaje + "%",
+      total: getTotal(venta),
       vendedor: venta.vendedor.nombre + " " + venta.vendedor.apellido,
-      cliente: venta.cliente.nombre + " " + venta.cliente.apellido
+      cliente: venta.cliente.nombre + " " + venta.cliente.apellido,
     }));
 
     setVentasFiltered(segundoFiltro);
   };
+
+  // pasamos data al modal y lo abrimos
+  const passDataToModal = (cellValues) => {
+    console.log(cellValues);
+    const idRow = cellValues.row.id;
+    const venta = ventas.find((venta) => venta.id === idRow);
+    setVentaSeleccionada(venta);
+    handleOpen();
+  };
+
 
   // funcion para filtrar los ventas cuando cambia la busqueda
   useEffect(() => {
@@ -82,7 +89,7 @@ const DataTableVentas = ({ loading, setLoading, busqueda }) => {
     { field: "id", headerName: "ID", flex: 0.3 },
     { field: "fecha", headerName: "Fecha", flex: 0.6 },
     { field: "modelo", headerName: "Modelo", flex: 0.6 },
-    { field: "marca", headerName: "Marca", flex: 0.4},
+    { field: "marca", headerName: "Marca", flex: 0.4 },
     { field: "pais", headerName: "Pais", flex: 0.6 },
     { field: "cantidad", headerName: "Cantidad", flex: 0.4 },
     { field: "precioUnitario", headerName: "P. Unitario", flex: 0.6 },
@@ -91,19 +98,14 @@ const DataTableVentas = ({ loading, setLoading, busqueda }) => {
     { field: "vendedor", headerName: "Vendedor", flex: 0.6 },
     { field: "cliente", headerName: "Cliente", flex: 0.6 },
 
-    
     {
       field: "Print",
-      headerName: "Actions",
+      headerName: "Acciones",
       flex: 0.5,
       renderCell: (cellValues) => {
         return (
           <div>
-            <Button
-              variant="contained"
-              color="primary"
-             
-            >
+            <Button variant="contained" color="primary" onClick={()=>passDataToModal(cellValues)}>
               <PreviewIcon />
             </Button>
           </div>
@@ -124,15 +126,19 @@ const DataTableVentas = ({ loading, setLoading, busqueda }) => {
               rows={ventasFiltered}
               columns={columns}
               autoPageSize={true}
-              disableColumnFilter={true}
+              disableColumnFilter={false}
               disableColumnMenu={true}
               disableSelectionOnClick={true}
               initialState={{
                 sorting: {
                   sortModel: [{ field: "id", sort: "asc" }],
                 },
+                
               }}
+              components={{ Toolbar: GridToolbar }}
+              localeText={esES.components.MuiDataGrid.defaultProps.localeText}
             />
+            <ModalDetalleVenta venta={ventaSeleccionada} open={open} handleClose={handleClose}/>
           </>
         )}
       </div>

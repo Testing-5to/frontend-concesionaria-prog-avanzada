@@ -1,4 +1,7 @@
-const url = "https://concesionaria-prog-avanzada.herokuapp.com/api/v1/";
+const url_remoto = "https://concesionaria-prog-avanzada.herokuapp.com/api/v1/";
+const url_local = "http://localhost:8080/api/v1/";
+const url = url_remoto;
+
 export { url };
 
 //Marcas
@@ -15,10 +18,10 @@ export { deleteEmpleado } from "./Empleado.api";
 export { updateEmpleado } from "./Empleado.api";
 
 //Cliente
-export { getAllClientes } from './Cliente.api'
-export { saveCliente } from './Cliente.api'
-export { deleteCliente } from './Cliente.api'
-export { updateCliente } from './Cliente.api'
+export { getAllClientes } from "./Cliente.api";
+export { saveCliente } from "./Cliente.api";
+export { deleteCliente } from "./Cliente.api";
+export { updateCliente } from "./Cliente.api";
 
 // Pais
 export { getAllPaises } from "./Pais.api";
@@ -30,7 +33,7 @@ export { getAllProvincias } from "./Provincia.api";
 export { getAllLocalidades } from "./Localidad.api";
 
 // Roles
-export { getAllRoles } from "./Rol.api"
+export { getAllRoles } from "./Rol.api";
 
 // Modelos
 export { getAllModelos } from "./Modelo.api";
@@ -47,17 +50,13 @@ export { updateVehiculo } from "./Vehiculo.api";
 // Ventas
 export { getAllVentas } from "./Venta.api";
 export { saveVenta } from "./Venta.api";
-export { deleteVenta } from "./Venta.api";
-export { updateVenta } from "./Venta.api";
 
 // Impuestos
 export { getAllImpuestos } from "./Impuesto.api";
-export { saveImpuesto } from "./Impuesto.api";
-export { deleteImpuesto } from "./Impuesto.api";
-export { updateImpuesto } from "./Impuesto.api";
+export { getImpuestoDelVehiculo } from "./Impuesto.api";
 
 // Genericos para formularios
 export { getAllDatosFormEmpleados } from "./Generico.api";
 export { getAllDatosFormModelo } from "./Generico.api";
 export { getAllDatosFormVehiculo } from "./Generico.api";
-export { getAllDatosFormVentas} from "./Generico.api"
+export { getAllDatosFormVentas } from "./Generico.api";

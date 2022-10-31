@@ -128,3 +128,25 @@ select {
 	transform: scale(1.1); 
 	cursor: pointer;
 }
+
+.image-gallery {
+    width: 800px;
+    height: auto;
+}
+
+.image-gallery-slide img {
+    width: 800px;
+    height: auto;
+    max-height: 50vh;
+    object-fit: cover;
+    overflow: hidden;
+    object-position: center center;
+	height: 600px;
+
+}
+
+
+
+
+
+

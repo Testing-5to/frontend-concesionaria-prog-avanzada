@@ -1,38 +1,31 @@
 import React, { useEffect, useState } from "react";
 import "./styles/dashboard.css";
 import SingleCard from "./reuseable/SingleCard";
-
-import MileChart from "./charts/MileChart";
-import CarStatsChart from "./charts/CarStatsChart";
-import RecommendCarCard from "./UI/RecommendCarCard";
-
-import recommendCarsData from "./assets/dummy-data/recommendCars";
 import { DotLoader } from "react-spinners";
+import { Box } from "@mui/system";
+import ImageGallery from 'react-image-gallery';
+import "react-image-gallery/styles/css/image-gallery.css";
 
-const carObj = {
-  title: "Total de vehículos",
-  totalNumber: 32,
-  icon: "ri-police-car-line",
-};
-
-const tripObj = {
-  title: "Ventas del mes",
-  totalNumber: 12,
-  icon: "ri-steering-2-line",
-};
-
-const clientObj = {
-  title: "Total de clientes",
-  totalNumber: "30",
-  icon: "ri-user-line",
-};
-
-const distanceObj = {
-  title: "Total de empleados",
-  totalNumber: 20,
-  icon: "ri-timer-flash-line",
-};
-
+const images = [
+  {
+    original: 'https://www.carlogos.org/car-logos/nissan-logo-2013-700x700.png',
+  },
+  {
+    original: 'https://1000marcas.net/wp-content/uploads/2020/01/Fiat-logo.png',
+  },
+  {
+    original: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Ford_Motor_Company_Logo.svg/1024px-Ford_Motor_Company_Logo.svg.png',
+  },
+  {
+    original: 'https://www.carlogos.org/car-logos/porsche-logo-950x1100.png',
+  },
+  {
+    original: 'https://www.pngmart.com/files/10/Renault-Logo-PNG-Transparent-Image.png' ,
+  },
+  {
+    original: 'https://noticias.coches.com/wp-content/uploads/2017/03/emblema-de-tesla.png',
+  },
+];
 
 const Dashboard = () => {
   // estados del dashboard
@@ -46,46 +39,36 @@ const Dashboard = () => {
   }, []);
 
   // renderizamos el dashboard
-  return (
-    loading ? <div style={{height: "100vh", width:"100%", display: "flex", justifyContent: "center", alignItems: "center"}}><DotLoader color="#1D1D1D" /></div>
-   : 
-   <div className="layout">
-   <div
-     className="dashboard"
-     style={{
-       display: "flex",
-       justifyContent: "center",
-       alignItems: "flex-start",
-     }}
-   >
-     <div className="dashboard__wrapper">
-       <div className="dashboard__cards">
-         <SingleCard item={carObj} />
-         <SingleCard item={tripObj} />
-         <SingleCard item={clientObj} />
-         <SingleCard item={distanceObj} />
-       </div>
+  return loading ? (
+    <div
+      style={{
+        height: "100vh",
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <DotLoader color="#1D1D1D" />
+    </div>
+  ) : (
+    <Box sx={{width: "100%", height: "100vh"}} >
+    
+      
+        <Box sx={{display: "flex", justifyContent: "space-around", width: "100%"}}>
+          <SingleCard title="Marca" icon="marca" route="/marca"/>
+          <SingleCard title="Modelos" icon="modelos" route="/modelo"/>
+          <SingleCard title="Vehiculos" icon="vehiculos" route="/vehiculo"/>
+          <SingleCard title="Clientes" icon="clientes" route="/clientes"/>
+          <SingleCard title="Empleados" icon="empleados" route="/empleados"/>
+          <SingleCard title="Ventas" icon="ventas" route="/ventas"/>
+        </Box>
 
-       <div className="statics">
-         <div className="stats">
-           <h3 className="stats__title">Ventas Mensuales</h3>
-           <MileChart />
-         </div>
+        <Box sx={{display: "flex", justifyContent: "center", height: "100%", marginTop: "30px"}}>
+          <ImageGallery sx={{height: "100%"}} items={images} autoPlay={true} showPlayButton={false} showBullets={false} showFullscreenButton={false} showNav={false}/>
 
-         <div className="stats">
-           <h3 className="stats__title">Flujo Mensual</h3>
-           <CarStatsChart />
-         </div>
-       </div>
-
-       <div className="recommend__cars-wrapper">
-         {recommendCarsData.map((item) => (
-           <RecommendCarCard item={item} key={item.id} />
-         ))}
-       </div>
-     </div>
-   </div>
- </div>
+        </Box>
+    </Box>
   );
 };
 

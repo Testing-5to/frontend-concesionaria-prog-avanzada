@@ -9,6 +9,7 @@ import styles from "../../Styles/styles";
 import { Box } from "@mui/system";
 import { Modal } from "@mui/material";
 import FormularioEmpleado from "./FormularioEmpleados";
+import { parseCurrency } from "../../Utils/Utils";
 
 const DataTableEmpleados = ({ loading, setLoading, busqueda }) => {
 
@@ -62,7 +63,7 @@ const DataTableEmpleados = ({ loading, setLoading, busqueda }) => {
       nombre: empleado.nombre,
       apellido: empleado.apellido,
       email: empleado.email,
-      salario: `$${parseFloat(empleado.salario).toFixed(0)}`,
+      salario: parseCurrency(empleado.salario),
       rol: empleado.rol.nombre,
       direccion: `${empleado.direccion.calle} ${empleado.direccion.numero}`,
       provincia: empleado.direccion.localidad.provincia.nombre,
@@ -88,8 +89,8 @@ const DataTableEmpleados = ({ loading, setLoading, busqueda }) => {
     { field: "nombre", headerName: "Nombre", flex: 0.6 },
     { field: "apellido", headerName: "Apellido", flex: 0.6 },
     { field: "email", headerName: "Email", flex: 1 },
-    { field: "salario", headerName: "Salario", flex: 0.5 },
-    { field: "rol", headerName: "Rol", flex: 1 },
+    { field: "salario", headerName: "Salario", flex: 0.6 },
+    { field: "rol", headerName: "Rol", flex: 0.8 },
     { field: "direccion", headerName: "Direccion", flex: 0.8 },
     { field: "provincia", headerName: "Provincia", flex: 0.8 },
     { field: "localidad", headerName: "Localidad", flex: 0.8 },

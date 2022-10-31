@@ -9,7 +9,7 @@ import styles from "../../Styles/styles";
 import { Box } from "@mui/system";
 import { Modal } from "@mui/material";
 import FormularioVehiculo from "./FormularioVehiculo";
-
+import { parseCurrency } from "../../Utils/Utils";
 const DataTableVehiculo = ({ loading, setLoading, busqueda }) => {
   // estados para la datatable
   const [vehiculos, setVehiculos] = useState([]);
@@ -111,8 +111,8 @@ const DataTableVehiculo = ({ loading, setLoading, busqueda }) => {
       pais: vehiculo.modelo.marca.pais.abreviatura,
       anio: vehiculo.anio,
       importado: vehiculo.importado ? "Si" : "No",
-      precioCompra: "$"+vehiculo.precioCompra,
-      precioVenta: "$"+vehiculo.precioVenta,
+      precioCompra: parseCurrency(vehiculo.precioCompra),
+      precioVenta: parseCurrency(vehiculo.precioVenta),
       cantidad: vehiculo.cantidad
     }));
     setVehiculosFiltered(segundoFiltro);
