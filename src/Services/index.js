@@ -1,6 +1,6 @@
 const url_remoto = "https://concesionaria-prog-avanzada.herokuapp.com/api/v1/";
 const url_local = "http://localhost:8080/api/v1/";
-const url = url_local;
+const url = url_remoto;
 
 export { url };
 
@@ -18,10 +18,10 @@ export { deleteEmpleado } from "./Empleado.api";
 export { updateEmpleado } from "./Empleado.api";
 
 //Cliente
-export { getAllClientes } from './Cliente.api'
-export { saveCliente } from './Cliente.api'
-export { deleteCliente } from './Cliente.api'
-export { updateCliente } from './Cliente.api'
+export { getAllClientes } from "./Cliente.api";
+export { saveCliente } from "./Cliente.api";
+export { deleteCliente } from "./Cliente.api";
+export { updateCliente } from "./Cliente.api";
 
 // Pais
 export { getAllPaises } from "./Pais.api";
@@ -33,7 +33,7 @@ export { getAllProvincias } from "./Provincia.api";
 export { getAllLocalidades } from "./Localidad.api";
 
 // Roles
-export { getAllRoles } from "./Rol.api"
+export { getAllRoles } from "./Rol.api";
 
 // Modelos
 export { getAllModelos } from "./Modelo.api";
@@ -59,4 +59,4 @@ export { getImpuestoDelVehiculo } from "./Impuesto.api";
 export { getAllDatosFormEmpleados } from "./Generico.api";
 export { getAllDatosFormModelo } from "./Generico.api";
 export { getAllDatosFormVehiculo } from "./Generico.api";
-export { getAllDatosFormVentas} from "./Generico.api"
+export { getAllDatosFormVentas } from "./Generico.api";
