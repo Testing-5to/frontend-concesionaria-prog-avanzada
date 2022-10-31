@@ -47,7 +47,7 @@ const DataTableClientes = ({ loading, setLoading, busqueda, filtros }) => {
   };
 
   useEffect(() => {
-    const {
+    let {
       nombre,
       apellido,
       email,
@@ -56,9 +56,10 @@ const DataTableClientes = ({ loading, setLoading, busqueda, filtros }) => {
       direccion,
       localidad,
       provincia,
+      cliente,
     } = filtros;
-    console.log(nombre, apellido, email);
-    const clientesFiltrados = clientes.filter((cliente) => {
+    console.log(cliente);
+    let clientesFiltrados = clientes.filter((cliente) => {
       return (
         cliente.nombre.toLowerCase().includes(nombre.toLowerCase()) &&
         cliente.apellido.toLowerCase().includes(apellido.toLowerCase()) &&
@@ -77,6 +78,16 @@ const DataTableClientes = ({ loading, setLoading, busqueda, filtros }) => {
           .includes(provincia.toLowerCase())
       );
     });
+
+    if (cliente === "true") {
+      clientesFiltrados = clientesFiltrados.filter((cliente) => {
+        return cliente.esCliente === true;
+      });
+    } else if (cliente === "false") {
+      clientesFiltrados = clientesFiltrados.filter((cliente) => {
+        return cliente.esCliente === false;
+      });
+    }
     const clientesMapped = clientesFiltrados.map((cliente) => {
       return {
         id: cliente.id,

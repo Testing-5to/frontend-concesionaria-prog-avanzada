@@ -57,15 +57,17 @@ export const FiltrosBar = ({ setFiltros }) => {
         <Button
           onClick={() =>
             setFiltros({
-              nombre: "",
-              apellido: "",
-              telefono: "",
-              email: "",
-              direccion: "",
-              dni: "",
-              provincia: "",
-              localidad: "",
-              cliente: "",
+              marca: "",
+              modelo: "",
+              tipoVehiculo: "",
+              pais: "",
+              anio: "",
+              importado: "",
+              compraMin: 0,
+              compraMax: 10000000000,
+              ventaMin: 0,
+              ventaMax: 1000000000,
+              cantidad: "",
             })
           }
           variant="outlined"

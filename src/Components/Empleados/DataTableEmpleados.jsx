@@ -11,8 +11,7 @@ import { Modal } from "@mui/material";
 import FormularioEmpleado from "./FormularioEmpleados";
 import { parseCurrency } from "../../Utils/Utils";
 
-const DataTableEmpleados = ({ loading, setLoading, busqueda }) => {
-
+const DataTableEmpleados = ({ loading, setLoading, busqueda, filtros }) => {
   // estados para la datatable
   const [empleados, setEmpleados] = useState([]);
   const [empleadosFiltered, setEmpleadosFiltered] = useState([]);
@@ -43,7 +42,6 @@ const DataTableEmpleados = ({ loading, setLoading, busqueda }) => {
       return;
     }
   };
-
 
   // funcion para obtener todos los empleados
   const getEmpleados = async () => {
@@ -94,7 +92,7 @@ const DataTableEmpleados = ({ loading, setLoading, busqueda }) => {
     { field: "direccion", headerName: "Direccion", flex: 0.8 },
     { field: "provincia", headerName: "Provincia", flex: 0.8 },
     { field: "localidad", headerName: "Localidad", flex: 0.8 },
-    
+
     {
       field: "Print",
       headerName: "Actions",
@@ -127,6 +125,57 @@ const DataTableEmpleados = ({ loading, setLoading, busqueda }) => {
       },
     },
   ];
+
+  useEffect(() => {
+    let {
+      nombre,
+      apellido,
+      email,
+      salarioMin,
+      salarioMax,
+      rol,
+      direccion,
+      provincia,
+      localidad,
+    } = filtros;
+    let empleadosFiltrados = empleados.filter((empleado) => {
+      return (
+        empleado.nombre.toLowerCase().includes(nombre.toLowerCase()) &&
+        empleado.apellido.toLowerCase().includes(apellido.toLowerCase()) &&
+        empleado.email.toLowerCase().includes(email.toLowerCase()) &&
+        empleado.rol.nombre.toLowerCase().includes(rol.toLowerCase()) &&
+        `${empleado.direccion.calle} ${empleado.direccion.numero}`
+          .toLowerCase()
+          .includes(direccion.toLowerCase()) &&
+        empleado.direccion.localidad.provincia.nombre
+          .toLowerCase()
+          .includes(provincia.toLowerCase()) &&
+        empleado.direccion.localidad.nombre
+          .toLowerCase()
+          .includes(localidad.toLowerCase())
+      );
+    });
+
+    if (salarioMin > 0 && salarioMax > 0) {
+      empleadosFiltrados = empleadosFiltrados.filter((empleado) => {
+        return empleado.salario >= salarioMin && empleado.salario <= salarioMax;
+      });
+    }
+
+    const empleadosFiltradosMapped = empleadosFiltrados.map((empleado) => ({
+      id: empleado.id,
+      nombre: empleado.nombre,
+      apellido: empleado.apellido,
+      email: empleado.email,
+      salario: parseCurrency(empleado.salario),
+      rol: empleado.rol.nombre,
+      direccion: `${empleado.direccion.calle} ${empleado.direccion.numero}`,
+      provincia: empleado.direccion.localidad.provincia.nombre,
+      localidad: empleado.direccion.localidad.nombre,
+    }));
+
+    setEmpleadosFiltered(empleadosFiltradosMapped);
+  }, [filtros]);
 
   // renderizamos la datatable
   return (

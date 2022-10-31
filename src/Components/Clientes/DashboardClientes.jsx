@@ -12,20 +12,14 @@ const DashboardClientes = () => {
   const [filtros, setFiltros] = useState({
     nombre: "",
     apellido: "",
-    email: "",
     telefono: "",
+    email: "",
+    direccion: "",
     dni: "",
     provincia: "",
     localidad: "",
-    direccion: "",
+    cliente: "",
   });
-
-  const handleFiltros = (e) => {
-    setFiltros({
-      ...filtros,
-      [e.target.name]: e.target.value,
-    });
-  };
 
   // renderizamos el navbar y la datatable
   return (
@@ -40,8 +34,8 @@ const DashboardClientes = () => {
       }}
     >
       <NavbarClientes setBusqueda={setBusqueda} />
+      <FiltrosBar setFiltros={setFiltros} />
       <br />
-      <FiltrosBar handleFiltros={handleFiltros} />
       <DataTableClientes
         busqueda={busqueda}
         loading={loading}

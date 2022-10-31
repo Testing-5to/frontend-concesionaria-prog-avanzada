@@ -59,13 +59,13 @@ export const FiltrosBar = ({ setFiltros }) => {
             setFiltros({
               nombre: "",
               apellido: "",
-              telefono: "",
               email: "",
+              salarioMin: 0,
+              salarioMax: 0,
+              rol: "",
               direccion: "",
-              dni: "",
               provincia: "",
               localidad: "",
-              cliente: "",
             })
           }
           variant="outlined"

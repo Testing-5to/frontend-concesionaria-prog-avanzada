@@ -1,6 +1,6 @@
 import * as React from "react";
 import TextField from "@mui/material/TextField";
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, Select } from "@mui/material";
 import { Form, Formik } from "formik";
 import styles from "../../Styles/styles";
 
@@ -22,18 +22,15 @@ export const FormularioFiltros = ({ onClose, setFiltros }) => {
     >
       <Formik
         initialValues={{
-          fechaDesde: "",
-          fechaHasta: "",
-          modelo: "",
-          marca: "",
-          pais: "",
-          cantidad: "",
-          pUnitarioMin: 0,
-          pUnitarioMax: 0,
-          totalMin: 0,
-          totalMax: 0,
-          vendedor: "",
-          cliente: "",
+          nombre: "",
+          apellido: "",
+          email: "",
+          salarioMin: 0,
+          salarioMax: 0,
+          rol: "",
+          direccion: "",
+          provincia: "",
+          localidad: "",
         }}
         onSubmit={(valores, { resetForm }) => onSubmit(valores, { resetForm })}
       >
@@ -58,31 +55,15 @@ export const FormularioFiltros = ({ onClose, setFiltros }) => {
                       marginBottom: "15px",
                     }}
                   >
-                    <h3>Fecha desde - hasta</h3>
+                    <h3>Nombre</h3>
                   </div>
                   <TextField
-                    id="date"
-                    label="Fecha desde"
-                    type="datetime-local"
-                    sx={{ width: 220 }}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    name="fechaDesde"
-                    value={values.fechaDesde}
-                    onChange={handleChange}
-                  />
-                  <br />
-                  <TextField
-                    id="date"
-                    label="Fecha hasta"
-                    type="datetime-local"
-                    sx={{ width: 220 }}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    name="fechaHasta"
-                    value={values.fechaHasta}
+                    id="outlined-basic"
+                    label="Ingrese nombre"
+                    variant="outlined"
+                    fullWidth
+                    name="nombre"
+                    value={values.nombre}
                     onChange={handleChange}
                   />
                 </div>
@@ -94,16 +75,16 @@ export const FormularioFiltros = ({ onClose, setFiltros }) => {
                       padding: "15px",
                     }}
                   >
-                    <h3>Modelo</h3>
+                    <h3>Apellido</h3>
                   </div>
 
                   <TextField
                     id="outlined-basic"
-                    label="Ingrese modelo"
+                    label="Ingrese apellido"
                     variant="outlined"
                     fullWidth
-                    name="modelo"
-                    value={values.modelo}
+                    name="apellido"
+                    value={values.apellido}
                     onChange={handleChange}
                   />
                 </div>
@@ -115,15 +96,15 @@ export const FormularioFiltros = ({ onClose, setFiltros }) => {
                       padding: "15px",
                     }}
                   >
-                    <h3>Marca</h3>
+                    <h3>Email</h3>
                   </div>
                   <TextField
                     id="outlined-basic"
-                    label="Ingrese marca"
+                    label="Ingrese email"
                     variant="outlined"
                     fullWidth
-                    name="marca"
-                    value={values.marca}
+                    name="email"
+                    value={values.email}
                     onChange={handleChange}
                   />
                 </div>
@@ -135,37 +116,49 @@ export const FormularioFiltros = ({ onClose, setFiltros }) => {
                       padding: "15px",
                     }}
                   >
-                    <h3>Pais</h3>
+                    <h3>Salario min - max</h3>
                   </div>
                   <TextField
                     id="outlined-basic"
-                    label="Ingrese pais"
+                    label="Ingrese salario min"
                     variant="outlined"
                     fullWidth
-                    name="pais"
-                    value={values.pais}
+                    type={"number"}
+                    name={"salarioMin"}
+                    value={values.salarioMin}
                     onChange={handleChange}
                   />
-                </div>
-              </Grid>
-              <Grid item xs={1}>
-                <div style={styles.boxFilter}>
-                  <div
-                    style={{
-                      padding: "15px",
-                    }}
-                  >
-                    <h3>Cantidad</h3>
-                  </div>
+                  <br />
                   <TextField
                     id="outlined-basic"
-                    label="Ingrese cantidad"
+                    label="Ingrese salario max"
                     variant="outlined"
                     fullWidth
                     type={"number"}
                     min={0}
-                    name={"cantidad"}
-                    value={values.cantidad}
+                    name="salarioMax"
+                    value={values.salarioMax}
+                    onChange={handleChange}
+                  />
+                </div>
+              </Grid>
+              <Grid item xs={1}>
+                <div style={styles.boxFilter}>
+                  <div
+                    style={{
+                      padding: "15px",
+                    }}
+                  >
+                    <h3>Rol</h3>
+                  </div>
+                  <TextField
+                    id="outlined-basic"
+                    label="Ingrese rol"
+                    variant="outlined"
+                    fullWidth
+                    type={"text"}
+                    name={"rol"}
+                    value={values.rol}
                     onChange={handleChange}
                   />
                 </div>
@@ -177,29 +170,15 @@ export const FormularioFiltros = ({ onClose, setFiltros }) => {
                       marginBottom: "15px",
                     }}
                   >
-                    <h3>Precio unitario min - max</h3>
+                    <h3>Direccion</h3>
                   </div>
                   <TextField
                     id="outlined-basic"
-                    label="Ingrese precio min"
+                    label="Ingrese direccion"
                     variant="outlined"
                     fullWidth
-                    type="number"
-                    min={0}
-                    name={"pUnitarioMin"}
-                    value={values.pUnitarioMin}
-                    onChange={handleChange}
-                  />
-                  <br />
-                  <TextField
-                    id="outlined-basic"
-                    label="Ingrese precio max"
-                    variant="outlined"
-                    fullWidth
-                    type={"number"}
-                    min={0}
-                    name={"pUnitarioMax"}
-                    value={values.pUnitarioMax}
+                    name="direccion"
+                    value={values.direccion}
                     onChange={handleChange}
                   />
                 </div>
@@ -211,69 +190,37 @@ export const FormularioFiltros = ({ onClose, setFiltros }) => {
                       marginBottom: "15px",
                     }}
                   >
-                    <h3>Precio total min - max</h3>
+                    <h3>Provincia</h3>
                   </div>
                   <TextField
                     id="outlined-basic"
-                    label="Ingrese precio min"
+                    label="Ingrese provincia"
                     variant="outlined"
                     fullWidth
-                    type={"number"}
-                    min={0}
-                    name={"totalMin"}
-                    value={values.totalMin}
-                    onChange={handleChange}
-                  />
-                  <br />
-                  <TextField
-                    id="outlined-basic"
-                    label="Ingrese precio max"
-                    variant="outlined"
-                    fullWidth
-                    type={"number"}
-                    min={0}
-                    name="totalMax"
-                    value={values.totalMax}
+                    type={"text"}
+                    name={"provincia"}
+                    value={values.provincia}
                     onChange={handleChange}
                   />
                 </div>
               </Grid>
-              <Grid item xs={1}>
+              <Grid item xs={2}>
                 <div style={styles.boxFilter}>
                   <div
                     style={{
                       padding: "15px",
                     }}
                   >
-                    <h3>Vendedor</h3>
+                    <h3>Localidad</h3>
                   </div>
                   <TextField
                     id="outlined-basic"
-                    label="Ingrese vendedor"
+                    label="Ingrese localidad"
                     variant="outlined"
                     fullWidth
-                    name="vendedor"
-                    value={values.vendedor}
-                    onChange={handleChange}
-                  />
-                </div>
-              </Grid>
-              <Grid item xs={1}>
-                <div style={styles.boxFilter}>
-                  <div
-                    style={{
-                      padding: "15px",
-                    }}
-                  >
-                    <h3>Cliente</h3>
-                  </div>
-                  <TextField
-                    id="outlined-basic"
-                    label="Ingrese cliente"
-                    variant="outlined"
-                    fullWidth
-                    name="cliente"
-                    value={values.cliente}
+                    type={"text"}
+                    name={"localidad"}
+                    value={values.localidad}
                     onChange={handleChange}
                   />
                 </div>
@@ -292,7 +239,7 @@ export const FormularioFiltros = ({ onClose, setFiltros }) => {
                 color="primary"
                 onClick={handleSubmit}
               >
-                Filtrar ventas
+                Filtrar empleados
               </Button>
             </div>
           </Form>
