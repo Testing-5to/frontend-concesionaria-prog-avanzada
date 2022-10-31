@@ -26,7 +26,16 @@ function BootstrapDialogTitle(props) {
   const { children, onClose, ...other } = props;
 
   return (
-    <DialogTitle sx={{ m: 0, p: 2, width: "500px",display: "flex", justifyContent: "center" }} {...other}>
+    <DialogTitle
+      sx={{
+        m: 0,
+        p: 2,
+        width: "500px",
+        display: "flex",
+        justifyContent: "center",
+      }}
+      {...other}
+    >
       {children}
       {onClose ? (
         <IconButton
@@ -52,7 +61,6 @@ BootstrapDialogTitle.propTypes = {
 };
 
 const ModalDetalleVenta = ({ venta, open, handleClose }) => {
-  console.log(venta);
   return (
     <div>
       {venta.id ? (
@@ -117,7 +125,6 @@ const ModalDetalleVenta = ({ venta, open, handleClose }) => {
                     {venta.cliente.nombre + " " + venta.cliente.apellido}
                   </Typography>
 
-                  
                   <Typography variant="body1" component="div" gutterBottom>
                     Email: {venta.cliente.email}
                   </Typography>
@@ -137,7 +144,6 @@ const ModalDetalleVenta = ({ venta, open, handleClose }) => {
                   <Typography variant="body1" component="div" gutterBottom>
                     DNI: {venta.cliente.dni}
                   </Typography>
-                  
                 </Box>
                 <Divider />
 
@@ -174,7 +180,6 @@ const ModalDetalleVenta = ({ venta, open, handleClose }) => {
                   </Typography>
                 </Box>
                 <Divider />
-
               </CardContent>
             </Card>
             <Typography variant="h6" component="div">
@@ -198,36 +203,13 @@ const ModalDetalleVenta = ({ venta, open, handleClose }) => {
                   }}
                 >
                   <Typography variant="body1" component="div" gutterBottom>
-                    Marca:{" "}
-                    {venta.vehiculo.modelo.marca.nombre}
+                    Marca: {venta.vehiculo.modelo.marca.nombre}
                   </Typography>
                   <Typography variant="body1" component="div" gutterBottom>
-                    Modelo:{" "}
-                    {venta.vehiculo.modelo.nombre}
+                    Modelo: {venta.vehiculo.modelo.nombre}
                   </Typography>
                   <Typography variant="body1" component="div" gutterBottom>
-                    Año:{" "}
-                    {venta.vehiculo.anio}
-                  </Typography>
-                
-                </Box>
-                <Divider />
-
-                <Box
-                  sx={{
-                    width: "100%",
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  
-                  <Typography variant="body1" component="div" gutterBottom>
-                    Tipo vehículo:{" "}
-                    {venta.vehiculo.modelo.tipoVehiculo.nombre}
-                  </Typography>
-                  <Typography variant="body1" component="div" gutterBottom>
-                    Pais:{" "}
-                    {venta.vehiculo.modelo.marca.pais.nombre}
+                    Año: {venta.vehiculo.anio}
                   </Typography>
                 </Box>
                 <Divider />
@@ -239,19 +221,30 @@ const ModalDetalleVenta = ({ venta, open, handleClose }) => {
                     justifyContent: "space-between",
                   }}
                 >
-                  
                   <Typography variant="body1" component="div" gutterBottom>
-                    P. Compra:{" "}
-                    {parseCurrency(venta.vehiculo.precioCompra)}
+                    Tipo vehículo: {venta.vehiculo.modelo.tipoVehiculo.nombre}
                   </Typography>
                   <Typography variant="body1" component="div" gutterBottom>
-                    P. Venta:{" "}
-                    {parseCurrency(venta.vehiculo.precioVenta)}
+                    Pais: {venta.vehiculo.modelo.marca.pais.nombre}
                   </Typography>
-                
                 </Box>
                 <Divider />
 
+                <Box
+                  sx={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Typography variant="body1" component="div" gutterBottom>
+                    P. Compra: {parseCurrency(venta.vehiculo.precioCompra)}
+                  </Typography>
+                  <Typography variant="body1" component="div" gutterBottom>
+                    P. Venta: {parseCurrency(venta.vehiculo.precioVenta)}
+                  </Typography>
+                </Box>
+                <Divider />
               </CardContent>
             </Card>
             <Typography variant="h6" component="div">

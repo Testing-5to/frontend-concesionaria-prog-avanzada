@@ -97,6 +97,17 @@ const styles = {
     boxShadow: 24,
     p: 4,
   },
+  boxFilter: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
+    border: "1px solid gray",
+    padding: "20px",
+    borderRadius: "3px",
+    boxShadow: "3px 3px 3px #dadada, -10px -10px 10px #e2e2e2",
+  },
 };
 
 export default styles;

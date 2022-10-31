@@ -8,9 +8,7 @@ import styles from "../../Styles/styles";
 import { parseCurrency, dateFormatter } from "../../Utils/Utils";
 import ModalDetalleVenta from "./ModalDetalleVenta";
 
-
-
-const DataTableVentas = ({ loading, setLoading, busqueda }) => {
+const DataTableVentas = ({ loading, setLoading, busqueda, filtros }) => {
   // estados para el modal
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -21,11 +19,11 @@ const DataTableVentas = ({ loading, setLoading, busqueda }) => {
   const [ventasFiltered, setVentasFiltered] = useState([]);
   const [ventaSeleccionada, setVentaSeleccionada] = useState({});
 
-
   // funcion para obtener todos los ventas
   const getVentas = async () => {
     const response = await getAllVentas();
     setVentas(response);
+    console.log(response);
     filtrarVentas(response, "");
     setLoading(false);
   };
@@ -66,13 +64,11 @@ const DataTableVentas = ({ loading, setLoading, busqueda }) => {
 
   // pasamos data al modal y lo abrimos
   const passDataToModal = (cellValues) => {
-    console.log(cellValues);
     const idRow = cellValues.row.id;
     const venta = ventas.find((venta) => venta.id === idRow);
     setVentaSeleccionada(venta);
     handleOpen();
   };
-
 
   // funcion para filtrar los ventas cuando cambia la busqueda
   useEffect(() => {
@@ -105,7 +101,11 @@ const DataTableVentas = ({ loading, setLoading, busqueda }) => {
       renderCell: (cellValues) => {
         return (
           <div>
-            <Button variant="contained" color="primary" onClick={()=>passDataToModal(cellValues)}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => passDataToModal(cellValues)}
+            >
               <PreviewIcon />
             </Button>
           </div>
@@ -113,6 +113,102 @@ const DataTableVentas = ({ loading, setLoading, busqueda }) => {
       },
     },
   ];
+
+  const calcularTotal = (venta) => {
+    const total =
+      Number(venta.precioUnitario) * Number(venta.cantidadVehiculos) +
+      Number(venta.precioUnitario) *
+        Number(venta.cantidadVehiculos) *
+        (venta.impuesto.porcentaje / 100);
+    return total;
+  };
+
+  useEffect(() => {
+    let {
+      fechaDesde,
+      fechaHasta,
+      modelo,
+      marca,
+      pais,
+      cantidad,
+      pUnitarioMin,
+      pUnitarioMax,
+      totalMin,
+      totalMax,
+      vendedor,
+      cliente,
+    } = filtros;
+
+    // len of pUnitarioMin
+    let primerFiltro = ventas.filter((venta) => {
+      return (
+        venta.vehiculo.modelo.nombre
+          .toLowerCase()
+          .includes(modelo.toLowerCase()) &&
+        venta.vehiculo.modelo.marca.nombre
+          .toLowerCase()
+          .includes(marca.toLowerCase()) &&
+        venta.vehiculo.modelo.marca.pais.nombre
+          .toLowerCase()
+          .includes(pais.toLowerCase()) &&
+        venta.vendedor.nombre.toLowerCase().includes(vendedor.toLowerCase()) &&
+        (venta.cliente.nombre + " " + venta.cliente.apellido)
+          .toLowerCase()
+          .includes(cliente.toLowerCase()) &&
+        venta.cantidadVehiculos.toString().includes(cantidad.toString())
+      );
+    });
+    console.log(primerFiltro);
+
+    if (pUnitarioMin >= 0 && pUnitarioMax > 0) {
+      // add pUnitarioMin and pUnitarioMax to primerFiltro
+      primerFiltro = primerFiltro.filter((venta) => {
+        return (
+          venta.precioUnitario >= pUnitarioMin &&
+          venta.precioUnitario <= pUnitarioMax
+        );
+      });
+    }
+
+    if (totalMin >= 0 && totalMax > 0) {
+      // add totalMin and totalMax to primerFiltro
+      console.log("totalMin", totalMin);
+      console.log("totalMax", totalMax);
+
+      primerFiltro = primerFiltro.filter((venta) => {
+        return (
+          calcularTotal(venta) >= totalMin && calcularTotal(venta) <= totalMax
+        );
+      });
+    }
+
+    if (fechaDesde && fechaHasta) {
+      // add fechaDesde and fechaHasta to primerFiltro
+      fechaDesde = new Date(fechaDesde);
+      fechaHasta = new Date(fechaHasta);
+      primerFiltro = primerFiltro.filter((venta) => {
+        return (
+          new Date(venta.fecha).getTime() >= new Date(fechaDesde).getTime() &&
+          new Date(venta.fecha).getTime() <= new Date(fechaHasta).getTime()
+        );
+      });
+    }
+
+    const tercerFiltro = primerFiltro.map((venta) => ({
+      id: venta.id,
+      fecha: dateFormatter(venta.fecha),
+      modelo: venta.vehiculo.modelo.nombre,
+      marca: venta.vehiculo.modelo.marca.nombre,
+      pais: venta.vehiculo.modelo.marca.pais.nombre,
+      cantidad: venta.cantidadVehiculos,
+      precioUnitario: parseCurrency(venta.precioUnitario),
+      impuesto: venta.impuestoPorcentaje + "%",
+      total: getTotal(venta),
+      vendedor: venta.vendedor.nombre + " " + venta.vendedor.apellido,
+      cliente: venta.cliente.nombre + " " + venta.cliente.apellido,
+    }));
+    setVentasFiltered(tercerFiltro);
+  }, [filtros]);
 
   // renderizamos la datatable
   return (
@@ -133,12 +229,15 @@ const DataTableVentas = ({ loading, setLoading, busqueda }) => {
                 sorting: {
                   sortModel: [{ field: "id", sort: "asc" }],
                 },
-                
               }}
               components={{ Toolbar: GridToolbar }}
               localeText={esES.components.MuiDataGrid.defaultProps.localeText}
             />
-            <ModalDetalleVenta venta={ventaSeleccionada} open={open} handleClose={handleClose}/>
+            <ModalDetalleVenta
+              venta={ventaSeleccionada}
+              open={open}
+              handleClose={handleClose}
+            />
           </>
         )}
       </div>
