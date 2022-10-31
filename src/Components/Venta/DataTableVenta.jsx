@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { DataGrid } from "@mui/x-data-grid";
-import { getAllVentas, deleteVenta } from "../../Services";
+import { DataGrid, GridToolbar, esES } from "@mui/x-data-grid";
+import { getAllVentas } from "../../Services";
 import Button from "@mui/material/Button";
 import PreviewIcon from "@mui/icons-material/Preview";
 import { DotLoader } from "react-spinners";
 import styles from "../../Styles/styles";
 import { parseCurrency, dateFormatter } from "../../Utils/Utils";
 import ModalDetalleVenta from "./ModalDetalleVenta";
+
+
 
 const DataTableVentas = ({ loading, setLoading, busqueda }) => {
   // estados para el modal
@@ -124,14 +126,17 @@ const DataTableVentas = ({ loading, setLoading, busqueda }) => {
               rows={ventasFiltered}
               columns={columns}
               autoPageSize={true}
-              disableColumnFilter={true}
+              disableColumnFilter={false}
               disableColumnMenu={true}
               disableSelectionOnClick={true}
               initialState={{
                 sorting: {
                   sortModel: [{ field: "id", sort: "asc" }],
                 },
+                
               }}
+              components={{ Toolbar: GridToolbar }}
+              localeText={esES.components.MuiDataGrid.defaultProps.localeText}
             />
             <ModalDetalleVenta venta={ventaSeleccionada} open={open} handleClose={handleClose}/>
           </>
