@@ -22,6 +22,7 @@ export const FiltrosBar = ({ setFiltros }) => {
         width: "95%",
         marginBottom: 2,
         backgroundColor: "white",
+        opacity: 1,
         display: "flex",
         margin: "auto",
       }}

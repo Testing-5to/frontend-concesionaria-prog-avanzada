@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { getAllClientes, deleteCliente, updateCliente } from "../../Services/";
+import { getAllClientes, deleteCliente } from "../../Services/";
 import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -148,10 +148,10 @@ const DataTableClientes = ({ loading, setLoading, busqueda, filtros }) => {
   // columnas de la datatable
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
-    { field: "nombre", headerName: "Nombre", flex: 0.7 },
-    { field: "apellido", headerName: "Apellido", flex: 0.7 },
+    { field: "nombre", headerName: "Nombre", flex: 0.6 },
+    { field: "apellido", headerName: "Apellido", flex: 0.6 },
     { field: "telefono", headerName: "Telefono", flex: 1 },
-    { field: "email", headerName: "Email", flex: 1.5 },
+    { field: "email", headerName: "Email", flex: 1 },
     { field: "direccion", headerName: "Direccion", flex: 1.1 },
     { field: "dni", headerName: "DNI", flex: 0.7 },
     { field: "provincia", headerName: "Provincia", flex: 0.7 },
@@ -159,7 +159,7 @@ const DataTableClientes = ({ loading, setLoading, busqueda, filtros }) => {
     {
       field: "esCliente",
       headerName: "Cliente",
-      flex: 0.4,
+      flex: 0.5,
       renderCell: (cliente) => {
         return <div>{cliente.row.esCliente ? <CheckIcon /> : ""}</div>;
       },
@@ -211,7 +211,7 @@ const DataTableClientes = ({ loading, setLoading, busqueda, filtros }) => {
               autoPageSize={true}
               disableColumnFilter={true}
               disableColumnMenu={true}
-              clienteFound
+              empleadoFound
               initialState={{
                 sorting: {
                   sortModel: [{ field: "id", sort: "asc" }],
