@@ -8,6 +8,8 @@
   --card-02-bg: linear-gradient(#01d293, #56c57a);
   --card-03-bg: #725cff;
   --card-04-bg: #2884ff;
+  --card-05-bg: #fe7e05;
+  --card-06-bg: #da42b2;
   --heading-color: #fff;
   --small-text-color: #808191;
   --recommend-car01-bg: #e1dfa4;
@@ -72,6 +74,14 @@ img {
 
 .single__card:nth-child(4) {
   background: var(--card-04-bg);
+}
+
+.single__card:nth-child(5) {
+  background: var(--card-05-bg);
+}
+
+.single__card:nth-child(6) {
+  background: var(--card-06-bg);
 }
 
 .card__content h4 {

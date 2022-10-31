@@ -55,7 +55,7 @@ const NavbardDashboard = ({ setBusqueda }) => {
 
   // renderizamos el dashboard
   return (
-    <Box sx={{ flexGrow: 1, width: "100%"}}>
+    <Box sx={{ flexGrow: 1, width: "100%", height: "100px"}}>
       <AppBar style={{ background: "#1D1D1D", width: "calc(100% - 80px)" }} position="absolute">
         <Toolbar>
           <Typography
@@ -65,19 +65,8 @@ const NavbardDashboard = ({ setBusqueda }) => {
           >
             CONCESIONARIA
           </Typography>
-
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-              onChange={(e) => {
-                setBusqueda(e.target.value);
-              }}
-            />
-          </Search>
+ 
+         
         </Toolbar>
       </AppBar>
     </Box>

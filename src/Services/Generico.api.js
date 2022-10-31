@@ -12,54 +12,76 @@ import { getAllClientes } from "./Cliente.api";
 
 // genericos para formularios
 const getAllDatosFormEmpleados = async () => {
-  const paises = await getAllPaises();
-  const roles = await getAllRoles();
-  const provincias = await getAllProvincias();
-  const localidades = await getAllLocalidades();
+
+  const [paises, roles, provincias, localidades] = await Promise.all([
+    getAllPaises(),
+    getAllRoles(),
+    getAllProvincias(),
+    getAllLocalidades(),
+  ]);
 
   const datos = {
     paises: paises,
     roles: roles,
     provincias: provincias,
     localidades: localidades,
-  };
+
+  }
+
   return datos;
+
 };
 
 const getAllDatosFormModelo = async () => {
-  const marcas = await getAllMarcas();
-  const tiposVehiculo = await getAllTiposVehiculo();
+
+  const [marcas, tiposVehiculo] = await Promise.all([
+    getAllMarcas(),
+    getAllTiposVehiculo(),
+  ]);
+
   const datos = {
-    marcas: marcas,
-    tiposVehiculo: tiposVehiculo,
-  };
+    marcas,
+    tiposVehiculo
+  }
+
   return datos;
+
 };
 
 const getAllDatosFormVehiculo = async () => {
-    const marcas = await getAllMarcas();
-    const modelos = await getAllModelos();
-    const tiposVehiculo = await getAllTiposVehiculo();
+
+    const [marcas, modelos, tiposVehiculo] = await Promise.all([
+
+
+        getAllMarcas(),
+        getAllModelos(),
+        getAllTiposVehiculo(),
+    ]);
+
     const datos = {
         marcas,
         modelos,
         tiposVehiculo,
     };
+
     return datos;
 }
 
 const getAllDatosFormVentas = async () => {
-  const impuestos = await getAllImpuestos();
-  const vehiculos = await getAllVehiculos();
-  const vendedores = await getAllEmpleados();
-  const clientes = await getAllClientes();
+  
+  const [impuestos, vehiculos, vendedores, clientes] = await Promise.all([
+    getAllImpuestos(),
+    getAllVehiculos(),
+    getAllEmpleados(),
+    getAllClientes(),
+  ]);
 
   const datos = {
     impuestos,
     vehiculos,
     vendedores,
-    clientes
-  }
+    clientes,
+  };
 
   return datos;
 }
