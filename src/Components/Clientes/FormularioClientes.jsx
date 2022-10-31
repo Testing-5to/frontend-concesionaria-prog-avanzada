@@ -9,6 +9,7 @@ import {
 import { Grid, Checkbox, FormControlLabel } from "@mui/material";
 
 const FormularioClientes = ({ onClose, isEdit, cliente }) => {
+ 
   // estados para los datos del formulario
   const [saving, setSaving] = useState(false);
   const [loadingModal, setLoadingModal] = useState(true);
@@ -36,7 +37,6 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
 
   // funcion para guardar un cliente, este manda los valores a la api y luego cierra el modal
   const guardarCliente = async (valores) => {
-    console.log(valores);
     await saveCliente(valores).then((response) => {
       onClose();
       window.location.reload();
@@ -55,13 +55,10 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
   // este metodo es para setear las localidades que se van a mostrar en el select
   const guardarLocalidadesDeProvincia = (localidades, idProvincia) => {
     const localidadesFiltradas = localidades.filter(
-      (localidad) =>
-        localidad.provincia.id.toString() === idProvincia.toString()
+      (localidad) => localidad.provincia.id.toString() === idProvincia.toString()
     );
     setLocalidadesDeProvincia(localidadesFiltradas);
   };
-
-  const regexTelefono = /^[0-9]*$/;
 
   // este metodo es para validar los campos del formulario
   const validateValues = (valores) => {
@@ -98,8 +95,8 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
     }
 
     // Validacion teléfono
-    if (!valores.telefono || !regexTelefono.test(valores.telefono)) {
-      errores.telefono = "Por favor ingresa un telefono valido";
+    if (!valores.telefono) {
+      errores.telefono = "Por favor ingresa un telefono";
     }
 
     return errores;
@@ -110,8 +107,6 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
     setSaving(true);
     if (!isEdit) {
       guardarCliente(valores).then(() => {
-        console.log("Cliente guardado");
-        console.log(valores);
         resetForm();
         setSaving(false);
       });
@@ -137,14 +132,16 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
 
   // esta funcion esta para que cuando cambie la marca, se cambie el modelo, y setearle sus valores en el formulario
   const handleChangeProvincia = (e, values, handleChange) => {
-    values.provincia = e.target.value;
-    try {
-      guardarLocalidadesDeProvincia(localidades, e.target.value);
-      values.localidad = getLocalidadInitial(e.target.value);
-    } catch {
+    values.provincia = e.target.value
+    try{
+      guardarLocalidadesDeProvincia(localidades, e.target.value)
+      values.localidad = getLocalidadInitial(e.target.value)
+      
+    }catch{
       values.localidad = "1";
     }
     handleChange(e);
+    
   };
 
   // este metodo es para traer los datos iniciales del formulario
@@ -191,7 +188,7 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
               >
                 <Grid container spacing={2}>
                   <Grid item md={6} xs={12}>
-                    <label htmlFor="nombre">Nombre</label>
+                    <label htmlFor="nombre">Cliente</label>
                     <Field
                       type="text"
                       id="nombre"
@@ -256,7 +253,7 @@ const FormularioClientes = ({ onClose, isEdit, cliente }) => {
                   <Grid item md={6} xs={12}>
                     <label htmlFor="telefono">Telefono</label>
                     <Field
-                      type="text"
+                      type="string"
                       id="telefono"
                       name="telefono"
                       placeholder="Teléfono del empleado"
