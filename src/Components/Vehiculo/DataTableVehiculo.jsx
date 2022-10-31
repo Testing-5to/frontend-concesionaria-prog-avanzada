@@ -200,7 +200,7 @@ const DataTableVehiculo = ({ loading, setLoading, busqueda, filtros }) => {
   // renderizamos el componente
   return (
     <>
-      <div style={styles.divDataTable}>
+      <div style={styles.divDataTableVenta}>
         {loading ? (
           <DotLoader color="#1D1D1D" />
         ) : (

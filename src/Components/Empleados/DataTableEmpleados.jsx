@@ -180,7 +180,7 @@ const DataTableEmpleados = ({ loading, setLoading, busqueda, filtros }) => {
   // renderizamos la datatable
   return (
     <>
-      <div style={styles.divDataTable}>
+      <div style={styles.divDataTableVenta}>
         {loading ? (
           <DotLoader color="#1D1D1D" />
         ) : (

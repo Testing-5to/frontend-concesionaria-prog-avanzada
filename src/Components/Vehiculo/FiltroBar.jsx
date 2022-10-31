@@ -21,7 +21,7 @@ export const FiltrosBar = ({ setFiltros }) => {
       sx={{
         width: "95%",
         marginBottom: 2,
-        backgroundColor: "white",
+        backgroundColor:"rgba(255, 255, 255, 0)",
         display: "flex",
         margin: "auto",
       }}
@@ -30,13 +30,12 @@ export const FiltrosBar = ({ setFiltros }) => {
         item
         xs={3}
         sx={{
-          ml: 2,
           my: 1,
         }}
       >
         <Button
           onClick={handleOpen}
-          variant="outlined"
+          variant="contained"
           sx={{
             backgroundColor: styles.primaryColor,
             width: "100%",
@@ -70,7 +69,7 @@ export const FiltrosBar = ({ setFiltros }) => {
               cantidad: "",
             })
           }
-          variant="outlined"
+          variant="contained"
           sx={{
             backgroundColor: styles.primaryColor,
             width: "100%",
