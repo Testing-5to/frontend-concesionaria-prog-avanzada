@@ -9,6 +9,7 @@ import Modelo from "./Pages/Modelo";
 import Vehiculo from "./Pages/Vehiculo";
 import DashboardHome from "./Pages/DashboardHome";
 import Venta from "./Pages/Venta";
+import Reportes from "./Pages/Reportes";
 
 // componentes principal de la app
 const App = () => {
@@ -33,6 +34,7 @@ const App = () => {
           <Route path="/modelo" element={<Modelo />} />
           <Route path="/vehiculo" element={<Vehiculo />} />
           <Route path="/ventas" element={<Venta />} />
+          <Route path="/reportes" element={<Reportes />} />
           <Route path="*" element={<DashboardHome />} />
         </Routes>
       </Box>

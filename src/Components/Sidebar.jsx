@@ -13,7 +13,8 @@ import RecentActorsIcon from "@mui/icons-material/RecentActors";
 import StoreIcon from "@mui/icons-material/Store";
 import AutoAwesomeMotionIcon from "@mui/icons-material/AutoAwesomeMotion";
 import PersonIcon from "@mui/icons-material/Person";
-import { Link, Navigate } from "react-router-dom";
+import AssessmentIcon from '@mui/icons-material/Assessment';
+import { Link } from "react-router-dom";
 import styles from "../Styles/styles";
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
@@ -83,7 +84,10 @@ const Sidebar = () => {
               <Typography style={hidden}>Ventas</Typography>
             </Box>
             <MenuItem icon={<StoreIcon />}>
-              <strong>Venta</strong> <Link to="/ventas" />
+              <strong>Ventas</strong> <Link to="/ventas" />
+            </MenuItem>
+            <MenuItem icon={<AssessmentIcon />}>
+              <strong>Reportes</strong> <Link to="/reportes" />
             </MenuItem>
           </Menu>
         </SidebarContent>
