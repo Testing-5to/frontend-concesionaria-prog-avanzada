@@ -59,6 +59,17 @@ const styles = {
     position: "relative",
     overflowX: "auto",
   },
+  divReportes: {
+    margin: "auto",
+    height: "87%",
+    width: "95%",
+    backgroundColor: "white",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "relative",
+    overflowX: "auto",
+  },
   box: {
     position: "absolute",
     top: "50%",
