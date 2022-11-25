@@ -8,7 +8,7 @@ import styles from "../../Styles/styles";
 const DataTableGeneric = ({ rows, columns }) => {
   // renderizamos la datatable y el modal se renderiza cuando se abre
   return (
-    <div style={styles.divDataTable}>
+    <div style={styles.divDataTableReporte}>
       <DataGrid
         rows={rows}
         columns={columns}

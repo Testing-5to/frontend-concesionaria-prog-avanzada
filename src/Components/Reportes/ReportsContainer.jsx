@@ -24,7 +24,7 @@ const ReportsContainer = ({ loading, setLoading }) => {
           <DotLoader color="#1D1D1D" />
         ) : (
           <>
-            <Box sx={{display: "flex", flexDirection: "column", height: "100%", width: "100%", justifyContent: "flex-start"}}>
+            <Box sx={{display: "flex", flexDirection: "column", height: "100%", width: "100%", justifyContent: "flex-start", alignItems: "flex-start"}}>
                 <ReportsForm />
                 <DataTableGeneric columns={columns} rows={rows}/>
             </Box>

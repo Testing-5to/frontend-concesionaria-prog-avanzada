@@ -50,7 +50,7 @@ const styles = {
   },
   divDataTableVehiculo: {
     margin: "2px auto auto auto",
-    height: "90%",
+    height: "100%",
     width: "100%",
     backgroundColor: "white",
     display: "flex",
@@ -59,9 +59,17 @@ const styles = {
     position: "relative",
     overflowX: "auto",
   },
+  divDataTableReporte: {
+    margin: "auto auto auto 1.7%",
+    height: "80%",
+    width: "80%",
+    backgroundColor: "white",
+    position: "relative",
+    overflowX: "auto",
+  },
   divReportes: {
     margin: "auto",
-    height: "87%",
+    height: "90%",
     width: "95%",
     backgroundColor: "white",
     display: "flex",
@@ -69,6 +77,7 @@ const styles = {
     alignItems: "center",
     position: "relative",
     overflowX: "auto",
+    marginTop: "2%"
   },
   box: {
     position: "absolute",

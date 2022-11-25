@@ -3,7 +3,6 @@ import TextField from "@mui/material/TextField";
 import { Button, Grid, Select } from "@mui/material";
 import { Form, Formik } from "formik";
 import styles from "../../Styles/styles";
-import { CheckBox } from "@mui/icons-material";
 
 export const FormularioFiltros = ({ onClose, setFiltros }) => {
   const onSubmit = async (valores) => {
