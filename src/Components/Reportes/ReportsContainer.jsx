@@ -89,26 +89,12 @@ const ReportsContainer = ({ loading, setLoading }) => {
         }
         break;
       case 3:
-<<<<<<< HEAD
-         
-          const reporte = await getReporteVentasPorMes({
-            fechaDesde: data.fechaDesde,
-            fechaHasta: data.fechaHasta,
-          });
-          generarReporte(reporte, 3);
-       
-         
-        
-=======
-        // if all vendedores are selected, then I have to send an empty array to the backend
-
         const reporte = await getReporteVentasPorMes({
           fechaDesde: data.fechaDesde,
           fechaHasta: data.fechaHasta,
         });
         generarReporte(reporte, 3);
 
->>>>>>> desarrollo
         break;
       default:
         console.log("default");
@@ -148,17 +134,6 @@ const ReportsContainer = ({ loading, setLoading }) => {
         setRows(rowsTwo);
         break;
       case 3:
-<<<<<<< HEAD
-        const rowsThree = reporte.map((elemento, index)=> (
-          {
-            id: index + 1,
-            anio: elemento[2],
-            mes: elemento[1],
-            cantidadAutosVendidos: elemento[0]
-          }
-        ))
-      
-=======
         const rowsThree = reporte.map((elemento, index) => ({
           id: index + 1,
           anio: elemento[2],
@@ -166,7 +141,6 @@ const ReportsContainer = ({ loading, setLoading }) => {
           cantidadAutosVendidos: elemento[0],
         }));
 
->>>>>>> desarrollo
         setColumns(columnsForReport(3));
         setRows(rowsThree);
         break;
