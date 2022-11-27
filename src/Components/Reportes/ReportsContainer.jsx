@@ -81,7 +81,6 @@ const ReportsContainer = ({ loading, setLoading }) => {
         }
         break;
       case 3:
-         // if all vendedores are selected, then I have to send an empty array to the backend
          
           const reporte = await getReporteVentasPorMes({
             fechaDesde: data.fechaDesde,
@@ -137,9 +136,9 @@ const ReportsContainer = ({ loading, setLoading }) => {
         const rowsThree = reporte.map((elemento, index)=> (
           {
             id: index + 1,
-            anio: elemento[0],
+            anio: elemento[2],
             mes: elemento[1],
-            cantidadAutosVendidos: elemento[2]
+            cantidadAutosVendidos: elemento[0]
           }
         ))
       
