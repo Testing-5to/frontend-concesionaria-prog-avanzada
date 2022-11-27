@@ -137,9 +137,9 @@ const ReportsContainer = ({ loading, setLoading }) => {
         const rowsThree = reporte.map((elemento, index)=> (
           {
             id: index + 1,
-            anio: elemento[0],
+            anio: elemento[2],
             mes: elemento[1],
-            cantidadAutosVendidos: elemento[2]
+            cantidadAutosVendidos: elemento[0]
           }
         ))
       
