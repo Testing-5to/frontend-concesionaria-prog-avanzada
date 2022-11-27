@@ -5,8 +5,16 @@ import { Box } from "@mui/system";
 import DataTableGeneric from "./DataTableGeneric";
 import ReportsForm from "./ReportsForm";
 import { getAllEmpleados } from "../../Services";
-import { columnsForReport, parseCurrency, parsePercentage} from "../../Utils/Utils";
-import { getReporteUtilidades, getReporteAutosVendidos, getReporteVentasPorMes } from "../../Services";
+import {
+  columnsForReport,
+  parseCurrency,
+  parsePercentage,
+} from "../../Utils/Utils";
+import {
+  getReporteUtilidades,
+  getReporteAutosVendidos,
+  getReporteVentasPorMes,
+} from "../../Services";
 
 const ReportsContainer = ({ loading, setLoading }) => {
   const [columns, setColumns] = useState([
@@ -62,8 +70,8 @@ const ReportsContainer = ({ loading, setLoading }) => {
         }
         break;
       case 2:
-         // if all vendedores are selected, then I have to send an empty array to the backend
-         if (vendedoresSeleccionados.length === vendedores.length) {
+        // if all vendedores are selected, then I have to send an empty array to the backend
+        if (vendedoresSeleccionados.length === vendedores.length) {
           vendedoresSeleccionadosId.length = 0;
           const reporte = await getReporteAutosVendidos({
             fechaDesde: data.fechaDesde,
@@ -81,16 +89,14 @@ const ReportsContainer = ({ loading, setLoading }) => {
         }
         break;
       case 3:
-         // if all vendedores are selected, then I have to send an empty array to the backend
-         
-          const reporte = await getReporteVentasPorMes({
-            fechaDesde: data.fechaDesde,
-            fechaHasta: data.fechaHasta,
-          });
-          generarReporte(reporte, 3);
-       
-         
-        
+        // if all vendedores are selected, then I have to send an empty array to the backend
+
+        const reporte = await getReporteVentasPorMes({
+          fechaDesde: data.fechaDesde,
+          fechaHasta: data.fechaHasta,
+        });
+        generarReporte(reporte, 3);
+
         break;
       default:
         console.log("default");
@@ -106,43 +112,37 @@ const ReportsContainer = ({ loading, setLoading }) => {
   const generarReporte = (reporte, reporteSeleccionado) => {
     switch (reporteSeleccionado) {
       case 1:
-        const rows = reporte.map((elemento, index)=> (
-          {
-            id: index + 1,
-            utilidades: parseCurrency(elemento[0]),
-            promUtilidadAuto: parseCurrency(elemento[1]),
-            porcentajeUtilidades: parsePercentage(elemento[2]),
-            cantidadAutos: elemento[3],
-            vendedor: elemento[4],
-          }
-        ))
-      
+        const rows = reporte.map((elemento, index) => ({
+          id: index + 1,
+          utilidades: parseCurrency(elemento[0]),
+          promUtilidadAuto: parseCurrency(elemento[1]),
+          porcentajeUtilidades: parsePercentage(elemento[2]),
+          cantidadAutos: elemento[3],
+          vendedor: elemento[4],
+        }));
+
         setColumns(columnsForReport(1));
         setRows(rows);
         break;
       case 2:
-        const rowsTwo = reporte.map((elemento, index)=> (
-          {
-            id: index + 1,
-            marca: elemento[0],
-            vendedor: elemento[1],
-            cantidadAutosVendidos: elemento[2]
-          }
-        ))
-      
+        const rowsTwo = reporte.map((elemento, index) => ({
+          id: index + 1,
+          marca: elemento[0],
+          vendedor: elemento[1],
+          cantidadAutosVendidos: elemento[2],
+        }));
+
         setColumns(columnsForReport(2));
         setRows(rowsTwo);
         break;
       case 3:
-        const rowsThree = reporte.map((elemento, index)=> (
-          {
-            id: index + 1,
-            anio: elemento[2],
-            mes: elemento[1],
-            cantidadAutosVendidos: elemento[0]
-          }
-        ))
-      
+        const rowsThree = reporte.map((elemento, index) => ({
+          id: index + 1,
+          anio: elemento[2],
+          mes: elemento[1],
+          cantidadAutosVendidos: elemento[0],
+        }));
+
         setColumns(columnsForReport(3));
         setRows(rowsThree);
         break;
@@ -150,6 +150,11 @@ const ReportsContainer = ({ loading, setLoading }) => {
         console.log("default");
         break;
     }
+  };
+
+  const cleanTable = () => {
+    setColumns([{ field: "id", headerName: "ID", flex: 0.5 }]);
+    setRows([]);
   };
   // renderizamos el componente
   return (
@@ -172,6 +177,7 @@ const ReportsContainer = ({ loading, setLoading }) => {
               <ReportsForm
                 vendedores={vendedoresParaReporte}
                 handleConsultarReporte={handleConsultarReporte}
+                cleanTable={cleanTable}
               />
               <DataTableGeneric columns={columns} rows={rows} />
             </Box>
