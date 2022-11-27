@@ -1,7 +1,8 @@
 // importamos los componentes necesarios
 import React from "react";
-import { DataGrid } from "@mui/x-data-grid";
 import styles from "../../Styles/styles";
+import { DataGrid, GridToolbar, esES } from "@mui/x-data-grid";
+
 
 
 // este componente es el que se encarga de renderizar la datatable de clientes
@@ -21,6 +22,8 @@ const DataTableGeneric = ({ rows, columns }) => {
             sortModel: [{ field: "id", sort: "asc" }],
           },
         }}
+        components={{ Toolbar: GridToolbar }}
+        localeText={esES.components.MuiDataGrid.defaultProps.localeText}
       />
     </div>
   );

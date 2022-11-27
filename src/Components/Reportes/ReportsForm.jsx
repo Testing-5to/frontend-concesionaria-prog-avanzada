@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import dayjs from "dayjs";
 import { Box, Stack } from "@mui/system";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -45,31 +45,19 @@ const MenuProps = {
   },
 };
 
-const vendedores = [
-  "Oliver Hansen",
-  "Van Henry",
-  "April Tucker",
-  "Ralph Hubbard",
-  "Omar Alexander",
-  "Carlos Abbott",
-  "Miriam Wagner",
-  "Bradley Wilkerson",
-  "Virginia Andrews",
-  "Kelly Snyder",
-];
 
-const ReportsForm = () => {
+const ReportsForm = ({vendedores, handleConsultarReporte}) => {
   const [reporteSeleccionado, setReporteSeleccionado] = useState(1);
+  const [vendedoresDisabled, setVendedoresDisabled] = useState(false);
   const [fechaDesde, setFechaDesde] = useState(
     dayjs(new Date()).format("YYYY-MM-DD")
   );
   const [fechaHasta, setFechaHasta] = useState(
     dayjs(new Date()).format("YYYY-MM-DD")
   );
-  const [vendedorSeleccionado, setVendedorSeleccionado] = useState([]);
+  const [vendedoresSeleccionados, setVendedoresSeleccionados] = useState(vendedores);
 
   const handleChangeReporteSeleccionado = (event) => {
-    console.log(event.target.value);
     setReporteSeleccionado(event.target.value);
   };
 
@@ -81,15 +69,33 @@ const ReportsForm = () => {
     setFechaHasta(newDate);
   };
 
-  const handleChangeVendedorSeleccionado = (event) => {
+  const handleClickForm = () => {
+    handleConsultarReporte({
+      reporteSeleccionado: reporteSeleccionado,
+      fechaDesde: dayjs(fechaDesde).format("DD-MM-YYYY"),
+      fechaHasta: dayjs(fechaHasta).format("DD-MM-YYYY"),
+      vendedoresSeleccionados: vendedoresSeleccionados,
+    });
+
+  };
+
+  const handleChangeVendedoresSeleccionados = (event) => {
     const {
       target: { value },
     } = event;
-    setVendedorSeleccionado(
+    setVendedoresSeleccionados(
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value,
     );
   };
+
+  useEffect(()=> {
+    if(reporteSeleccionado === 3){
+      setVendedoresDisabled(true);
+    }else{
+      setVendedoresDisabled(false);
+    }
+  }, [reporteSeleccionado])
   return (
     <Box
       sx={{
@@ -154,21 +160,22 @@ const ReportsForm = () => {
             labelId="select-vendedor-label"
             id="select-vendedor"
             multiple
-            value={vendedorSeleccionado}
-            onChange={handleChangeVendedorSeleccionado}
+            disabled={vendedoresDisabled}
+            value={vendedoresSeleccionados}
+            onChange={handleChangeVendedoresSeleccionados}
             input={<OutlinedInput label="Vendedor" />}
             renderValue={(selected) => selected.join(", ")}
             MenuProps={MenuProps}
           >
             {vendedores.map((name) => (
               <MenuItem key={name} value={name}>
-                <Checkbox checked={vendedorSeleccionado.indexOf(name) > -1} />
+                <Checkbox checked={vendedoresSeleccionados.indexOf(name) > -1} />
                 <ListItemText primary={name} />
               </MenuItem>
             ))}
           </Select>
         </FormControl>
-        <Button sx={{ width: 200,  ml: 2 }} variant="contained" size="large">
+        <Button onClick={handleClickForm} sx={{ width: 200,  ml: 2 }} variant="contained" size="large">
           Consultar <FindInPageIcon/>
         </Button>
       </Box>

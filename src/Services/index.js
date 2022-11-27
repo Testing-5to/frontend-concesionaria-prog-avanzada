@@ -1,6 +1,6 @@
 const url_remoto = "https://concesionaria-prog-avanzada.herokuapp.com/api/v1/";
 const url_local = "http://localhost:8080/api/v1/";
-const url = url_remoto;
+const url = url_local;
 
 export { url };
 
@@ -60,3 +60,8 @@ export { getAllDatosFormEmpleados } from "./Generico.api";
 export { getAllDatosFormModelo } from "./Generico.api";
 export { getAllDatosFormVehiculo } from "./Generico.api";
 export { getAllDatosFormVentas } from "./Generico.api";
+
+// Reportes
+export { getReporteUtilidades } from "./Reporte.api";
+export { getReporteAutosVendidos } from "./Reporte.api";
+export { getReporteVentasPorMes } from "./Reporte.api";
