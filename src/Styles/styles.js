@@ -61,15 +61,15 @@ const styles = {
   },
   divDataTableReporte: {
     margin: "auto auto auto 1.7%",
-    height: "80%",
-    width: "80%",
+    height: "85%",
+    width: "85%",
     backgroundColor: "white",
     position: "relative",
     overflowX: "auto",
   },
   divReportes: {
     margin: "auto",
-    height: "90%",
+    height: "100vh",
     width: "95%",
     backgroundColor: "white",
     display: "flex",

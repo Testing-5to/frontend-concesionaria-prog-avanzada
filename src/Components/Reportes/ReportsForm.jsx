@@ -17,7 +17,7 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "dayjs/locale/es";
-import FindInPageIcon from '@mui/icons-material/FindInPage';
+import FindInPageIcon from "@mui/icons-material/FindInPage";
 
 const tiposReportes = [
   {
@@ -45,8 +45,7 @@ const MenuProps = {
   },
 };
 
-
-const ReportsForm = ({vendedores, handleConsultarReporte}) => {
+const ReportsForm = ({ vendedores, handleConsultarReporte, cleanTable }) => {
   const [reporteSeleccionado, setReporteSeleccionado] = useState(1);
   const [vendedoresDisabled, setVendedoresDisabled] = useState(false);
   const [fechaDesde, setFechaDesde] = useState(
@@ -55,7 +54,8 @@ const ReportsForm = ({vendedores, handleConsultarReporte}) => {
   const [fechaHasta, setFechaHasta] = useState(
     dayjs(new Date()).format("YYYY-MM-DD")
   );
-  const [vendedoresSeleccionados, setVendedoresSeleccionados] = useState(vendedores);
+  const [vendedoresSeleccionados, setVendedoresSeleccionados] =
+    useState(vendedores);
 
   const handleChangeReporteSeleccionado = (event) => {
     setReporteSeleccionado(event.target.value);
@@ -76,7 +76,6 @@ const ReportsForm = ({vendedores, handleConsultarReporte}) => {
       fechaHasta: dayjs(fechaHasta).format("DD-MM-YYYY"),
       vendedoresSeleccionados: vendedoresSeleccionados,
     });
-
   };
 
   const handleChangeVendedoresSeleccionados = (event) => {
@@ -85,17 +84,18 @@ const ReportsForm = ({vendedores, handleConsultarReporte}) => {
     } = event;
     setVendedoresSeleccionados(
       // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
+      typeof value === "string" ? value.split(",") : value
     );
   };
 
-  useEffect(()=> {
-    if(reporteSeleccionado === 3){
+  useEffect(() => {
+    if (reporteSeleccionado === 3) {
       setVendedoresDisabled(true);
-    }else{
+    } else {
       setVendedoresDisabled(false);
-    }
-  }, [reporteSeleccionado])
+    };
+    cleanTable();
+  }, [reporteSeleccionado]);
   return (
     <Box
       sx={{
@@ -154,29 +154,37 @@ const ReportsForm = ({vendedores, handleConsultarReporte}) => {
             />
           </Stack>
         </LocalizationProvider>
-        <FormControl sx={{ width: 300,  ml: 2 }}>
-          <InputLabel id="select-vendedor-label">Vendedores</InputLabel>
-          <Select
-            labelId="select-vendedor-label"
-            id="select-vendedor"
-            multiple
-            disabled={vendedoresDisabled}
-            value={vendedoresSeleccionados}
-            onChange={handleChangeVendedoresSeleccionados}
-            input={<OutlinedInput label="Vendedor" />}
-            renderValue={(selected) => selected.join(", ")}
-            MenuProps={MenuProps}
-          >
-            {vendedores.map((name) => (
-              <MenuItem key={name} value={name}>
-                <Checkbox checked={vendedoresSeleccionados.indexOf(name) > -1} />
-                <ListItemText primary={name} />
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <Button onClick={handleClickForm} sx={{ width: 200,  ml: 2 }} variant="contained" size="large">
-          Consultar <FindInPageIcon/>
+        <Box hidden={vendedoresDisabled}>
+          <FormControl sx={{ width: 300, ml: 2 }} >
+            <InputLabel id="select-vendedor-label">Vendedores</InputLabel>
+            <Select
+              labelId="select-vendedor-label"
+              id="select-vendedor"
+              multiple
+              value={vendedoresSeleccionados}
+              onChange={handleChangeVendedoresSeleccionados}
+              input={<OutlinedInput label="Vendedor" />}
+              renderValue={(selected) => selected.join(", ")}
+              MenuProps={MenuProps}
+            >
+              {vendedores.map((name) => (
+                <MenuItem key={name} value={name}>
+                  <Checkbox
+                    checked={vendedoresSeleccionados.indexOf(name) > -1}
+                  />
+                  <ListItemText primary={name} />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
+        <Button
+          onClick={handleClickForm}
+          sx={{ width: 200, ml: 2 }}
+          variant="contained"
+          size="large"
+        >
+          Consultar <FindInPageIcon />
         </Button>
       </Box>
     </Box>
