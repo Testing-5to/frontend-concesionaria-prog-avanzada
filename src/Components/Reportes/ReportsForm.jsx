@@ -53,7 +53,6 @@ const ReportsForm = ({
   handleChangeReporteSeleccionado,
 }) => {
   const [vendedoresDisabled, setVendedoresDisabled] = useState(false);
-  const [monthPickerDisabled, setMonthPickerDisabled] = useState(false);
   const [fechaDesde, setFechaDesde] = useState(
     dayjs(new Date()).format("YYYY-MM-DD")
   );
@@ -94,10 +93,8 @@ const ReportsForm = ({
     console.log(reporteSeleccionado);
     if (reporteSeleccionado === 3) {
       setVendedoresDisabled(true);
-      setMonthPickerDisabled(true);
     } else {
       setVendedoresDisabled(false);
-      setMonthPickerDisabled(false);
     }
 
     cleanTable();
@@ -137,7 +134,7 @@ const ReportsForm = ({
         </Box>
       </Box>
 
-      <Box hidden={monthPickerDisabled} sx={{ width: "100%", display: "flex" }}>
+      <Box sx={{ width: "100%", display: "flex" }}>
         <LocalizationProvider adapterLocale={"es"} dateAdapter={AdapterDayjs}>
           <Stack spacing={3} sx={{ width: 300 }}>
             <DesktopDatePicker

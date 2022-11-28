@@ -53,23 +53,53 @@ export function HorizontalBar(reporteVentasPorMes) {
     Diciembre: 12,
   };
 
-  console.log(Object.keys(meses));
+  const colors = [
+    "rgba(255, 99, 132, 0.8)",
+    "rgba(54, 162, 235, 0.8)",
+    "rgba(255, 206, 86, 0.8)",
+    "rgba(75, 192, 192, 0.8)",
+    "rgba(153, 102, 255, 0.8)",
+    "rgba(255, 159, 64, 0.8)",
+  ];
+
+  console.log(reporteVentasPorMes);
+
+  // get the months from the report
+
+  // get the total years from the report, in reporteVentasPorMes.data[2], count the non repeated years
+  const totalYears = [
+    ...new Set(reporteVentasPorMes.data.map((mes) => mes[2])),
+  ];
+
+  const month = [
+    ...new Set(
+      reporteVentasPorMes.data.map((mes) => Object.keys(meses)[mes[1] - 1])
+    ),
+  ];
+
+  // Create a dataset for each year
+  const datasets = reporteVentasPorMes.data.reduce((acc, mes) => {
+    const year = mes[2];
+    const index = totalYears.indexOf(year);
+    const color = colors[index];
+    const label = `Año ${year}`;
+    const data = acc[index] ? acc[index].data : [];
+    data.push(mes[0]);
+    acc[index] = {
+      label,
+      data,
+      backgroundColor: color,
+      borderColor: color,
+      borderWidth: 1,
+    };
+    return acc;
+  }, []);
 
   const data = {
     // Get the name by number of the key in Meses
-    labels: reporteVentasPorMes.data.map(
-      (mes) => Object.keys(meses)[mes[1] - 1]
-    ),
-    datasets: [
-      {
-        label: reporteVentasPorMes.data.map((elemento) => elemento[2]),
-        data: reporteVentasPorMes.data.map((elemento) => elemento[0]),
-        backgroundColor: "rgba(255, 99, 132, 0.2)",
-        borderColor: "rgb(255, 99, 132)",
-        borderWidth: 1,
-      },
-    ],
+    labels: month,
+    datasets: datasets,
   };
-
+  //
   return <Bar options={options} data={data} />;
 }
