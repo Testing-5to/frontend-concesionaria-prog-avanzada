@@ -45,9 +45,15 @@ const MenuProps = {
   },
 };
 
-const ReportsForm = ({ vendedores, handleConsultarReporte, cleanTable }) => {
-  const [reporteSeleccionado, setReporteSeleccionado] = useState(1);
+const ReportsForm = ({
+  vendedores,
+  handleConsultarReporte,
+  cleanTable,
+  reporteSeleccionado,
+  handleChangeReporteSeleccionado,
+}) => {
   const [vendedoresDisabled, setVendedoresDisabled] = useState(false);
+  const [monthPickerDisabled, setMonthPickerDisabled] = useState(false);
   const [fechaDesde, setFechaDesde] = useState(
     dayjs(new Date()).format("YYYY-MM-DD")
   );
@@ -56,10 +62,6 @@ const ReportsForm = ({ vendedores, handleConsultarReporte, cleanTable }) => {
   );
   const [vendedoresSeleccionados, setVendedoresSeleccionados] =
     useState(vendedores);
-
-  const handleChangeReporteSeleccionado = (event) => {
-    setReporteSeleccionado(event.target.value);
-  };
 
   const handleChangeFechaDesde = (newDate) => {
     setFechaDesde(newDate);
@@ -87,14 +89,19 @@ const ReportsForm = ({ vendedores, handleConsultarReporte, cleanTable }) => {
       typeof value === "string" ? value.split(",") : value
     );
   };
-
+  console.log(reporteSeleccionado);
   useEffect(() => {
+    console.log(reporteSeleccionado);
     if (reporteSeleccionado === 3) {
       setVendedoresDisabled(true);
+      setMonthPickerDisabled(true);
     } else {
       setVendedoresDisabled(false);
-    };
+      setMonthPickerDisabled(false);
+    }
+
     cleanTable();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reporteSeleccionado]);
   return (
     <Box
@@ -129,7 +136,8 @@ const ReportsForm = ({ vendedores, handleConsultarReporte, cleanTable }) => {
           </FormControl>
         </Box>
       </Box>
-      <Box sx={{ width: "100%", display: "flex" }}>
+
+      <Box hidden={monthPickerDisabled} sx={{ width: "100%", display: "flex" }}>
         <LocalizationProvider adapterLocale={"es"} dateAdapter={AdapterDayjs}>
           <Stack spacing={3} sx={{ width: 300 }}>
             <DesktopDatePicker
@@ -154,8 +162,10 @@ const ReportsForm = ({ vendedores, handleConsultarReporte, cleanTable }) => {
             />
           </Stack>
         </LocalizationProvider>
+        <Box />
+
         <Box hidden={vendedoresDisabled}>
-          <FormControl sx={{ width: 300, ml: 2 }} >
+          <FormControl sx={{ width: 300, ml: 2 }}>
             <InputLabel id="select-vendedor-label">Vendedores</InputLabel>
             <Select
               labelId="select-vendedor-label"
@@ -178,6 +188,7 @@ const ReportsForm = ({ vendedores, handleConsultarReporte, cleanTable }) => {
             </Select>
           </FormControl>
         </Box>
+
         <Button
           onClick={handleClickForm}
           sx={{ width: 200, ml: 2 }}

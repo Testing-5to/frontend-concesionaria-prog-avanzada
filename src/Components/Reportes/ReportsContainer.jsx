@@ -15,6 +15,7 @@ import {
   getReporteAutosVendidos,
   getReporteVentasPorMes,
 } from "../../Services";
+import { HorizontalBar } from "./HorizontalBar";
 
 const ReportsContainer = ({ loading, setLoading }) => {
   const [columns, setColumns] = useState([
@@ -23,7 +24,8 @@ const ReportsContainer = ({ loading, setLoading }) => {
   const [rows, setRows] = useState([]);
   const [vendedores, setVendedores] = useState([]);
   const [vendedoresParaReporte, setVendedoresParaReporte] = useState([]);
-
+  const [reporteSeleccionado, setReporteSeleccionado] = useState(1);
+  const [reporteVentasPorMes, setReporteVentasPorMes] = useState([]);
   // traemos los vendedores
   const getVendedores = async () => {
     setLoading(true);
@@ -93,6 +95,9 @@ const ReportsContainer = ({ loading, setLoading }) => {
           fechaDesde: data.fechaDesde,
           fechaHasta: data.fechaHasta,
         });
+        console.log(reporte);
+        console.log("holaholaohl;asodmoawomdaw");
+        setReporteVentasPorMes(reporte);
         generarReporte(reporte, 3);
 
         break;
@@ -150,6 +155,10 @@ const ReportsContainer = ({ loading, setLoading }) => {
     }
   };
 
+  const handleChangeReporteSeleccionado = (e) => {
+    setReporteSeleccionado(e.target.value);
+  };
+
   const cleanTable = () => {
     setColumns([{ field: "id", headerName: "ID", flex: 0.5 }]);
     setRows([]);
@@ -176,8 +185,35 @@ const ReportsContainer = ({ loading, setLoading }) => {
                 vendedores={vendedoresParaReporte}
                 handleConsultarReporte={handleConsultarReporte}
                 cleanTable={cleanTable}
+                handleChangeReporteSeleccionado={
+                  handleChangeReporteSeleccionado
+                }
+                reporteSeleccionado={reporteSeleccionado}
               />
-              <DataTableGeneric columns={columns} rows={rows} />
+              {/* If its reportes 3 render HorizontalBar else render DataTableGeneric */}
+              {reporteSeleccionado === 3 ? (
+                <Box
+                  sx={{
+                    width: "70%",
+                    height: "70%",
+                    justifyContent: "center",
+                    display: "flex",
+                    alignItems: "center",
+                    margin: "auto",
+                  }}
+                >
+                  <HorizontalBar
+                    data={reporteVentasPorMes}
+                    title="Ventas por mes"
+                  />
+                </Box>
+              ) : (
+                <DataTableGeneric
+                  rows={rows}
+                  columns={columns}
+                  title="Reporte"
+                />
+              )}
             </Box>
           </>
         )}
