@@ -53,23 +53,21 @@ export function HorizontalBar(reporteVentasPorMes) {
     Diciembre: 12,
   };
 
-  console.log(Object.keys(meses));
-
   const data = {
     // Get the name by number of the key in Meses
     labels: reporteVentasPorMes.data.map(
       (mes) => Object.keys(meses)[mes[1] - 1]
     ),
-    datasets: [
-      {
-        label: reporteVentasPorMes.data.map((elemento) => elemento[2]),
-        data: reporteVentasPorMes.data.map((elemento) => elemento[0]),
+    datasets: reporteVentasPorMes.data.map((data) => {
+      return {
+        label: data[2],
+        data: [data[0]],
         backgroundColor: "rgba(255, 99, 132, 0.2)",
         borderColor: "rgb(255, 99, 132)",
         borderWidth: 1,
-      },
-    ],
+      };
+    }),
   };
-
+  //
   return <Bar options={options} data={data} />;
 }
