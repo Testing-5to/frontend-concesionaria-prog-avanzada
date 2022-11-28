@@ -57,10 +57,11 @@ const getReporteVentasPorMes = async (data) => {
   const anioHasta = data.fechaHasta.substring(6, 10);
   const response = await axios.get(urlReporteVentasPorMes, {
     params: {
-      fechaInicio: anioDesde,
-      fechaFin: anioHasta,
+      anioInicio: anioDesde,
+      anioFin: anioHasta,
     },
   });
+  console.log("response.data", response.data);
   return response.data;
 };
 
