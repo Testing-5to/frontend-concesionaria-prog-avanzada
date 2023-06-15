@@ -24,9 +24,7 @@ const App = () => {
           height: "100vh",
         }}
       >
-        {/* renderizamos el sidebar a este nivel porque aparece en todas las pantallas */}
         <Sidebar />
-        {/* renderizamos las rutas */}
         <Routes>
           <Route path="/marca" element={<Marca />} />
           <Route path="/empleados" element={<Empleados />} />

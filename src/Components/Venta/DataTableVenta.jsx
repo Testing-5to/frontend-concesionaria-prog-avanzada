@@ -8,14 +8,13 @@ import styles from "../../Styles/styles";
 import { parseCurrency, dateFormatter } from "../../Utils/Utils";
 import ModalDetalleVenta from "./ModalDetalleVenta";
 
-const DataTableVentas = ({ loading, setLoading, busqueda, filtros }) => {
+const DataTableVentas = ({ loading, setLoading, busqueda, filtros, ventas, setVentas}) => {
   // estados para el modal
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   // estados para la datatable
-  const [ventas, setVentas] = useState([]);
   const [ventasFiltered, setVentasFiltered] = useState([]);
   const [ventaSeleccionada, setVentaSeleccionada] = useState({});
 
@@ -23,7 +22,6 @@ const DataTableVentas = ({ loading, setLoading, busqueda, filtros }) => {
   const getVentas = async () => {
     const response = await getAllVentas();
     setVentas(response);
-    console.log(response);
     filtrarVentas(response, "");
     setLoading(false);
   };
@@ -75,10 +73,16 @@ const DataTableVentas = ({ loading, setLoading, busqueda, filtros }) => {
     filtrarVentas(ventas, busqueda);
   }, [busqueda]);
 
+  useEffect(() => {
+    getVentas();
+  }, [ventas]);
+
   // funcion para obtener los ventas cuando se renderiza el componente
   useEffect(() => {
     getVentas();
   }, []);
+
+ 
 
   // columnas de la datatable
   const columns = [

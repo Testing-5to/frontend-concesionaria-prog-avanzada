@@ -16,7 +16,7 @@ import {
   StyledInputBase,
 } from "../../Styles/material";
 
-const NavbarVentas = ({ setBusqueda }) => {
+const NavbarVentas = ({ setBusqueda, setVentas, ventas}) => {
   // estados para el modal
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -64,7 +64,7 @@ const NavbarVentas = ({ setBusqueda }) => {
             aria-describedby="modal-modal-description"
           >
             <Box sx={styles.boxVenta}>
-              <FormularioVentas sx={{height: "100%"}} onClose={handleClose} />
+              <FormularioVentas sx={{height: "100%"}} onClose={handleClose} setVentas={setVentas} ventas={ventas}/>
             </Box>
           </Modal>
         </Toolbar>

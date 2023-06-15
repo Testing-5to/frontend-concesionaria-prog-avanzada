@@ -22,6 +22,7 @@ const DashboardVenta = () => {
     vendedor: "",
     cliente: "",
   });
+  const [ventas, setVentas] = useState([]);
 
   // renderizamos el navbar y la datatable
   return (
@@ -35,7 +36,7 @@ const DashboardVenta = () => {
         marginLeft: "80px",
       }}
     >
-      <NavbarVentas setBusqueda={setBusqueda} />
+      <NavbarVentas setBusqueda={setBusqueda} setVentas={setVentas} ventas={ventas}/>
       <FiltrosBar setFiltros={setFiltros} />
       <br />
       <DataTableVenta
@@ -43,6 +44,8 @@ const DashboardVenta = () => {
         loading={loading}
         setLoading={setLoading}
         filtros={filtros}
+        ventas={ventas}
+        setVentas={setVentas}
       />
     </Box>
   );

@@ -18,7 +18,7 @@ const filtrosVehiculo = [
   { id: 4, nombre: "Año", value: "anio" },
 ];
 
-const FormularioVentas = ({ onClose }) => {
+const FormularioVentas = ({ onClose, setVentas, ventas}) => {
   // estados del formulario
   const [saving, setSaving] = useState(false);
   const [loadingModal, setLoadingModal] = useState(true);
@@ -175,8 +175,9 @@ const FormularioVentas = ({ onClose }) => {
   // funcion para guardar un venta nuevo, esta llama a la api y luego cierra el modal
   const guardarVenta = async (valores) => {
     await saveVenta(valores).then((response) => {
+      setVentas([...ventas, response]);
+      console.log([...ventas, response]);
       onClose();
-      window.location.reload();
     });
   };
 
@@ -184,7 +185,6 @@ const FormularioVentas = ({ onClose }) => {
   const validateValues = (valores) => {
     let errores = {};
     // Validacion venta
-    console.log(valores.cantidad, vehiculoSeleccionado.cantidad);
     if (valores.cantidad > vehiculoSeleccionado.cantidad) {
       errores.cantidad = "No hay suficiente stock";
     }
